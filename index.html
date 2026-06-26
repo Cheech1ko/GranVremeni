@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-
         .catalog-link-wrap {
             text-align: center;
             margin-top: 12px;
@@ -44,24 +43,6 @@
             color: #fff;
         }
         .btn-telegram:hover {
-            background: #006699;
-            color: #fff;
-        }
-        .header-telegram {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #0088cc;
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: var(--radius);
-            font-weight: 600;
-            font-size: 14px;
-            transition: background .2s;
-            font-family: 'Montserrat', sans-serif;
-            margin-left: 8px;
-        }
-        .header-telegram:hover {
             background: #006699;
             color: #fff;
         }
@@ -156,8 +137,6 @@
     </div>
 </section>
 
-
-
 <!-- POPULAR ITEMS -->
 <section class="catalog-items">
     <div class="container">
@@ -226,25 +205,74 @@
     </div>
 </div>
 
-<!-- GALLERY -->
+<!-- GALLERY - КАРУСЕЛЬ -->
 <section class="gallery" id="gallery">
     <h2 class="section-title">Галерея работ</h2>
     <p class="section-sub">Примеры выполненных проектов — памятники, ограды, комплексное благоустройство</p>
-    <div class="gallery-grid">
-        <div class="gallery-item"><i class="fas fa-mountain"></i></div>
-        <div class="gallery-item"><i class="fas fa-archway"></i></div>
-        <div class="gallery-item"><i class="fas fa-fence"></i></div>
-        <div class="gallery-item"><i class="fas fa-layer-group"></i></div>
-        <div class="gallery-item"><i class="fas fa-tree"></i></div>
-        <div class="gallery-item"><i class="fas fa-mountain"></i></div>
-        <div class="gallery-item"><i class="fas fa-cross"></i></div>
-        <div class="gallery-item"><i class="fas fa-candle-holder"></i></div>
-        <div class="gallery-item"><i class="fas fa-mountain"></i></div>
-        <div class="gallery-item"><i class="fas fa-archway"></i></div>
-        <div class="gallery-item"><i class="fas fa-fence"></i></div>
-        <div class="gallery-item"><i class="fas fa-layer-group"></i></div>
+
+    <div class="gallery-carousel">
+        <button class="gallery-arrow gallery-arrow-left" onclick="slideGallery('left')">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="gallery-track-wrapper">
+            <div class="gallery-track" id="galleryTrack">
+                <div class="gallery-item" data-index="0">
+                    <img src="img/products-img/1.jpeg" alt="Памятник «Классик»" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-mountain\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="1">
+                    <img src="img/products-img/2.jpeg" alt="Памятник «Резной»" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-archway\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="2">
+                    <img src="img/products-img/3.jpeg" alt="Памятник «Элит»" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-fence\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="3">
+                    <img src="img/products-img/4.jpeg" alt="Памятник «Стела»" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-layer-group\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="4">
+                    <img src="img/products-img/5.jpeg" alt="Ограда профильная" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-tree\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="5">
+                    <img src="img/products-img/6.jpeg" alt="Цоколь гранитный" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-mountain\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="6">
+                    <img src="img/products-img/7.jpeg" alt="Памятник с крестом" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-cross\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="7">
+                    <img src="img/products-img/8.jpeg" alt="Вазон гранитный" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-candle-holder\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="8">
+                    <img src="img/products-img/9.jpeg" alt="Памятник двойной" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-mountain\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="9">
+                    <img src="img/products-img/10.jpeg" alt="Мраморный памятник" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-archway\'></i>'">
+                </div>
+                <div class="gallery-item" data-index="10">
+                    <img src="img/products-img/11.jpeg" alt="Ограда кованая" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-fence\'></i>'">
+                </div>
+            </div>
+        </div>
+
+        <button class="gallery-arrow gallery-arrow-right" onclick="slideGallery('right')">
+            <i class="fas fa-chevron-right"></i>
+        </button>
     </div>
+
+    <div class="gallery-dots" id="galleryDots"></div>
 </section>
+
+<!-- ЛАЙТБОКС -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation(); prevLightbox()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Увеличенное фото">
+    <button class="lightbox-next" onclick="event.stopPropagation(); nextLightbox()">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    <div class="lightbox-counter" id="lightboxCounter">1 / 12</div>
+</div>
 
 <!-- FAQ -->
 <section class="faq" id="faq">
@@ -464,12 +492,11 @@
 <script src="js/logo-patch.js"></script>
 <script src="js/validation.js"></script>
 <script>
-    // ===== ЗАГРУЗКА ПОПУЛЯРНЫХ ТОВАРОВ НА ГЛАВНОЙ =====
+    // ===== ЗАГРУЗКА ПОПУЛЯРНЫХ ТОВАРОВ =====
     document.addEventListener('DOMContentLoaded', function() {
         const grid = document.getElementById('popularGrid');
         if (!grid) return;
 
-        // Берём первые 6 популярных товаров из глобального списка
         const popular = PRODUCTS.filter(p => p.popular).slice(0, 6);
 
         if (popular.length === 0) {
@@ -510,5 +537,146 @@
     });
 </script>
 <script src="js/header.js"></script>
+<script>
+    // ===== ГАЛЕРЕЯ-КАРУСЕЛЬ С ЛАЙТБОКСОМ =====
+    let currentSlide = 0;
+    const track = document.getElementById('galleryTrack');
+    const dotsContainer = document.getElementById('galleryDots');
+    let itemsPerView = 3;
+    let totalItems = 0;
+    let lightboxImages = [];
+    let currentLightboxIndex = 0;
+
+    function initGallery() {
+        if (!track) return;
+        const items = track.querySelectorAll('.gallery-item');
+        totalItems = items.length;
+
+        lightboxImages = [];
+        items.forEach(item => {
+            const img = item.querySelector('img');
+            if (img) {
+                lightboxImages.push(img.src);
+            }
+        });
+
+        items.forEach((item, index) => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', function(e) {
+                if (e.target.closest('.gallery-item')) {
+                    openLightbox(index);
+                }
+            });
+        });
+
+        updateItemsPerView();
+        renderDots();
+        updateSlide();
+    }
+
+    function updateItemsPerView() {
+        if (window.innerWidth <= 480) itemsPerView = 1;
+        else if (window.innerWidth <= 768) itemsPerView = 2;
+        else itemsPerView = 3;
+    }
+
+    function renderDots() {
+        const dotsCount = Math.ceil(totalItems / itemsPerView);
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < dotsCount; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+            dot.dataset.index = i;
+            dot.onclick = function() { goToSlide(parseInt(this.dataset.index)); };
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    function updateSlide() {
+        if (!track) return;
+        const maxSlide = Math.ceil(totalItems / itemsPerView) - 1;
+        if (currentSlide > maxSlide) currentSlide = maxSlide;
+        if (currentSlide < 0) currentSlide = 0;
+
+        const slideWidth = 100 / itemsPerView;
+        const gap = 8;
+        const trackWidth = track.parentElement.offsetWidth;
+        const offset = -currentSlide * (itemsPerView * (slideWidth + (gap / trackWidth * 100)));
+        track.style.transform = 'translateX(' + offset + '%)';
+
+        const dots = dotsContainer.querySelectorAll('.gallery-dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentSlide);
+        });
+    }
+
+    function slideGallery(direction) {
+        const maxSlide = Math.ceil(totalItems / itemsPerView) - 1;
+        if (direction === 'left') {
+            currentSlide = currentSlide > 0 ? currentSlide - 1 : maxSlide;
+        } else {
+            currentSlide = currentSlide < maxSlide ? currentSlide + 1 : 0;
+        }
+        updateSlide();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSlide();
+    }
+
+    // ===== ЛАЙТБОКС =====
+    function openLightbox(index) {
+        currentLightboxIndex = index;
+        const img = document.getElementById('lightboxImg');
+        img.src = lightboxImages[index];
+        document.getElementById('lightbox').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        updateCounter();
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function prevLightbox() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+        document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
+        updateCounter();
+    }
+
+    function nextLightbox() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length;
+        document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
+        updateCounter();
+    }
+
+    function updateCounter() {
+        document.getElementById('lightboxCounter').textContent = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
+    }
+
+    // Закрытие по ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft' && document.getElementById('lightbox').classList.contains('open')) prevLightbox();
+        if (e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('open')) nextLightbox();
+    });
+
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            updateItemsPerView();
+            const maxSlide = Math.ceil(totalItems / itemsPerView) - 1;
+            if (currentSlide > maxSlide) currentSlide = maxSlide;
+            if (currentSlide < 0) currentSlide = 0;
+            renderDots();
+            updateSlide();
+        }, 200);
+    });
+
+    document.addEventListener('DOMContentLoaded', initGallery);
+</script>
 </body>
 </html>

@@ -58,7 +58,6 @@
         }).join('');
     }
 
-    // ===== РЕНДЕР ШАПКИ =====
     function renderHeader() {
         var el = document.getElementById('site-header');
         if (!el) return;
@@ -83,7 +82,6 @@
         }).join('');
 
         el.innerHTML =
-            /* ===== ШАПКА ===== */
             '<div class="header-inner">' +
               '<a href="' + prefix + 'index.html" class="logo">' +
                 '<div class="logo-icon">' +
@@ -93,7 +91,6 @@
                 '</div>' +
                 '<div class="logo-text">' +
                   '<div class="logo-name">' + CONFIG.siteName + '</div>' +
-                  '<div class="logo-sub">Памятники и благоустройство</div>' +
                 '</div>' +
               '</a>' +
 
@@ -287,7 +284,6 @@
         }
     });
 
-    // ===== CSS =====
     var css = `
 /* ─── ДЕСКТОПНЫЕ СТИЛИ ─── */
 .social-icons {
@@ -622,7 +618,6 @@
     styleEl.textContent = css;
     document.head.appendChild(styleEl);
 
-    // ===== ИНИЦИАЛИЗАЦИЯ =====
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function () {
             renderHeader();
