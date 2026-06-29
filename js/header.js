@@ -5,9 +5,9 @@
         siteName:  'МосПамять.рф',
         phone:     '+79362200900',
         phoneDisplay: '+7 (936) 2200-900',
-        tgLink:    'https://t.me/ваш_телеграм',
+        tgLink:    'https://t.me/mospamyat',
         waLink:    'https://wa.me/79362200900',
-        maxLink:   'https://ваша-ссылка-на-max',
+        maxLink:   'https://max.ru/ваш_профиль',
     };
 
     function getBasePath() {
@@ -28,6 +28,28 @@
             return '../';
         }
         return '';
+    }
+
+    // ============================================================
+    //  ГЕНЕРАЦИЯ ССЫЛОК С СООБЩЕНИЕМ
+    // ============================================================
+    function getMessengerLinks(productName, productPrice) {
+        var priceText = productPrice ? productPrice.toLocaleString('ru-RU') + ' ₽' : '';
+        var productText = productName || 'памятник';
+        var fullText = 'Здравствуйте! Меня интересует ' + productText + (priceText ? ' (' + priceText + ')' : '') + '. Хотел бы узнать подробнее.';
+
+        // Кодируем текст для URL
+        var encodedText = encodeURIComponent(fullText);
+
+        // Ссылки с предзаполненным текстом
+        var tgLink = CONFIG.tgLink + '?text=' + encodedText;
+        var waLink = CONFIG.waLink + '?text=' + encodedText;
+
+        return {
+            tg: tgLink,
+            wa: waLink,
+            max: CONFIG.maxLink
+        };
     }
 
     function isActive(href) {
@@ -111,32 +133,27 @@
 
             /* ===== МОБИЛЬНОЕ НИЖНЕЕ МЕНЮ ===== */
             '<div class="mobile-bottom-nav" id="mobileBottomNav">' +
-              /* Кнопка "Каталог" */
               '<div class="mobile-nav-item" id="catalogToggle" onclick="toggleCatalogDropdown()">' +
                 '<i class="fas fa-th-list"></i>' +
                 '<span>Каталог</span>' +
               '</div>' +
 
-              /* Логотип между кнопками */
               '<div class="mobile-logo-divider">' +
                 '<img src="' + img('моспамятьрф-04.svg') + '" alt="МосПамять" width="80" height="40" loading="lazy" ' +
                      'onerror="this.style.display=\'none\'">' +
               '</div>' +
 
-              /* Кнопка "Меню" */
               '<div class="mobile-nav-item" id="menuToggle" onclick="toggleMenu()">' +
                 '<i class="fas fa-bars"></i>' +
                 '<span>Меню</span>' +
               '</div>' +
 
-              /* ВЫПАДАЮЩЕЕ МЕНЮ "КАТАЛОГ" (снизу вверх) */
               '<div class="mobile-dropdown catalog-dropdown" id="catalogDropdown">' +
                 '<div class="dropdown-header">Категории</div>' +
                 '<a href="' + prefix + 'catalog/" class="dropdown-all">Все товары</a>' +
                 catalogDropdownHtml +
               '</div>' +
 
-              /* ВЫПАДАЮЩЕЕ МЕНЮ "МЕНЮ" (снизу вверх) */
               '<nav class="mobile-dropdown menu-dropdown" id="menuDropdown">' +
                 '<div class="dropdown-header">Меню</div>' +
                 '<a href="' + prefix + 'index.html#about"   onclick="closeAllDropdowns()">О компании</a>' +
@@ -194,7 +211,7 @@
                   '</div>' +
                   '<div class="logo-text"><div class="logo-name">' + CONFIG.siteName + '</div></div>' +
                 '</div>' +
-                '<p>Проектирование, изготовление и установка памятников в Москве и МО с 2009 года.</p>' +
+                '<p>Проектирование, изготовление и установка памятников в Москве и МО с 2019 года.</p>' +
                 '<div class="footer-social">' + '</div>' +
               '</div>' +
 
@@ -218,7 +235,7 @@
             '</div>' +
 
             '<div class="footer-bottom">' +
-              '<span>' + CONFIG.siteName + ' © 2009–' + new Date().getFullYear() + '</span>' +
+              '<span>' + CONFIG.siteName + ' © 2019–' + new Date().getFullYear() + '</span>' +
               '<a href="' + prefix + 'privacy-policy.html" style="color:rgba(255,255,255,0.4);font-size:12px;">' +
                 'Политика конфиденциальности</a>' +
             '</div>';
@@ -698,4 +715,10 @@
         renderHeader();
         renderFooter();
     }
+
+    window.getMessengerLinks = getMessengerLinks;
+    window.getTelegramSvg = getTelegramSvg;
+    window.getWhatsappSvg = getWhatsappSvg;
+    window.getMaxSvg = getMaxSvg;
+
 })();

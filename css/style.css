@@ -30,7 +30,6 @@ h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
 a { text-decoration: none; color: inherit; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(12px, 3vw, 20px); }
 
-/* ===== TOP BAR ===== */
 .topbar {
     background: var(--dark);
     color: rgba(255,255,255,0.6);
@@ -51,7 +50,6 @@ a { text-decoration: none; color: inherit; }
 .topbar-contacts .phone { font-weight: 700; font-size: clamp(13px, 0.9vw, 15px); color: #fff; }
 .topbar-right { font-size: clamp(10px, 0.7vw, 12px); opacity: .6; }
 
-/* ===== HEADER ===== */
 header {
     background: var(--dark);
     position: sticky;
@@ -184,7 +182,7 @@ header {
 }
 .burger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: .3s; }
 
-/* ===== АДАПТИВНАЯ ШАПКА ДЛЯ УЗКИХ ЭКРАНОВ ===== */
+
 @media (max-width: 1150px) {
     .header-cta {
         display: none !important;
@@ -433,7 +431,7 @@ header {
     }
 }
 
-/* ===== ADVANTAGES ===== */
+
 .advantages { padding: clamp(40px, 8vh, 70px) clamp(12px, 3vw, 20px); background: var(--gray-bg); }
 .section-title {
     text-align: center;
@@ -455,7 +453,7 @@ header {
 }
 .adv-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: clamp(16px, 2vw, 24px);
     max-width: 1200px;
     margin: 0 auto;
@@ -589,7 +587,7 @@ header {
     }
 }
 
-/* ===== CALCULATOR ===== */
+
 .calculator { padding: clamp(40px, 8vh, 70px) clamp(12px, 3vw, 20px); background: var(--dark); color: #fff; }
 .calculator .section-title { color: #fff; }
 .calculator .section-sub { color: rgba(255,255,255,0.6); }
@@ -642,7 +640,6 @@ header {
     }
 }
 
-/* ===== CTA BANNER ===== */
 .cta-banner {
     padding: clamp(30px, 6vh, 60px) clamp(12px, 3vw, 20px);
     background: linear-gradient(90deg, var(--dark-light), var(--dark));
@@ -669,7 +666,7 @@ header {
     }
 }
 
-/* ===== FAQ ===== */
+
 .faq { padding: clamp(40px, 8vh, 70px) clamp(12px, 3vw, 20px); background: var(--gray-bg); }
 .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
 .faq-item {
@@ -709,7 +706,7 @@ header {
 }
 .faq-item.open .faq-a { display: block; }
 
-/* ===== USP STRIP ===== */
+
 .usp-strip { background: var(--dark); padding: clamp(20px, 3vh, 40px) clamp(12px, 3vw, 20px); }
 .usp-inner {
     max-width: 1200px;
@@ -739,7 +736,6 @@ header {
     }
 }
 
-/* ===== CONTACT FORM ===== */
 .contact { padding: clamp(40px, 8vh, 70px) clamp(12px, 3vw, 20px); background: var(--gray-bg); }
 .contact-inner {
     max-width: 900px;
@@ -833,7 +829,7 @@ header {
     }
 }
 
-/* ===== FOOTER ===== */
+
 footer {
     background: #0d0d0d;
     color: rgba(255,255,255,0.6);
@@ -896,7 +892,7 @@ footer {
     }
 }
 
-/* ===== MODAL ===== */
+
 .modal-overlay {
     display: none;
     position: fixed;
@@ -953,7 +949,7 @@ input.error, textarea.error, select.error {
     border-width: 2px !important;
 }
 
-/* ===== GALLERY ===== */
+
 .gallery-carousel {
     position: relative;
     max-width: 1200px;
@@ -1071,7 +1067,7 @@ input.error, textarea.error, select.error {
     }
 }
 
-/* ===== LIGHTBOX ===== */
+
 .lightbox {
     display: none;
     position: fixed;
@@ -1154,7 +1150,7 @@ input.error, textarea.error, select.error {
     .lightbox-close { font-size: 28px; right: 16px; top: 12px; }
 }
 
-/* ===== МОБИЛЬНОЕ МЕНЮ ===== */
+
 .mobile-nav {
     display: none;
     background: var(--dark);
@@ -1174,7 +1170,6 @@ input.error, textarea.error, select.error {
 }
 .mobile-nav a:hover { background: rgba(255,255,255,0.06); }
 
-/* ===== FLOATING PHONE ===== */
 .floating-phone {
     position: fixed;
     bottom: clamp(16px, 3vh, 24px);
@@ -1202,13 +1197,11 @@ input.error, textarea.error, select.error {
     100% { box-shadow: 0 0 0 0 rgba(184,148,74,0); }
 }
 
-/* ===== БЕЗОПАСНОСТЬ: скрыть outline у кнопок только при мыши ===== */
+
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 :focus:not(:focus-visible) { outline: none; }
 
-/* ================================================================
-   ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (до 400px)
-   ================================================================ */
+
 @media (max-width: 400px) {
     .hero h1 {
         font-size: 20px;
@@ -1242,4 +1235,140 @@ input.error, textarea.error, select.error {
         font-size: 11px;
         padding: 4px 8px;
     }
+}
+
+
+
+
+@media (max-width: 1200px) {
+    .container { padding: 0 clamp(14px, 2vw, 24px); }
+    .hero-inner { gap: clamp(20px, 3vw, 40px); }
+    .footer-inner { grid-template-columns: 1.2fr 1fr 1fr; gap: 24px; }
+}
+
+@media (max-width: 992px) {
+    /* Топ-бар */
+    .topbar .container { flex-direction: column; gap: 4px; text-align: center; }
+    .topbar-right { display: none; }
+    .topbar-contacts { justify-content: center; }
+
+    /* Герой */
+    .hero-inner { grid-template-columns: 1fr; gap: 24px; }
+    .hero-visual { order: -1; }
+    .hero-card { max-width: 100%; }
+    .hero-desc { max-width: 100%; }
+
+    /* Преимущества */
+    .adv-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Каталог на главной */
+    .items-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Контакты */
+    .contact-inner { grid-template-columns: 1fr; gap: 28px; }
+
+    /* Подвал */
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+}
+
+
+@media (max-width: 768px) {
+    /* Секции */
+    .advantages { padding: clamp(28px, 5vh, 48px) clamp(10px, 2vw, 16px); }
+    .catalog-items { padding: 0 clamp(10px, 2vw, 16px) clamp(28px, 5vh, 48px); }
+    .contact { padding: clamp(28px, 5vh, 48px) clamp(10px, 2vw, 16px); }
+    .faq { padding: clamp(28px, 5vh, 48px) clamp(10px, 2vw, 16px); }
+    .calculator { padding: clamp(28px, 5vh, 48px) clamp(10px, 2vw, 16px); }
+
+    /* Заголовки секций */
+    .section-title { font-size: clamp(18px, 4vw, 26px); }
+    .section-sub { font-size: 13px; }
+
+    /* Подвал */
+    .footer-inner { grid-template-columns: 1fr; gap: 20px; }
+    .footer-brand { grid-column: auto; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+
+    /* Модальное окно */
+    .modal { padding: 20px 16px; border-radius: 12px; }
+    .modal h3 { font-size: 18px; }
+
+    /* USP */
+    .usp-item { border-right: none; width: 100%; justify-content: center; padding: 6px 12px; }
+}
+
+/* ── Мобильный — портрет (480px–600px) ── */
+@media (max-width: 600px) {
+    /* Герой */
+    .hero { padding: clamp(20px, 4vh, 36px) clamp(10px, 2vw, 14px); }
+    .hero h1 { font-size: clamp(20px, 5.5vw, 28px); }
+    .hero-desc { font-size: 14px; }
+    .hero-buttons { flex-direction: column; align-items: stretch; }
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-outline { text-align: center; width: 100%; }
+    .hero-stats { gap: 8px; }
+    .hero-stat-num { font-size: 22px; }
+    .hero-card { padding: 16px; }
+
+    /* Преимущества */
+    .adv-grid { grid-template-columns: 1fr; }
+    .adv-card { padding: 18px 16px; }
+    .adv-icon { width: 44px; height: 44px; font-size: 20px; }
+
+    /* Карточки каталога на главной */
+    .items-grid { grid-template-columns: 1fr; }
+    .item-img { height: 200px; }
+    .item-footer { flex-direction: column; align-items: stretch; }
+    .btn-card { text-align: center; }
+
+    /* Контакты */
+    .contact-inner { gap: 20px; }
+    .form-card { padding: 18px 14px; }
+    .form-card h3 { font-size: 18px; }
+
+    /* CTA */
+    .cta-row { flex-direction: column; gap: 12px; }
+
+    /* Калькулятор */
+    .calc-grid { grid-template-columns: 1fr; }
+    .calc-box { padding: 16px; }
+
+    /* Модалка */
+    .modal-overlay { padding: 10px; }
+    .modal { padding: 18px 14px; max-width: 100%; }
+
+    /* Кнопка звонка */
+    .floating-phone { width: 48px; height: 48px; font-size: 20px; bottom: 14px; right: 14px; }
+
+    /* Пагинация */
+    .pagination button { padding: 6px 12px; font-size: 13px; }
+}
+
+
+@media (max-width: 480px) {
+    .hero h1 { font-size: clamp(18px, 5vw, 22px); }
+    .hero-stat-num { font-size: 20px; }
+    .hero-label { font-size: 10px; letter-spacing: 1px; }
+
+    .adv-card h3 { font-size: 14px; }
+    .adv-card p { font-size: 12px; }
+
+    .section-title { font-size: 18px; }
+    .section-sub { font-size: 12px; }
+
+    .cdet { gap: 8px; font-size: 13px; }
+    .cdet-icon { width: 32px; height: 32px; font-size: 13px; }
+
+    .footer-col h4 { font-size: 12px; }
+    .footer-col ul li a { font-size: 12px; }
+
+    .form-group label { font-size: 12px; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select { font-size: 14px; padding: 9px 12px; }
+    .btn-submit { font-size: 14px; padding: 12px; }
+
+    .gallery-item { flex: 0 0 calc(100% - 4px); }
+    .gallery-arrow { width: 28px; height: 28px; font-size: 12px; }
 }

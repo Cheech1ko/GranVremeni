@@ -303,7 +303,7 @@
             background: #333;
         }
 
-        /* ===== КРУГЛЫЕ КНОПКИ С SVG (как в header.js) ===== */
+        /* ===== КРУГЛЫЕ КНОПКИ С SVG ===== */
         .btn-icon {
             width: 38px;
             height: 38px;
@@ -332,10 +332,8 @@
         /* Цвета как в header.js */
         .btn-icon-tg { color: #0088cc; }
         .btn-icon-tg:hover { color: #006699; background: rgba(0, 136, 204, 0.12); }
-
         .btn-icon-wa { color: #25d366; }
         .btn-icon-wa:hover { color: #1da851; background: rgba(37, 211, 102, 0.12); }
-
         .btn-icon-max { color: #6f42c1; }
         .btn-icon-max:hover { color: #5530a3; background: rgba(111, 66, 193, 0.12); }
 
@@ -426,57 +424,259 @@
             margin-bottom: 16px;
         }
 
-        /* ===== АДАПТИВ ===== */
+        /* ================================================================
+           АДАПТИВ — МОБИЛЬНЫЕ ФИЛЬТРЫ ВЕРТИКАЛЬНЫМ СПИСКОМ
+           ================================================================ */
+
+        /* ── Планшет и небольшой десктоп (до 1100px) ── */
+        @media (max-width: 1100px) {
+            .catalog-layout { grid-template-columns: 200px 1fr; gap: 20px; }
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+            .catalog-item-img { height: 200px; }
+        }
+
+        /* ── Планшет-портрет и крупный телефон (до 992px) ── */
         @media (max-width: 992px) {
-            .catalog-layout { grid-template-columns: 1fr; }
+            .catalog-page { padding: 28px 16px 60px; }
+            .catalog-layout { grid-template-columns: 1fr; gap: 0; }
+
+            /* Фильтры — вертикальный список, компактный, сворачиваемый */
             .catalog-filters {
                 position: static;
+                display: block;
+                padding: 16px 16px 12px;
+                border-radius: 10px;
+                margin-bottom: 16px;
+                background: #fff;
+                box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            }
+            .catalog-filters h3 {
+                width: 100%;
+                margin-bottom: 10px;
+                font-size: 14px;
+                cursor: pointer;
+                user-select: none;
                 display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .catalog-filters h3 .filter-toggle {
+                font-size: 12px;
+                color: var(--text-light);
+                font-weight: 400;
+                transition: transform .2s;
+            }
+            .catalog-filters h3 .filter-toggle.open {
+                transform: rotate(180deg);
+            }
+
+            .filter-body {
+                display: none;
+                padding-top: 8px;
+            }
+            .filter-body.open {
+                display: block;
+            }
+
+            .filter-section {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+                flex: 0 0 auto;
+                width: 100%;
+            }
+            .filter-section h4 {
+                display: block !important;
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--text-light);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 6px;
+                margin-top: 10px;
+            }
+            .filter-section h4:first-of-type {
+                margin-top: 0;
+            }
+
+            .filter-group {
+                display: flex;
+                flex-direction: row;
                 flex-wrap: wrap;
-                gap: 8px;
-                padding: 12px 16px;
+                gap: 4px;
             }
-            .catalog-filters h3 { width: 100%; margin-bottom: 4px; font-size: 13px; }
-            .filter-section { margin-bottom: 0; padding-bottom: 0; border-bottom: none; flex: 0 0 auto; }
-            .filter-section h4 { display: none; }
-            .filter-group { flex-direction: row; flex-wrap: wrap; gap: 4px; }
-            .filter-btn { font-size: 12px; padding: 4px 10px; background: var(--gray-bg); border-radius: 20px; white-space: nowrap; }
-            .filter-btn.active { background: var(--gold); }
+            .filter-btn {
+                font-size: 12px;
+                padding: 5px 12px;
+                background: var(--gray-bg);
+                border-radius: 20px;
+                white-space: nowrap;
+                border: 1px solid transparent;
+            }
+            .filter-btn.active {
+                background: var(--gold);
+                border-color: var(--gold);
+                color: var(--dark);
+                font-weight: 700;
+            }
             .filter-btn .count-badge { display: none; }
-            .filter-range { flex-wrap: nowrap; }
-            .filter-range input { width: 60px; font-size: 11px; padding: 3px 6px; }
-            .filter-range button { padding: 3px 10px; font-size: 11px; }
-            .filter-clear { font-size: 11px; padding: 2px 0; margin-top: 0; }
-            .catalog-grid { grid-template-columns: repeat(2, 1fr); }
-            .btn-icon {
-                width: 34px;
-                height: 34px;
-                padding: 5px;
+
+            .filter-range {
+                display: flex;
+                gap: 6px;
+                align-items: center;
+                margin-top: 4px;
+                flex-wrap: wrap;
             }
+            .filter-range input {
+                width: 70px;
+                font-size: 12px;
+                padding: 5px 8px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+            }
+            .filter-range button {
+                padding: 5px 14px;
+                font-size: 12px;
+                background: var(--gold);
+                border: none;
+                border-radius: 6px;
+                font-weight: 700;
+                cursor: pointer;
+                color: var(--dark);
+            }
+
+            .filter-clear {
+                font-size: 12px;
+                padding: 6px 0 2px;
+                margin-top: 6px;
+                display: inline-block;
+                background: none;
+                border: none;
+                color: var(--gold);
+                cursor: pointer;
+                font-weight: 600;
+            }
+            .filter-clear:hover { text-decoration: underline; }
+
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .catalog-item-img { height: 190px; }
+            .btn-icon { width: 34px; height: 34px; padding: 5px; }
         }
 
-        @media (max-width: 600px) {
-            .catalog-header { flex-direction: column; align-items: flex-start; }
-            .catalog-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .catalog-toolbar { flex-direction: column; align-items: flex-start; }
-            .catalog-item-img { height: 140px; }
-            .catalog-item-body { padding: 12px 14px; }
+        /* ── Средние телефоны + планшет-портрет (до 768px) ── */
+        @media (max-width: 768px) {
+            .catalog-page { padding: 20px 12px 48px; }
+            .catalog-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .catalog-header h1 { font-size: 22px; }
+
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .catalog-item-img { height: 160px; }
+            .catalog-item-body { padding: 12px 14px 14px; }
             .catalog-item-body h3 { font-size: 14px; }
-            .catalog-item-body .price { font-size: 17px; }
-            .catalog-item-body .item-actions .btn-card { font-size: 10px; padding: 6px 8px; }
-            .btn-icon {
-                width: 30px;
-                height: 30px;
-                padding: 4px;
+            .catalog-item-body .dims { font-size: 12px; }
+            .catalog-item-body .price { font-size: 17px; margin-bottom: 10px; }
+
+            .item-actions { gap: 6px; }
+            .catalog-item-body .item-actions .btn-card {
+                font-size: 11px;
+                padding: 7px 8px;
             }
+            .btn-icon { width: 32px; height: 32px; padding: 5px; }
+
+            .catalog-toolbar { gap: 8px; }
+            .catalog-toolbar .sort label { font-size: 12px; }
+            .catalog-toolbar .sort select { font-size: 12px; padding: 5px 10px; }
+
+            .pagination button { padding: 6px 12px; font-size: 13px; }
+
+            .filter-range input { width: 60px; }
         }
 
-        @media (max-width: 480px) {
-            .catalog-grid { grid-template-columns: 1fr; gap: 16px; }
-            .catalog-item-img { height: 180px; }
+        /* ── Телефоны (до 600px) ── */
+        @media (max-width: 600px) {
+            .catalog-page { padding: 16px 10px 40px; }
+            .catalog-header h1 { font-size: 20px; }
+            .catalog-header .count { font-size: 13px; }
+
+            .catalog-filters {
+                padding: 12px 14px;
+            }
+            .catalog-filters h3 {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            .filter-section h4 {
+                font-size: 10px;
+                margin-top: 8px;
+            }
+            .filter-btn {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+            .filter-range input {
+                width: 55px;
+                font-size: 11px;
+                padding: 4px 6px;
+            }
+            .filter-range button {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+
+            .catalog-toolbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 8px;
+            }
+            .catalog-toolbar .sort { gap: 4px; }
+            .catalog-toolbar .sort label { display: none; }
+            .catalog-toolbar .sort select { font-size: 12px; padding: 5px 8px; }
+
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .catalog-item-img { height: 140px; }
+            .catalog-item-body { padding: 10px 12px 12px; }
+            .catalog-item-body h3 { font-size: 13px; line-height: 1.25; }
+            .catalog-item-body .dims { font-size: 11px; margin-bottom: 6px; }
+            .catalog-item-body .price { font-size: 16px; margin-bottom: 8px; }
+            .catalog-item-body .price span { font-size: 12px; }
+
+            .item-actions { gap: 5px; }
+            .catalog-item-body .item-actions .btn-card {
+                font-size: 10px;
+                padding: 6px 6px;
+                gap: 3px;
+            }
+            .catalog-item-body .item-actions .btn-card i { display: none; }
+            .btn-icon { width: 30px; height: 30px; padding: 4px; }
+
+            .pagination { gap: 6px; margin-top: 20px; }
+            .pagination button { padding: 6px 11px; font-size: 12px; }
+        }
+
+        /* ── Маленькие телефоны (до 400px) ── */
+        @media (max-width: 400px) {
+            .catalog-page { padding: 12px 8px 32px; }
+            .catalog-header h1 { font-size: 18px; }
+
+            .catalog-grid { grid-template-columns: 1fr; gap: 12px; }
+            .catalog-item-img { height: 220px; }
             .catalog-item-body { padding: 14px 16px; }
             .catalog-item-body h3 { font-size: 16px; }
-            .catalog-item-body .price { font-size: 19px; }
+            .catalog-item-body .dims { font-size: 13px; }
+            .catalog-item-body .price { font-size: 20px; }
+            .catalog-item-body .item-actions .btn-card {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+            .catalog-item-body .item-actions .btn-card i { display: inline; }
+            .btn-icon { width: 36px; height: 36px; padding: 6px; }
+
+            .filter-btn { font-size: 10px; padding: 3px 8px; }
+            .filter-range input { width: 50px; font-size: 10px; }
+
+            .pagination button { padding: 5px 9px; font-size: 11px; }
         }
 
         @media (max-width: 768px) {
@@ -534,29 +734,34 @@
     </div>
     <div class="catalog-layout">
         <aside class="catalog-filters" id="filters">
-            <h3><i class="fas fa-filter" style="margin-right:6px;font-size:12px;"></i>Фильтры</h3>
-            <div class="filter-section">
-                <h4>Категория</h4>
-                <div class="filter-group" id="categoryFilters">
-                    <button class="filter-btn active" data-filter="category" data-value="all">Все товары <span class="count-badge" id="countAll">0</span></button>
-                    <button class="filter-btn" data-filter="category" data-value="vertical">Вертикальные <span class="count-badge" id="countVertical">0</span></button>
-                    <button class="filter-btn" data-filter="category" data-value="horizontal">Горизонтальные <span class="count-badge" id="countHorizontal">0</span></button>
-                    <button class="filter-btn" data-filter="category" data-value="carved">Резные <span class="count-badge" id="countCarved">0</span></button>
-                    <button class="filter-btn" data-filter="category" data-value="double">Двойные <span class="count-badge" id="countDouble">0</span></button>
-                    <button class="filter-btn" data-filter="category" data-value="combined">Комбинированные <span class="count-badge" id="countCombined">0</span></button>
-                    <button class="filter-btn" data-filter="category" data-value="cross">С крестом <span class="count-badge" id="countCross">0</span></button>
-                    <button class="filter-btn" data-filter="category" data-value="complex">Комплексы <span class="count-badge" id="countComplex">0</span></button>
+            <h3 onclick="toggleFilters()">
+                <span><i class="fas fa-filter" style="margin-right:6px;font-size:12px;"></i>Фильтры</span>
+                <span class="filter-toggle" id="filterToggle">▼</span>
+            </h3>
+            <div class="filter-body" id="filterBody">
+                <div class="filter-section">
+                    <h4>Категория</h4>
+                    <div class="filter-group" id="categoryFilters">
+                        <button class="filter-btn active" data-filter="category" data-value="all">Все товары <span class="count-badge" id="countAll">0</span></button>
+                        <button class="filter-btn" data-filter="category" data-value="vertical">Вертикальные <span class="count-badge" id="countVertical">0</span></button>
+                        <button class="filter-btn" data-filter="category" data-value="horizontal">Горизонтальные <span class="count-badge" id="countHorizontal">0</span></button>
+                        <button class="filter-btn" data-filter="category" data-value="carved">Резные <span class="count-badge" id="countCarved">0</span></button>
+                        <button class="filter-btn" data-filter="category" data-value="double">Двойные <span class="count-badge" id="countDouble">0</span></button>
+                        <button class="filter-btn" data-filter="category" data-value="combined">Комбинированные <span class="count-badge" id="countCombined">0</span></button>
+                        <button class="filter-btn" data-filter="category" data-value="cross">С крестом <span class="count-badge" id="countCross">0</span></button>
+                        <button class="filter-btn" data-filter="category" data-value="complex">Комплексы <span class="count-badge" id="countComplex">0</span></button>
+                    </div>
                 </div>
-            </div>
-            <div class="filter-section">
-                <h4>Цена</h4>
-                <div class="filter-range">
-                    <input type="number" id="priceMin" placeholder="от" min="0" style="width:70px;">
-                    <input type="number" id="priceMax" placeholder="до" min="0" style="width:70px;">
-                    <button onclick="applyPriceFilter()">OK</button>
+                <div class="filter-section">
+                    <h4>Цена</h4>
+                    <div class="filter-range">
+                        <input type="number" id="priceMin" placeholder="от" min="0">
+                        <input type="number" id="priceMax" placeholder="до" min="0">
+                        <button onclick="applyPriceFilter()">OK</button>
+                    </div>
                 </div>
+                <button class="filter-clear" onclick="clearAllFilters()">Сбросить все фильтры</button>
             </div>
-            <button class="filter-clear" onclick="clearAllFilters()">Сбросить все фильтры</button>
         </aside>
         <div class="catalog-products">
             <div class="catalog-toolbar">
@@ -585,10 +790,6 @@
 <script src="../js/main.js"></script>
 <script src="../js/header.js"></script>
 <script>
-    // ============================================================
-    //  КАТАЛОГ — СВОИ SVG ИЗ HEADER.JS
-    // ============================================================
-
     function escapeHtml(unsafe) {
         if (!unsafe) return '';
         return unsafe
@@ -602,30 +803,22 @@
     // ── ПОСТРОЕНИЕ ПУТИ К ФОТО ──
     function getPhotoUrl(product) {
         if (!product.photoURL) return null;
-
         if (product.photoURL.startsWith('http') || product.photoURL.startsWith('/')) {
             return product.photoURL;
         }
-
         var path = product.photoURL;
         if (path.startsWith('img/products/')) {
             path = path.replace('img/products/', 'img/products-img/');
         }
-
         return '../' + path;
     }
 
-    // ── ТЕ ЖЕ SVG, ЧТО В HEADER.JS (скопированы оттуда) ──
     function getTelegramSvg() {
         return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>';
     }
 
     function getWhatsappSvg() {
         return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
-    }
-
-    function getMaxSvg() {
-        return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>';
     }
 
     // ── ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ──
@@ -637,6 +830,38 @@
     var currentView = 'grid';
     var priceMin = 0;
     var priceMax = Infinity;
+
+    // ── Toggle фильтров на мобильных ──
+    function toggleFilters() {
+        var body = document.getElementById('filterBody');
+        var toggle = document.getElementById('filterToggle');
+        if (body) {
+            body.classList.toggle('open');
+            if (toggle) {
+                toggle.classList.toggle('open');
+                toggle.textContent = body.classList.contains('open') ? '▲' : '▼';
+            }
+        }
+    }
+
+    // ── Автоматически открываем фильтры на десктопе ──
+    function initFiltersMobile() {
+        var body = document.getElementById('filterBody');
+        var toggle = document.getElementById('filterToggle');
+        if (window.innerWidth > 992) {
+            if (body) body.classList.add('open');
+            if (toggle) {
+                toggle.classList.add('open');
+                toggle.textContent = '▲';
+            }
+        } else {
+            if (body) body.classList.remove('open');
+            if (toggle) {
+                toggle.classList.remove('open');
+                toggle.textContent = '▼';
+            }
+        }
+    }
 
     // ── ИНИЦИАЛИЗАЦИЯ ──
     function initCatalog() {
@@ -746,10 +971,9 @@
                 }
                 var dimsHtml = '<div class="dims">' + escapeHtml(firstSize) + '</div>';
 
-                // Ссылки из header.js
-                var tgLink = 'https://t.me/ваш_телеграм';
-                var waLink = 'https://wa.me/79362200900';
-                var maxLink = 'https://ваша-ссылка-на-max';
+                var links = window.getMessengerLinks ? 
+                    window.getMessengerLinks(p.name, p.price) : 
+                    { tg: 'https://t.me/mospamyat', wa: 'https://wa.me/79362200900' };
 
                 return `
                     <div class="catalog-item" onclick="window.location.href='../product/?id=${p.id}'">
@@ -760,15 +984,15 @@
                         <div class="catalog-item-body">
                             <h3>${escapeHtml(p.name)}</h3>
                             ${dimsHtml}
-                            <div class="price">${p.price.toLocaleString('ru-RU')} <span>₽</span></div>
+                            <div class="price"><span>От</span> ${p.price.toLocaleString('ru-RU')}<span> ₽</span></div>
                             <div class="item-actions">
                                 <a href="../product/?id=${p.id}" class="btn-card btn-detail" onclick="event.stopPropagation();">
                                     <i class="fas fa-calculator"></i> Рассчитать
                                 </a>
-                                <a href="${tgLink}" target="_blank" rel="noopener noreferrer" class="btn-icon btn-icon-tg" onclick="event.stopPropagation();" title="Telegram">
+                                <a href="${links.tg}" target="_blank" rel="noopener noreferrer" class="btn-icon btn-icon-tg" onclick="event.stopPropagation();" title="Telegram">
                                     ${getTelegramSvg()}
                                 </a>
-                                <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="btn-icon btn-icon-wa" onclick="event.stopPropagation();" title="WhatsApp">
+                                <a href="${links.wa}" target="_blank" rel="noopener noreferrer" class="btn-icon btn-icon-wa" onclick="event.stopPropagation();" title="WhatsApp">
                                     ${getWhatsappSvg()}
                                 </a>
                             </div>
@@ -861,6 +1085,7 @@
 
     // ── ОБРАБОТЧИКИ ──
     document.addEventListener('DOMContentLoaded', function() {
+        // Фильтры
         document.querySelectorAll('.filter-btn[data-filter="category"]').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 var value = this.dataset.value;
@@ -899,7 +1124,21 @@
         }
 
         initCatalog();
+        initFiltersMobile();
     });
+
+    // При ресайзе обновляем состояние фильтров
+    window.addEventListener('resize', function() {
+        initFiltersMobile();
+    });
+
+    // Делаем функцию toggle глобальной для onclick
+    window.toggleFilters = toggleFilters;
+    window.applyPriceFilter = applyPriceFilter;
+    window.clearAllFilters = clearAllFilters;
+    window.applySort = applySort;
+    window.setView = setView;
+    window.goToPage = goToPage;
 </script>
 </body>
 </html>

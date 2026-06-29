@@ -184,7 +184,7 @@
             color: var(--text-light);
         }
 
-        /* ===== ХАРАКТЕРИСТИКИ (только Размеры и Состав) ===== */
+        /* ===== ХАРАКТЕРИСТИКИ ===== */
         .product-info .specs {
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -208,9 +208,133 @@
         .product-info .specs .spec-row .value {
             font-weight: 600;
             color: var(--dark);
+            line-height: 1.6;
         }
 
-        /* ===== КАРУСЕЛЬ МАТЕРИАЛОВ С ФОТО ===== */
+        /* ===== БЛОК РАЗМЕРОВ С ВЫБОРОМ ===== */
+        .sizes-block {
+            margin: 2px 0 4px;
+            width: 100%;
+        }
+        .sizes-block .sizes-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sizes-block .sizes-label i {
+            color: var(--gold);
+        }
+
+        .size-group {
+            margin-bottom: 8px;
+        }
+        .size-group:last-child {
+            margin-bottom: 0;
+        }
+        .size-group-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            padding-left: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .size-group-title span {
+            background: var(--gray-bg);
+            padding: 1px 10px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-light);
+            letter-spacing: 0.3px;
+        }
+
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+        .size-tag {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 3px;
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dark);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.2;
+            min-height: 40px;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+        }
+        .size-tag:hover {
+            border-color: var(--gold);
+            background: #fffbf0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200,168,75,0.15);
+        }
+        .size-tag.active {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: var(--dark);
+            box-shadow: 0 4px 12px rgba(200,168,75,0.25);
+        }
+        .size-tag.active .thickness {
+            color: rgba(0,0,0,0.6);
+        }
+        .size-tag .thickness {
+            font-size: 9px;
+            font-weight: 400;
+            color: var(--text-light);
+            display: block;
+            margin-top: 1px;
+            font-family: 'Open Sans', sans-serif;
+            transition: color 0.2s;
+        }
+        .size-tag .size-main {
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .size-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+            .size-tag {
+                font-size: 11px;
+                padding: 4px 2px;
+                min-height: 34px;
+            }
+            .size-tag .size-main {
+                font-size: 11px;
+            }
+            .size-tag .thickness {
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .size-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ===== КАРУСЕЛЬ МАТЕРИАЛОВ С ВЫБОРОМ (без бейджа с ценой) ===== */
         .materials-carousel {
             margin: 4px 0 6px;
         }
@@ -253,12 +377,17 @@
             align-items: center;
             justify-content: center;
             padding: 4px;
-            cursor: default;
-            transition: border-color 0.2s;
+            cursor: pointer;
+            transition: all 0.2s ease;
             position: relative;
         }
         .materials-carousel .material-slide:hover {
             border-color: var(--gold);
+            transform: scale(1.02);
+        }
+        .materials-carousel .material-slide.active {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold), 0 4px 12px rgba(200,168,75,0.3);
         }
         .materials-carousel .material-slide img {
             width: 100%;
@@ -287,6 +416,10 @@
         .materials-carousel .material-slide:hover .material-name {
             opacity: 1;
         }
+        .materials-carousel .material-slide.active .material-name {
+            opacity: 1;
+        }
+
         /* Заглушка если нет фото */
         .materials-carousel .material-slide .material-fallback {
             display: flex;
@@ -361,6 +494,24 @@
         }
         .materials-carousel .carousel-dot.active {
             background: var(--gold);
+        }
+
+        /* Индикатор выбранного */
+        .selected-display {
+            background: var(--gray-bg);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .selected-display strong {
+            color: var(--dark);
+            font-weight: 700;
         }
 
         /* ===== ОПИСАНИЕ ===== */
@@ -686,6 +837,9 @@
             .materials-carousel .material-slide {
                 flex: 0 0 calc(33.33% - 6px);
             }
+            .product-info .specs .spec-row {
+                grid-template-columns: 120px 1fr;
+            }
         }
 
         @media (max-width: 600px) {
@@ -799,6 +953,8 @@
 
             <div class="order-summary-table">
                 <div class="osl"><span class="k">Товар</span><span class="v" id="ms-product">—</span></div>
+                <div class="osl"><span class="k">Размер</span><span class="v" id="ms-size">—</span></div>
+                <div class="osl"><span class="k">Материал</span><span class="v" id="ms-material">—</span></div>
                 <div class="osl"><span class="k">Цена</span><span class="v" id="ms-price">—</span></div>
                 <div class="osl total-row"><span class="k">Итого</span><span class="v" id="ms-total">—</span></div>
             </div>
@@ -839,7 +995,7 @@
 <script src="../js/main.js"></script>
 <script src="../js/validation.js"></script>
 <script>
-    (function() {
+(function() {
         'use strict';
 
         // ── Утилиты ──
@@ -892,7 +1048,7 @@
                     showNotFound('Товар не найден');
                     return;
                 }
-                document.title = product.name + ' — СонДуши.рф';
+                document.title = product.name + ' — МосПамять.рф';
                 renderProduct(product, products);
             });
         });
@@ -931,6 +1087,8 @@
 
         // ── ТРАНСЛИТЕРАЦИЯ ──
         function transliterate(text) {
+            if (!text || typeof text !== 'string') return '';
+
             var map = {
                 'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
                 'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
@@ -943,6 +1101,7 @@
                 'Ф': 'F', 'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sch',
                 'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
             };
+
             return text.split('').map(function(ch) {
                 return map[ch] || ch;
             }).join('');
@@ -950,6 +1109,7 @@
 
         // ── ЦВЕТА ДЛЯ ЗАГЛУШКИ ──
         function getMaterialColor(name) {
+            if (!name) return '#999999';
             var colors = {
                 'гранит': '#4a4a4a',
                 'гранит габбро': '#2d2d2d',
@@ -975,6 +1135,7 @@
         }
 
         function getMaterialIcon(name) {
+            if (!name) return 'fa-cube';
             var lower = name.toLowerCase();
             if (lower.includes('гранит') || lower.includes('мрамор')) {
                 return 'fa-mountain';
@@ -985,16 +1146,172 @@
             return 'fa-cube';
         }
 
-        // ── РЕНДЕР КАРУСЕЛИ МАТЕРИАЛОВ С ФОТО ──
-        function renderMaterialsCarousel(materialNames) {
+        // ============================================================
+        //  ВЫБОР РАЗМЕРА И МАТЕРИАЛА
+        // ============================================================
+        var selectedSize = null;
+        var selectedMaterial = null;
+
+        // ── ПОЛУЧИТЬ ВЫБРАННЫЕ ЗНАЧЕНИЯ ──
+        function getSelectedSize() {
+            return selectedSize || 'не выбран';
+        }
+
+        function getSelectedMaterial() {
+            return selectedMaterial || 'не выбран';
+        }
+
+        // ── ОБНОВЛЕНИЕ ИНДИКАТОРА ВЫБРАННОГО ──
+        function updateSelectedDisplay() {
+            var displayEl = document.getElementById('selectedDisplay');
+            if (displayEl) {
+                var sizeText = selectedSize || 'не выбран';
+                var materialText = selectedMaterial || 'не выбран';
+                displayEl.innerHTML =
+                    '<i class="fas fa-check-circle" style="color:var(--gold);"></i> ' +
+                    'Размер: <strong>' + esc(sizeText) + '</strong> &nbsp;|&nbsp; ' +
+                    'Материал: <strong>' + esc(materialText) + '</strong>';
+            }
+        }
+
+        // ── ОБНОВЛЕНИЕ ССЫЛОК МЕССЕНДЖЕРОВ ──
+        function updateMessengerLinks() {
+            var product = window._currentProduct;
+            if (!product) return;
+
+            var size = getSelectedSize();
+            var material = getSelectedMaterial();
+            var productText = product.name || 'памятник';
+            var priceText = product.price ? product.price.toLocaleString('ru-RU') + ' ₽' : '';
+            var sizeText = size !== 'не выбран' ? ', размер ' + size : '';
+            var materialText = material !== 'не выбран' ? ', материал ' + material : '';
+            var fullText = 'Здравствуйте! Меня интересует ' + productText + sizeText + materialText + (priceText ? ' (' + priceText + ')' : '') + '. Хотел бы узнать подробнее.';
+            var encodedText = encodeURIComponent(fullText);
+
+            var tgLink = 'https://t.me/mospamyat?text=' + encodedText;
+            var waLink = 'https://wa.me/79362200900?text=' + encodedText;
+            var maxLink = 'https://max.ru/ваш_профиль';
+
+            var tgEl = document.querySelector('.btn-tg');
+            var waEl = document.querySelector('.btn-wa');
+            var maxEl = document.querySelector('.btn-max');
+
+            if (tgEl) tgEl.href = tgLink;
+            if (waEl) waEl.href = waLink;
+            if (maxEl) maxEl.href = maxLink;
+        }
+
+        // ── ВЫБОР РАЗМЕРА ──
+        window.selectSize = function(sizeLabel, element) {
+            document.querySelectorAll('.size-tag').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            if (element) {
+                element.classList.add('active');
+            }
+            selectedSize = sizeLabel;
+            updateSelectedDisplay();
+            updateMessengerLinks();
+        };
+
+        // ── ВЫБОР МАТЕРИАЛА ──
+        window.selectMaterial = function(materialLabel, element) {
+            document.querySelectorAll('.material-slide').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            if (element) {
+                element.classList.add('active');
+            }
+            selectedMaterial = materialLabel;
+            updateSelectedDisplay();
+            updateMessengerLinks();
+        };
+
+        // ── ФУНКЦИЯ ДЛЯ РЕНДЕРИНГА РАЗМЕРОВ ──
+        function renderSizesGrid(sizes) {
+            if (!sizes || sizes.length === 0) return '';
+
+            var sizeStrings = sizes.map(function(s) {
+                return typeof s === 'string' ? s : s.label;
+            });
+
+            var parsed = sizeStrings.map(function(s) {
+                var match = s.match(/(\d+)×(\d+)×(\d+)/);
+                if (match) {
+                    return {
+                        full: s,
+                        width: parseInt(match[1]),
+                        height: parseInt(match[2]),
+                        thickness: parseInt(match[3]),
+                        display: match[1] + '×' + match[2]
+                    };
+                }
+                return { full: s, width: 0, height: 0, thickness: 0, display: s };
+            });
+
+            var groups = {};
+            parsed.forEach(function(item) {
+                var key = item.thickness || 'other';
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(item);
+            });
+
+            var sortedKeys = Object.keys(groups).filter(function(k) { return k !== 'other'; }).sort(function(a, b) { return parseInt(a) - parseInt(b); });
+            if (groups['other']) sortedKeys.push('other');
+
+            var html = '<div class="sizes-block">';
+            html += '<div class="sizes-label"><i class="fas fa-arrows-alt"></i> Выберите размер</div>';
+
+            sortedKeys.forEach(function(key) {
+                var items = groups[key];
+                if (key === 'other') {
+                    html += '<div class="size-grid">' +
+                        items.map(function(item) {
+                            var safeFull = esc(item.full).replace(/'/g, "\\'");
+                            return '<div class="size-tag" data-size="' + safeFull + '" onclick="selectSize(\'' + safeFull + '\', this)">' +
+                                '<span class="size-main">' + esc(item.full) + '</span>' +
+                                '</div>';
+                        }).join('') +
+                        '</div>';
+                } else {
+                    html += '<div class="size-group">';
+                    html += '<div class="size-group-title">' + key + ' см <span>толщина</span></div>';
+                    html += '<div class="size-grid">';
+                    items.sort(function(a, b) { return a.width - b.width; });
+                    items.forEach(function(item) {
+                        var safeFull = esc(item.full).replace(/'/g, "\\'");
+                        html += '<div class="size-tag" data-size="' + safeFull + '" onclick="selectSize(\'' + safeFull + '\', this)">' +
+                            '<span class="size-main">' + esc(item.display) + '</span>' +
+                            '<span class="thickness">' + key + ' см</span>' +
+                            '</div>';
+                    });
+                    html += '</div>';
+                    html += '</div>';
+                }
+            });
+
+            html += '</div>';
+            return html;
+        }
+
+        // ── РЕНДЕР КАРУСЕЛИ МАТЕРИАЛОВ ──
+        function renderMaterialsCarousel(materials) {
+            if (!materials || materials.length === 0) return '';
+
+            var materialNames = materials.map(function(m) {
+                return typeof m === 'string' ? m : m.label;
+            });
+
             var slidesHtml = materialNames.map(function(name, index) {
                 var fileName = transliterate(name).toLowerCase().replace(/\s+/g, '-') + '.jpg';
                 var imgPath = '../img/products-img/materials/' + fileName;
                 var color = getMaterialColor(name);
                 var icon = getMaterialIcon(name);
 
+                var safeName = esc(name).replace(/'/g, "\\'");
+
                 return `
-                    <div class="material-slide" data-index="${index}">
+                    <div class="material-slide" data-material="${safeName}" onclick="selectMaterial('${safeName}', this)">
                         <img src="${imgPath}" alt="${esc(name)}" loading="lazy" 
                              onerror="this.style.display='none'; this.parentElement.querySelector('.material-fallback').style.display='flex'">
                         <div class="material-fallback" style="display:none;">
@@ -1007,15 +1324,15 @@
                 `;
             }).join('');
 
-            var arrowLeft = materialNames.length > 4 ? 
+            var arrowLeft = materialNames.length > 4 ?
                 '<button class="carousel-arrow carousel-arrow-left" onclick="slideMaterials(\'left\')"><i class="fas fa-chevron-left"></i></button>' : '';
-            var arrowRight = materialNames.length > 4 ? 
+            var arrowRight = materialNames.length > 4 ?
                 '<button class="carousel-arrow carousel-arrow-right" onclick="slideMaterials(\'right\')"><i class="fas fa-chevron-right"></i></button>' : '';
 
             return `
                 <div class="materials-carousel" id="materialsCarousel">
                     <div class="carousel-label">
-                        <i class="fas fa-cube"></i> Материалы
+                        <i class="fas fa-cube"></i> Выберите материал (нажмите на фото)
                     </div>
                     <div class="carousel-wrap">
                         ${arrowLeft}
@@ -1035,6 +1352,8 @@
             if (!card) return;
 
             window._currentProduct = product;
+            selectedSize = null;
+            selectedMaterial = null;
 
             // Фото
             var photoUrl = getPhotoUrl(product);
@@ -1056,12 +1375,32 @@
                 thumbsHtml += '<div class="thumb active"><i class="fas fa-camera"></i></div>';
             }
 
+            // ============================================================
+            //  ХАРАКТЕРИСТИКИ
+            // ============================================================
             var specRows = [];
 
+            // Размеры
             if (product.sizes && product.sizes.length) {
-                var sizeLabels = product.sizes.map(function(s) { return s.label; }).join(', ');
-                specRows.push({ label: 'Размеры', value: sizeLabels });
+                var sizesHtml = renderSizesGrid(product.sizes);
+                specRows.push({ label: 'Размеры', value: sizesHtml });
             }
+
+            // Состав
+            if (product.components && product.components.length) {
+                var compNames = product.components.map(function(cid) {
+                    var comp = allProducts.find(function(p) { return p.id === cid; });
+                    return comp ? comp.name : cid;
+                }).join(', ');
+                specRows.push({ label: 'Состав', value: compNames });
+            }
+
+            // Индикатор выбранного
+            var selectedDisplayHtml = '<div class="selected-display" id="selectedDisplay">' +
+                '<i class="fas fa-check-circle" style="color:var(--gold);"></i> ' +
+                'Размер: <strong>не выбран</strong> &nbsp;|&nbsp; ' +
+                'Материал: <strong>не выбран</strong>' +
+                '</div>';
 
             var specsHtml = '';
             if (specRows.length) {
@@ -1069,7 +1408,7 @@
                     specRows.map(function(row) {
                         return '<div class="spec-row">' +
                             '<span class="label">' + esc(row.label) + '</span>' +
-                            '<span class="value">' + esc(row.value) + '</span>' +
+                            '<span class="value">' + row.value + '</span>' +
                             '</div>';
                     }).join('') +
                     '</div>';
@@ -1077,19 +1416,14 @@
 
             // ── КАРУСЕЛЬ МАТЕРИАЛОВ ──
             var materialsCarouselHtml = '';
-            var materialNames = [];
             if (product.materials && product.materials.length) {
-                materialNames = product.materials.map(function(m) { return m.label; });
+                materialsCarouselHtml = renderMaterialsCarousel(product.materials);
             }
 
-            if (materialNames.length > 0) {
-                materialsCarouselHtml = renderMaterialsCarousel(materialNames);
-            }
-
-            // Ссылки на мессенджеры
-            var tgLink = 'https://t.me/PLACEHOLDER_TG';
-            var waLink = 'https://wa.me/79362200900';
-            var maxLink = 'https://max.ru/PLACEHOLDER_MAX';
+            // Базовые ссылки на мессенджеры (обновятся при выборе)
+            var tgLink = 'https://t.me/mospamyat?text=Здравствуйте!%20Меня%20интересует%20' + encodeURIComponent(product.name);
+            var waLink = 'https://wa.me/79362200900?text=Здравствуйте!%20Меня%20интересует%20' + encodeURIComponent(product.name);
+            var maxLink = 'https://max.ru/ваш_профиль';
 
             card.innerHTML =
                 '<div class="product-gallery">' +
@@ -1112,6 +1446,8 @@
                 '</div>' +
 
                 specsHtml +
+
+                selectedDisplayHtml +
 
                 materialsCarouselHtml +
 
@@ -1137,6 +1473,11 @@
                 '</a>' +
                 '</div>' +
                 '</div>';
+
+            // Обновляем ссылки после рендера
+            setTimeout(function() {
+                updateMessengerLinks();
+            }, 50);
 
             renderSimilar(product, allProducts);
 
@@ -1298,7 +1639,12 @@
             var product = window._currentProduct;
             if (!product) return;
 
+            var size = getSelectedSize();
+            var material = getSelectedMaterial();
+
             setText('ms-product', product.name);
+            setText('ms-size', size);
+            setText('ms-material', material);
             setText('ms-price', fmt(product.price) + ' ₽');
             setText('ms-total', fmt(product.price) + ' ₽');
 
@@ -1327,6 +1673,8 @@
             var phone = (el('modalPhone')?.value || '').trim();
             var opd = el('modalOpd');
             var product = window._currentProduct;
+            var size = getSelectedSize();
+            var material = getSelectedMaterial();
 
             var ok = true;
             if (typeof validateForm === 'function') {
@@ -1346,6 +1694,8 @@
 
             var msg = 'Заказ с сайта (карточка товара):\n\n' +
                 'Товар: ' + (product ? product.name : '—') + '\n' +
+                'Размер: ' + size + '\n' +
+                'Материал: ' + material + '\n' +
                 'Цена: ' + (product ? fmt(product.price) + ' ₽' : '—') + '\n\n' +
                 'Клиент: ' + name + '\n' +
                 'Телефон: ' + phone;
@@ -1356,7 +1706,7 @@
                 body: JSON.stringify({
                     name: name,
                     phone: phone,
-                    interest: product ? product.name : 'Товар с сайта',
+                    interest: product ? product.name + ' (' + size + ', ' + material + ')' : 'Товар с сайта',
                     comment: msg,
                     source: 'Карточка товара'
                 })
