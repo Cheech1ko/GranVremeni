@@ -1,10 +1,10 @@
 function toggleMenu() {
-    var nav = document.getElementById('mobileNav');
+    const nav = document.getElementById('mobileNav');
     if (nav) nav.classList.toggle('open');
 }
 
 function openModal() {
-    var overlay = document.getElementById('modalOverlay');
+    const overlay = document.getElementById('modalOverlay');
     if (overlay) {
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -12,24 +12,24 @@ function openModal() {
 }
 
 function closeModal() {
-    var overlay = document.getElementById('modalOverlay');
+    const overlay = document.getElementById('modalOverlay');
     if (overlay) {
         overlay.classList.remove('open');
         document.body.style.overflow = '';
     }
 }
 
-function closeModalOutside(e) {
-    var overlay = document.getElementById('modalOverlay');
-    if (e.target === overlay) closeModal();
+function closeModalOutside(event) {
+    const overlay = document.getElementById('modalOverlay');
+    if (event.target === overlay) closeModal();
 }
 
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') closeModal();
 });
 
 function openPhoneModal() {
-    var overlay = document.getElementById('phoneModalOverlay');
+    const overlay = document.getElementById('phoneModalOverlay');
     if (overlay) {
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -39,20 +39,20 @@ function openPhoneModal() {
 }
 
 function closePhoneModal() {
-    var overlay = document.getElementById('phoneModalOverlay');
+    const overlay = document.getElementById('phoneModalOverlay');
     if (overlay) {
         overlay.classList.remove('open');
         document.body.style.overflow = '';
     }
 }
 
-function closePhoneModalOutside(e) {
-    var overlay = document.getElementById('phoneModalOverlay');
-    if (e.target === overlay) closePhoneModal();
+function closePhoneModalOutside(event) {
+    const overlay = document.getElementById('phoneModalOverlay');
+    if (event.target === overlay) closePhoneModal();
 }
 
 function openEmailModal() {
-    var overlay = document.getElementById('emailModalOverlay');
+    const overlay = document.getElementById('emailModalOverlay');
     if (overlay) {
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -60,39 +60,41 @@ function openEmailModal() {
 }
 
 function closeEmailModal() {
-    var overlay = document.getElementById('emailModalOverlay');
+    const overlay = document.getElementById('emailModalOverlay');
     if (overlay) {
         overlay.classList.remove('open');
         document.body.style.overflow = '';
     }
 }
 
-function closeEmailModalOutside(e) {
-    var overlay = document.getElementById('emailModalOverlay');
-    if (e.target === overlay) closeEmailModal();
+function closeEmailModalOutside(event) {
+    const overlay = document.getElementById('emailModalOverlay');
+    if (event.target === overlay) closeEmailModal();
 }
 
 function copyEmail() {
-    var email = 'info@granvremeni.ru';
-    navigator.clipboard.writeText(email).then(function() {
-        var msg = document.getElementById('copyMessage');
-        if (msg) {
-            msg.textContent = '✅ Адрес скопирован!';
-            msg.style.color = '#2e7d32';
-        }
-    }).catch(function() {
-        var input = document.createElement('input');
-        input.value = email;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        var msg = document.getElementById('copyMessage');
-        if (msg) {
-            msg.textContent = '✅ Адрес скопирован!';
-            msg.style.color = '#2e7d32';
-        }
-    });
+    const email = 'info@granvremeni.ru';
+    navigator.clipboard.writeText(email)
+        .then(function() {
+            const messageEl = document.getElementById('copyMessage');
+            if (messageEl) {
+                messageEl.textContent = '✅ Адрес скопирован!';
+                messageEl.style.color = '#2e7d32';
+            }
+        })
+        .catch(function() {
+            const input = document.createElement('input');
+            input.value = email;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            const messageEl = document.getElementById('copyMessage');
+            if (messageEl) {
+                messageEl.textContent = '✅ Адрес скопирован!';
+                messageEl.style.color = '#2e7d32';
+            }
+        });
 }
 
 function openGmail() {
@@ -100,24 +102,24 @@ function openGmail() {
     closeEmailModal();
 }
 
-function toggleFaq(btn) {
-    var item = btn.parentElement;
-    var isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(function(i) {
-        i.classList.remove('open');
+function toggleFaq(button) {
+    const item = button.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(el) {
+        el.classList.remove('open');
     });
     if (!isOpen) item.classList.add('open');
 }
 
 function submitForm(formId, successId) {
-    var formWrap = document.getElementById(formId);
+    const formWrap = document.getElementById(formId);
     if (!formWrap) {
         console.error('Форма с id "' + formId + '" не найдена');
         return;
     }
 
-    var isModal = formId === 'modalFormWrap';
-    var name, phone, interest, comment, cemetery;
+    const isModal = formId === 'modalFormWrap';
+    let name, phone, interest, comment, cemetery;
 
     if (isModal) {
         name = document.getElementById('mname')?.value?.trim() || '';
@@ -133,42 +135,44 @@ function submitForm(formId, successId) {
         cemetery = document.getElementById('fcemetery')?.value?.trim() || 'Не указано';
     }
 
-    var errors = [];
+    const errors = [];
 
     if (!name) {
         errors.push('Введите ваше имя');
-        var nameField = isModal ? document.getElementById('mname') : document.getElementById('fname');
+        const nameField = isModal ? document.getElementById('mname') : document.getElementById('fname');
         if (nameField) showError(nameField, 'Введите ваше имя');
     }
 
     if (!phone) {
         errors.push('Введите номер телефона');
-        var phoneField = isModal ? document.getElementById('mphone') : document.getElementById('fphone');
+        const phoneField = isModal ? document.getElementById('mphone') : document.getElementById('fphone');
         if (phoneField) showError(phoneField, 'Введите номер телефона');
     } else {
-        var digits = phone.replace(/\D/g, '');
+        const digits = phone.replace(/\D/g, '');
         if (digits.length < 10) {
             errors.push('Введите полный номер телефона');
-            var phoneField2 = isModal ? document.getElementById('mphone') : document.getElementById('fphone');
-            if (phoneField2) showError(phoneField2, 'Введите полный номер телефона (10-11 цифр)');
+            const phoneField2 = isModal ? document.getElementById('mphone') : document.getElementById('fphone');
+            if (phoneField2) {
+                showError(phoneField2, 'Введите полный номер телефона (10-11 цифр)');
+            }
         }
     }
 
     if (!isModal) {
-        var check = document.getElementById('fcheck');
-        if (check && !check.checked) {
+        const consentCheck = document.getElementById('fcheck');
+        if (consentCheck && !consentCheck.checked) {
             errors.push('Необходимо согласие на обработку данных');
-            showError(check, 'Необходимо согласие');
+            showError(consentCheck, 'Необходимо согласие');
         }
     }
 
     if (errors.length > 0) {
-        var firstError = formWrap.querySelector('.error-msg');
+        const firstError = formWrap.querySelector('.error-msg');
         if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
     }
 
-    fetch('https://formspree.io/f/mojokdop', {
+    fetch('/mail.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -179,34 +183,34 @@ function submitForm(formId, successId) {
             source: isModal ? 'Модальное окно' : 'Основная форма'
         })
     })
-    .then(function(response) {
-        if (response.ok) {
-            var success = document.getElementById(successId);
-            if (success) {
-                success.style.display = 'block';
-                if (isModal) {
-                    document.getElementById('mname').value = '';
-                    document.getElementById('mphone').value = '';
-                } else {
-                    document.getElementById('fname').value = '';
-                    document.getElementById('fphone').value = '';
-                    document.getElementById('fcomment').value = '';
-                    var check2 = document.getElementById('fcheck');
-                    if (check2) check2.checked = false;
+        .then(function(response) {
+            if (response.ok) {
+                const successEl = document.getElementById(successId);
+                if (successEl) {
+                    successEl.style.display = 'block';
+                    if (isModal) {
+                        document.getElementById('mname').value = '';
+                        document.getElementById('mphone').value = '';
+                    } else {
+                        document.getElementById('fname').value = '';
+                        document.getElementById('fphone').value = '';
+                        document.getElementById('fcomment').value = '';
+                        const consentCheck2 = document.getElementById('fcheck');
+                        if (consentCheck2) consentCheck2.checked = false;
+                    }
+                    setTimeout(function() {
+                        successEl.style.display = 'none';
+                        if (isModal) closeModal();
+                    }, 5000);
                 }
-                setTimeout(function() {
-                    success.style.display = 'none';
-                    if (isModal) closeModal();
-                }, 5000);
+            } else {
+                alert('Ошибка отправки. Попробуйте позже.');
             }
-        } else {
-            alert('Ошибка отправки. Попробуйте позже.');
-        }
-    })
-    .catch(function(error) {
-        console.error('Ошибка:', error);
-        alert('Ошибка отправки. Проверьте интернет.');
-    });
+        })
+        .catch(function(error) {
+            console.error('Ошибка:', error);
+            alert('Ошибка отправки. Проверьте интернет.');
+        });
 }
 
 function showError(input, message) {
@@ -214,10 +218,10 @@ function showError(input, message) {
     input.style.borderColor = '#d32f2f';
     input.style.borderWidth = '2px';
 
-    var oldError = input.parentNode ? input.parentNode.querySelector('.error-msg') : null;
+    const oldError = input.parentNode ? input.parentNode.querySelector('.error-msg') : null;
     if (oldError) oldError.remove();
 
-    var errorDiv = document.createElement('div');
+    const errorDiv = document.createElement('div');
     errorDiv.className = 'error-msg';
     errorDiv.style.cssText = 'color:#d32f2f; font-size:12px; margin-top:4px; font-weight:600;';
     errorDiv.textContent = '⚠ ' + message;
@@ -228,44 +232,51 @@ function showError(input, message) {
 }
 
 function sendCallbackRequest() {
-    var name = document.getElementById('cbname')?.value?.trim() || '';
-    var phone = document.getElementById('cbphone')?.value?.trim() || '';
-    var time = document.getElementById('cbtime')?.value?.trim() || 'Не указано';
-    var cemetery = document.getElementById('cbcemetery')?.value?.trim() || 'Не указано';
+    const name = document.getElementById('cbname')?.value?.trim() || '';
+    const phone = document.getElementById('cbphone')?.value?.trim() || '';
+    const time = document.getElementById('cbtime')?.value?.trim() || 'Не указано';
+    const cemetery = document.getElementById('cbcemetery')?.value?.trim() || 'Не указано';
 
     if (!name || !phone) {
         alert('Пожалуйста, заполните имя и телефон');
         return;
     }
-    var digits = phone.replace(/\D/g, '');
+
+    const digits = phone.replace(/\D/g, '');
     if (digits.length < 10) {
         alert('Введите полный номер телефона (10-11 цифр)');
         return;
     }
 
-    fetch('https://formspree.io/f/mojokdop', {
+    fetch('/mail.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, time, cemetery, source: 'Выезд менеджера' })
+        body: JSON.stringify({
+            name: name,
+            phone: phone,
+            time: time,
+            cemetery: cemetery,
+            source: 'Выезд менеджера'
+        })
     })
-    .then(function(response) {
-        if (response.ok) {
-            alert('Спасибо! Менеджер свяжется с вами для подтверждения выезда.');
-            document.getElementById('cbname').value = '';
-            document.getElementById('cbphone').value = '';
-            document.getElementById('cbtime').value = '';
-            document.getElementById('cbcemetery').value = '';
-        } else {
-            alert('Ошибка отправки. Попробуйте позже.');
-        }
-    })
-    .catch(function(error) {
-        console.error('Ошибка:', error);
-        alert('Ошибка отправки. Проверьте интернет.');
-    });
+        .then(function(response) {
+            if (response.ok) {
+                alert('Спасибо! Менеджер свяжется с вами для подтверждения выезда.');
+                document.getElementById('cbname').value = '';
+                document.getElementById('cbphone').value = '';
+                document.getElementById('cbtime').value = '';
+                document.getElementById('cbcemetery').value = '';
+            } else {
+                alert('Ошибка отправки. Попробуйте позже.');
+            }
+        })
+        .catch(function(error) {
+            console.error('Ошибка:', error);
+            alert('Ошибка отправки. Проверьте интернет.');
+        });
 }
 
-var PRODUCTS = [];
+let PRODUCTS = [];
 
 function loadProducts(callback) {
     if (PRODUCTS.length > 0) {
@@ -309,11 +320,11 @@ function loadProducts(callback) {
 }
 
 function renderPopularProducts() {
-    var grid = document.getElementById('popularGrid');
+    const grid = document.getElementById('popularGrid');
     if (!grid) return;
 
     loadProducts(function(products) {
-        var popular = products.filter(function(p) { return p.popular === true; }).slice(0, 6);
+        const popular = products.filter(function(p) { return p.popular === true; }).slice(0, 6);
 
         if (popular.length === 0) {
             grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-light);">Нет популярных товаров</p>';
@@ -355,15 +366,15 @@ function renderPopularProducts() {
     });
 }
 
-var currentCategory = 'all';
-var currentPage = 1;
-var ITEMS_PER_PAGE = 20;
-var allProducts = [];
+let currentCategory = 'all';
+let currentPage = 1;
+const ITEMS_PER_PAGE = 20;
+let allProducts = [];
 
 function initCatalog() {
-    var grid = document.getElementById('productGrid');
-    var count = document.getElementById('productCount');
-    var pagination = document.getElementById('pagination');
+    const grid = document.getElementById('productGrid');
+    const count = document.getElementById('productCount');
+    const pagination = document.getElementById('pagination');
 
     if (!grid || !count || !pagination) return;
 
@@ -374,23 +385,23 @@ function initCatalog() {
 }
 
 function renderCatalog() {
-    var grid = document.getElementById('productGrid');
-    var count = document.getElementById('productCount');
-    var pagination = document.getElementById('pagination');
+    const grid = document.getElementById('productGrid');
+    const count = document.getElementById('productCount');
+    const pagination = document.getElementById('pagination');
 
     if (!grid) return;
 
-    var filtered = allProducts;
+    let filtered = allProducts;
     if (currentCategory !== 'all') {
         filtered = allProducts.filter(function(p) { return p.category === currentCategory; });
     }
 
     count.textContent = 'Найдено ' + filtered.length + ' товаров';
 
-    var totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
     if (currentPage > totalPages) currentPage = 1;
-    var start = (currentPage - 1) * ITEMS_PER_PAGE;
-    var paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
 
     if (paginated.length === 0) {
         grid.innerHTML = '<div class="catalog-empty">В этой категории пока нет товаров</div>';
@@ -423,8 +434,9 @@ function renderCatalog() {
         pagination.innerHTML = '';
         return;
     }
-    var pagHtml = '';
-    for (var i = 1; i <= totalPages; i++) {
+
+    let pagHtml = '';
+    for (let i = 1; i <= totalPages; i++) {
         pagHtml += '<button class="' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
     }
     pagination.innerHTML = pagHtml;
@@ -443,7 +455,7 @@ function setCategory(category) {
         btn.classList.toggle('active', btn.dataset.category === category);
     });
     renderCatalog();
-    var url = new URL(window.location);
+    const url = new URL(window.location);
     if (category === 'all') {
         url.searchParams.delete('category');
     } else {
@@ -453,14 +465,14 @@ function setCategory(category) {
 }
 
 function loadProduct() {
-    var container = document.getElementById('productContainer');
+    const container = document.getElementById('productContainer');
     if (!container) return;
 
-    var params = new URLSearchParams(window.location.search);
-    var id = parseInt(params.get('id'));
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'));
 
     loadProducts(function(products) {
-        var product = products.find(function(p) { return p.id === id; });
+        const product = products.find(function(p) { return p.id === id; });
 
         if (!product) {
             container.innerHTML = `
@@ -516,8 +528,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        var params = new URLSearchParams(window.location.search);
-        var catFromUrl = params.get('category');
+        const params = new URLSearchParams(window.location.search);
+        const catFromUrl = params.get('category');
         if (catFromUrl) {
             currentCategory = catFromUrl;
             document.querySelectorAll('.filter-btn').forEach(function(btn) {
@@ -532,3 +544,4 @@ document.addEventListener('DOMContentLoaded', function() {
         loadProduct();
     }
 });
+

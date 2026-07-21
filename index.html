@@ -7,9 +7,12 @@
     <meta name="description" content="Проектирование, изготовление и установка памятников любой сложности в Москве. Установка оград, цоколя, монтаж и демонтаж.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="/logoico.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/blocks.css">
     <style>
         .catalog-link-wrap {
             text-align: center;
@@ -38,7 +41,6 @@
         .item-actions .btn-card i {
             font-size: 14px;
         }
-
         .item-img {
             height: 200px;
             background: white;
@@ -72,24 +74,37 @@
             letter-spacing: 0.3px;
             z-index: 2;
         }
+
+        /* Кнопка корзины в хедере */
+        .header-cart-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-cart-wrap .cart-toggle {
+            position: relative;
+        }
+        .header-cart-wrap .cart-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-cart-wrap .cart-dropdown {
+                right: -20px;
+                width: 300px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
-<div class="topbar">
-    <div class="container">
-        <div class="topbar-contacts">
-            <span><i class="far fa-clock" style="margin-right:6px;"></i> 8:00–20:00 ежедневно | без выходных</span>
-        </div>
-        <div class="topbar-right">
-            <a href="tel:+79362200900" class="phone"><i class="fas fa-phone" style="margin-right:6px;"></i> +7 (936) 2200-900</a>
-            <span><i class="fas fa-map-marker-alt" style="margin-right:6px;"></i> Работаем по всей Москве и МО</span>
-        </div>
-    </div>
-</div>
-
-<header id="site-header"></header>
+<div class="page-wrapper">
+<header id="site-header">
+    <!-- Хедер рендерится через header.js, но мы добавим корзину вручную -->
+</header>
 
 <!-- HERO -->
 <section class="hero">
@@ -100,7 +115,6 @@
             <p class="hero-desc">Проектирование, изготовление и установка памятников любой сложности. Ограды, цоколи, благоустройство захоронений — под ключ.</p>
             <div class="hero-buttons">
                 <button class="btn-primary" onclick="openModal()">Сделать заказ</button>
-                <a href="tel:+79362200900" class="btn-outline"><i class="fas fa-phone" style="margin-right:8px;"></i> Позвонить сейчас</a>
             </div>
         </div>
         <div class="hero-visual">
@@ -108,7 +122,7 @@
                 <h3>Наши показатели</h3>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <div class="hero-stat-num">8+</div>
+                        <div class="hero-stat-num">7+</div>
                         <div class="hero-stat-label">лет в бизнесе</div>
                     </div>
                     <div class="hero-stat">
@@ -186,11 +200,16 @@
     </div>
 </section>
 
-<!-- CALLBACK (вместо калькулятора) -->
+<!-- КАТЕГОРИИ БЛОКАМИ -->
+<section class="category-blocks" id="categoryBlocks">
+    <!-- Рендерится через blocks.js -->
+</section>
+
+<!-- CALLBACK -->
 <section class="calculator" id="callback">
     <h2 class="section-title">Выезд менеджера</h2>
     <p class="section-sub">Бесплатный выезд специалиста для замера и консультации</p>
-    <div class="calc-box">
+    <div class="calc-box" id="callbackFormWrap">
         <div class="calc-grid">
             <div class="calc-field full">
                 <label class="calc-label">Ваше имя *</label>
@@ -209,16 +228,6 @@
                 <input type="text" id="cbtime" class="calc-input" placeholder="Например, завтра после 14:00">
             </div>
         </div>
-        <div class="opd-block">
-                <input type="checkbox" id="modalOpd">
-                <label for="modalOpd">
-                    Нажимая кнопку, я даю согласие на
-                    <a href="../privacy-policy.html" target="_blank" rel="noopener">обработку персональных данных</a>
-                    в соответствии с&nbsp;ФЗ&#8209;152.
-                </label>
-            </div>
-            <div class="opd-err" id="modalOpdErr"><i class="fas fa-exclamation-circle"></i> Необходимо согласие для отправки</div>
-        <div style="text-align:center">
             <button class="btn-primary" onclick="sendCallbackRequest()" style="font-size:15px;padding:14px 32px;">
                 <i class="fas fa-user-plus" style="margin-right:8px;"></i> Вызвать менеджера
             </button>
@@ -227,22 +236,11 @@
     </div>
 </section>
 
-<!-- CTA BANNER -->
-<div class="cta-banner">
-    <h2>Профессиональная консультация — бесплатно</h2>
-    <p>Получите экспертное мнение или расчёт от специалиста уже сегодня</p>
-    <div class="cta-row">
-        <button class="btn-primary" onclick="openModal()">Отправить заявку</button>
-        <span style="color:rgba(255,255,255,0.3)">или звоните:</span>
-        <a href="tel:+79362200900" class="cta-phone"><i class="fas fa-phone" style="margin-right:8px;"></i> +7 (936) 2200-900</a>
-    </div>
-</div>
-
 <!-- USP STRIP -->
 <div class="usp-strip">
     <div class="usp-inner">
         <div class="usp-item"><i class="fas fa-user-check" style="margin-right:8px;"></i> Выездной специалист</div>
-        <div class="usp-item"><i class="fas fa-award" style="margin-right:8px;"></i> Опыт более 8 лет</div>
+        <div class="usp-item"><i class="fas fa-award" style="margin-right:8px;"></i> Опыт более 7 лет</div>
         <div class="usp-item"><i class="fas fa-truck" style="margin-right:8px;"></i> Бесплатная доставка</div>
         <div class="usp-item"><i class="fas fa-check-circle" style="margin-right:8px;"></i> Гарантия на монтаж</div>
         <div class="usp-item"><i class="fas fa-tags" style="margin-right:8px;"></i> Цены от производителя</div>
@@ -251,7 +249,7 @@
     </div>
 </div>
 
-<!-- GALLERY - КАРУСЕЛЬ -->
+<!-- GALLERY -->
 <section class="gallery" id="gallery">
     <h2 class="section-title">Галерея работ</h2>
     <p class="section-sub">Примеры выполненных проектов — памятники, ограды, комплексное благоустройство</p>
@@ -455,15 +453,6 @@
                     <label>Комментарий</label>
                     <textarea id="fcomment" placeholder="Опишите ваши пожелания или задайте вопрос..."></textarea>
                 </div>
-                <div class="opd-block">
-                <input type="checkbox" id="modalOpd">
-                <label for="modalOpd">
-                    Нажимая кнопку, я даю согласие на
-                    <a href="../privacy-policy.html" target="_blank" rel="noopener">обработку персональных данных</a>
-                    в соответствии с&nbsp;ФЗ&#8209;152.
-                </label>
-            </div>
-            <div class="opd-err" id="modalOpdErr"><i class="fas fa-exclamation-circle"></i> Необходимо согласие для отправки</div>
                 <button class="btn-submit" onclick="submitForm('mainForm', 'mainSuccess')">Отправить заявку</button>
                 <div class="success-msg" id="mainSuccess">Спасибо! Ваша заявка принята. Мы перезвоним в ближайшее время.</div>
             </div>
@@ -551,121 +540,110 @@
     </div>
 </div>
 
+<!-- СКРИПТЫ -->
 <script src="js/main.js"></script>
 <script src="js/validation.js"></script>
-<script>
+<script src="js/header.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/blocks.js"></script>
+<script src="js/catalog.js"></script>
 
-    function getPhotoUrl(product) {
-        if (!product.photoURL) return null;
-        if (product.photoURL.startsWith('http') || product.photoURL.startsWith('/')) {
-            return product.photoURL;
-        }
-        var path = product.photoURL;
-        if (path.startsWith('img/products/')) {
-            path = path.replace('img/products/', 'img/products-img/');
-        }
-        return path;
+<script>
+// Популярные товары
+function getPhotoUrl(product) {
+    if (!product.photoURL) return null;
+    if (product.photoURL.startsWith('http') || product.photoURL.startsWith('/')) {
+        return product.photoURL;
+    }
+    let path = product.photoURL;
+    if (path.startsWith('img/products/')) {
+        path = path.replace('img/products/', 'img/products-img/');
+    }
+    return path;
+}
+
+function renderPopular(products) {
+    const grid = document.getElementById('popularGrid');
+    if (!grid) return;
+
+    const popular = products.filter(p => p.popular && !p.hidden).slice(0, 6);
+
+    if (popular.length === 0) {
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-light);">Нет популярных товаров</p>';
+        return;
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Ждём, пока загрузится products.json через main.js
-        var checkProducts = function() {
-            if (typeof PRODUCTS !== 'undefined' && PRODUCTS.length > 0) {
-                renderPopular(PRODUCTS);
-            } else {
-                setTimeout(checkProducts, 300);
-            }
-        };
-        checkProducts();
-    });
-
-    function renderPopular(products) {
-        const grid = document.getElementById('popularGrid');
-        if (!grid) return;
-
-        const popular = products.filter(p => p.popular && !p.hidden).slice(0, 6);
-
-        if (popular.length === 0) {
-            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-light);">Нет популярных товаров</p>';
-            return;
+    grid.innerHTML = popular.map(p => {
+        const photoUrl = getPhotoUrl(p);
+        let imgHtml = '';
+        if (photoUrl) {
+            imgHtml = '<img src="' + photoUrl + '" alt="' + escapeHtml(p.name) + '" loading="lazy" onerror="this.style.display=\'none\'; this.parentNode.querySelector(\'.no-image\').style.display=\'flex\'" />' +
+                '<div class="no-image" style="display:none;"><i class="fas fa-' + escapeHtml(p.imageIcon || 'mountain') + '"></i></div>';
+        } else {
+            const icon = p.imageIcon || 'mountain';
+            imgHtml = '<div class="no-image"><i class="fas fa-' + escapeHtml(icon) + '"></i></div>';
         }
 
-        grid.innerHTML = popular.map(p => {
-            // Фото
-            var photoUrl = getPhotoUrl(p);
-            var imgHtml = '';
-            if (photoUrl) {
-                imgHtml = '<img src="' + photoUrl + '" alt="' + escapeHtml(p.name) + '" loading="lazy" onerror="this.style.display=\'none\'; this.parentNode.querySelector(\'.no-image\').style.display=\'flex\'" />' +
-                    '<div class="no-image" style="display:none;"><i class="fas fa-' + escapeHtml(p.imageIcon || 'mountain') + '"></i></div>';
-            } else {
-                var icon = p.imageIcon || 'mountain';
-                imgHtml = '<div class="no-image"><i class="fas fa-' + escapeHtml(icon) + '"></i></div>';
+        let sizeLabel = '';
+        let materialLabel = '';
+        try {
+            if (p.sizes && p.sizes.length > 0) {
+                sizeLabel = typeof p.sizes[0] === 'object' ? p.sizes[0].label : p.sizes[0];
             }
+            if (p.materials && p.materials.length > 0) {
+                materialLabel = typeof p.materials[0] === 'object' ? p.materials[0].label : p.materials[0];
+            }
+        } catch (e) {
+            // Игнорируем ошибку
+        }
 
-            // Размер и материал
-            var sizeLabel = '';
-            var materialLabel = '';
-            try {
-                if (p.sizes && p.sizes.length > 0) {
-                    sizeLabel = typeof p.sizes[0] === 'object' ? p.sizes[0].label : p.sizes[0];
-                }
-                if (p.materials && p.materials.length > 0) {
-                    materialLabel = typeof p.materials[0] === 'object' ? p.materials[0].label : p.materials[0];
-                }
-            } catch(e) {}
+        const badgeHtml = p.badge ? '<span class="item-badge">' + escapeHtml(p.badge) + '</span>' : '';
 
-            var badgeHtml = p.badge ? '<span class="item-badge">' + escapeHtml(p.badge) + '</span>' : '';
-
-            return `
-                <div class="item-card" data-cat="${p.category}">
-                    <div class="item-img">
-                        ${imgHtml}
-                        ${badgeHtml}
+        return `
+            <div class="item-card" data-cat="${p.category}" onclick="window.location.href='product/?id=${p.id}'" style="cursor:pointer;">
+                <div class="item-img">
+                    ${imgHtml}
+                    ${badgeHtml}
+                </div>
+                <div class="item-body">
+                    <h3>${escapeHtml(p.name)}</h3>
+                    <div class="item-dims">
+                        ${sizeLabel ? '<span class="dim-tag">' + escapeHtml(sizeLabel) + '</span>' : ''}
+                        ${materialLabel ? '<span class="dim-tag">' + escapeHtml(materialLabel) + '</span>' : ''}
                     </div>
-                    <div class="item-body">
-                        <h3>${escapeHtml(p.name)}</h3>
-                        <div class="item-dims">
-                            ${sizeLabel ? '<span class="dim-tag">' + escapeHtml(sizeLabel) + '</span>' : ''}
-                            ${materialLabel ? '<span class="dim-tag">' + escapeHtml(materialLabel) + '</span>' : ''}
-                        </div>
-                        <p class="item-desc">${escapeHtml(p.description)}</p>
-                        <div class="item-footer" style="flex-direction:column;gap:8px;align-items:stretch;">
-                            <div class="item-price">
-                                <div class="item-price-from">цена от</div>
-                                <div class="item-price-val">${p.price.toLocaleString('ru-RU')} <span class="item-price-unit">₽</span></div>
-                            </div>
+                    <p class="item-desc">${escapeHtml(p.description)}</p>
+                    <div class="item-footer" style="flex-direction:column;gap:8px;align-items:stretch;">
+                        <div class="item-price">
+                            <div class="item-price-from">цена от</div>
+                            <div class="item-price-val">${p.price.toLocaleString('ru-RU')} <span class="item-price-unit">₽</span></div>
                         </div>
                     </div>
                 </div>
-            `;
-        }).join('');
+            </div>
+        `;
+    }).join('');
+}
 
-        // Добавляем обработчик клика на карточку для перехода в карточку товара
-        grid.querySelectorAll('.item-card').forEach(function(card, index) {
-            card.style.cursor = 'pointer';
-            card.addEventListener('click', function() {
-                var product = popular[index];
-                if (product) {
-                    window.location.href = 'product/?id=' + product.id;
-                }
-            });
+function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return String(unsafe)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// Инициализация популярных товаров
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof loadProducts === 'function') {
+        loadProducts(function(products) {
+            renderPopular(products);
         });
     }
+});
 
-    // ── Вспомогательная функция escapeHtml ──
-    function escapeHtml(unsafe) {
-        if (!unsafe) return '';
-        return String(unsafe)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-</script>
-<script src="js/header.js"></script>
-<script>
-
+// Функции для галереи (из main.js)
 let currentSlide = 0;
 const track = document.getElementById('galleryTrack');
 const dotsContainer = document.getElementById('galleryDots');
@@ -683,17 +661,13 @@ function initGallery() {
     lightboxImages = [];
     items.forEach(item => {
         const img = item.querySelector('img');
-        if (img) {
-            lightboxImages.push(img.src);
-        }
+        if (img) lightboxImages.push(img.src);
     });
 
     items.forEach((item, index) => {
         item.style.cursor = 'pointer';
         item.addEventListener('click', function(e) {
-            if (e.target.closest('.gallery-item')) {
-                openLightbox(index);
-            }
+            if (e.target.closest('.gallery-item')) openLightbox(index);
         });
     });
 
@@ -711,8 +685,7 @@ function updateItemsPerView() {
 function renderDots() {
     const dotsCount = Math.ceil(totalItems / itemsPerView);
     dotsContainer.innerHTML = '';
-    
-    // Если точек мало — показываем все
+
     if (dotsCount <= MAX_DOTS) {
         for (let i = 0; i < dotsCount; i++) {
             const dot = document.createElement('button');
@@ -724,11 +697,10 @@ function renderDots() {
         return;
     }
 
-    // Если точек много — показываем 5 штук
     let start = currentSlide - 2;
     if (start < 0) start = 0;
     if (start + MAX_DOTS > dotsCount) start = dotsCount - MAX_DOTS;
-    
+
     for (let i = 0; i < MAX_DOTS; i++) {
         const dotIndex = start + i;
         const dot = document.createElement('button');
@@ -751,7 +723,6 @@ function updateSlide() {
     const offset = -currentSlide * (itemsPerView * (slideWidth + (gap / trackWidth * 100)));
     track.style.transform = 'translateX(' + offset + '%)';
 
-    // Обновляем точки
     renderDots();
 }
 
@@ -770,44 +741,41 @@ function goToSlide(index) {
     updateSlide();
 }
 
+function openLightbox(index) {
+    currentLightboxIndex = index;
+    const img = document.getElementById('lightboxImg');
+    img.src = lightboxImages[index];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    updateCounter();
+}
 
-    // ===== ЛАЙТБОКС =====
-    function openLightbox(index) {
-        currentLightboxIndex = index;
-        const img = document.getElementById('lightboxImg');
-        img.src = lightboxImages[index];
-        document.getElementById('lightbox').classList.add('open');
-        document.body.style.overflow = 'hidden';
-        updateCounter();
-    }
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
 
-    function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('open');
-        document.body.style.overflow = '';
-    }
+function prevLightbox() {
+    currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+    document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
+    updateCounter();
+}
 
-    function prevLightbox() {
-        currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
-        document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
-        updateCounter();
-    }
+function nextLightbox() {
+    currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length;
+    document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
+    updateCounter();
+}
 
-    function nextLightbox() {
-        currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length;
-        document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
-        updateCounter();
-    }
+function updateCounter() {
+    document.getElementById('lightboxCounter').textContent = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
+}
 
-    function updateCounter() {
-        document.getElementById('lightboxCounter').textContent = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
-    }
-
-    // Закрытие по ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft' && document.getElementById('lightbox').classList.contains('open')) prevLightbox();
-        if (e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('open')) nextLightbox();
-    });
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft' && document.getElementById('lightbox').classList.contains('open')) prevLightbox();
+    if (e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('open')) nextLightbox();
+});
 
 let resizeTimeout;
 window.addEventListener('resize', function() {
@@ -819,7 +787,31 @@ window.addEventListener('resize', function() {
     }, 200);
 });
 
-    document.addEventListener('DOMContentLoaded', initGallery);
+document.addEventListener('DOMContentLoaded', initGallery);
+
+// Свайп для галереи
+(function() {
+    const wrapper = document.querySelector('.gallery-track-wrapper');
+    if (!wrapper) return;
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+
+    wrapper.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+    }, { passive: true });
+
+    wrapper.addEventListener('touchend', function(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+        slideGallery(dx < 0 ? 'right' : 'left');
+    }, { passive: true });
+})();
 </script>
 </body>
 </html>

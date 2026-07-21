@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина — ГраньВремени.рф</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="/logoico.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* все стили как в предыдущей версии */
+        .cart-page {
+            padding: 40px 20px 80px;
+            background: var(--gray-bg);
+            min-height: 70vh;
+        }
+        .cart-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .cart-header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cart-header h1 i {
+            color: var(--gold);
+        }
+        .cart-header .count {
+            font-size: 15px;
+            color: var(--text-light);
+            font-weight: 600;
+            background: var(--gray-bg);
+            padding: 2px 14px;
+            border-radius: 20px;
+        }
+        .cart-header .back-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color .2s;
+        }
+        .cart-header .back-link:hover {
+            color: var(--gold);
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        .cart-empty i {
+            font-size: 60px;
+            color: var(--border);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .cart-empty h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .cart-empty p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        .cart-empty .btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: 700;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background .2s;
+        }
+        .cart-empty .btn:hover {
+            background: var(--gold-light);
+        }
+
+        .cart-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .cart-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid var(--border);
+            transition: box-shadow .2s;
+        }
+        .cart-item:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #fafafa;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+        }
+        .cart-item-img i {
+            font-size: 32px;
+            color: var(--border);
+        }
+        .cart-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .cart-item-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .cart-item-params {
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 14px;
+            margin-top: 2px;
+        }
+        .cart-item-params span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .cart-item-params i {
+            color: var(--gold);
+            font-size: 12px;
+            width: 14px;
+        }
+        .cart-item-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .qty-wrap {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            background: var(--gray-bg);
+            border-radius: 6px;
+            padding: 2px;
+        }
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: background .2s;
+            color: var(--dark);
+        }
+        .qty-btn:hover {
+            background: var(--gold);
+            color: var(--dark);
+        }
+        .qty-num {
+            font-size: 15px;
+            font-weight: 700;
+            min-width: 28px;
+            text-align: center;
+            color: var(--dark);
+        }
+        .item-remove {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            transition: color .2s;
+        }
+        .item-remove:hover {
+            color: #d32f2f;
+        }
+        .item-total {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--gold-dark);
+            min-width: 90px;
+            text-align: right;
+        }
+
+        .cart-total-wrap {
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .cart-total-wrap .total-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        .cart-total-wrap .total-price {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .cart-total-wrap .total-price .rub {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+        .cart-total-wrap .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-clear {
+            padding: 10px 20px;
+            background: none;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .btn-clear:hover {
+            border-color: var(--dark);
+            color: var(--dark);
+        }
+        .btn-order {
+            padding: 10px 28px;
+            background: var(--gold);
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: background .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-order:hover {
+            background: var(--gold-light);
+        }
+
+        .cart-note {
+            margin-top: 14px;
+            padding: 12px 18px;
+            background: #fff8e7;
+            border-left: 4px solid var(--gold);
+            border-radius: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+        .cart-note i {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 24px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalIn .25s ease;
+        }
+        @keyframes modalIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: none; opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+        }
+        .modal-close:hover { color: var(--dark); }
+        .modal-box h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .modal-box .sub {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+        .modal-summary {
+            background: var(--gray-bg);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+        .modal-summary .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+        .modal-summary .row .k { color: var(--text-light); }
+        .modal-summary .row .v { font-weight: 600; }
+        .modal-summary .total {
+            border-top: 1px solid var(--border);
+            margin-top: 4px;
+            padding-top: 8px;
+        }
+        .modal-summary .total .k { font-weight: 700; color: var(--dark); }
+        .modal-summary .total .v { font-size: 16px; font-weight: 800; color: var(--gold-dark); }
+        .modal-items {
+            max-height: 140px;
+            overflow-y: auto;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 14px;
+        }
+        .modal-items .item {
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-group { margin-bottom: 12px; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #555;
+            margin-bottom: 3px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color .2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .form-group textarea { resize: vertical; min-height: 50px; }
+        .opd {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin: 10px 0;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+        .opd input { margin-top: 2px; flex-shrink: 0; accent-color: var(--gold); }
+        .opd a { color: var(--gold); }
+        .opd-err { display: none; color: #d32f2f; font-size: 12px; font-weight: 700; }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--gold);
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .btn-submit:hover { background: var(--gold-light); }
+        .modal-success {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .modal-success i {
+            font-size: 44px;
+            color: #27ae60;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .modal-success h4 { font-size: 18px; margin-bottom: 4px; }
+        .modal-success p { font-size: 14px; color: var(--text-light); }
+
+        @media (max-width: 768px) {
+            .cart-page { padding: 20px 12px 60px; }
+            .cart-header h1 { font-size: 20px; }
+            .cart-item { flex-wrap: wrap; padding: 14px; gap: 10px; }
+            .cart-item-img { width: 56px; height: 56px; }
+            .cart-item-name { font-size: 14px; }
+            .cart-item-params { font-size: 12px; }
+            .cart-item-price { font-size: 14px; }
+            .item-total { font-size: 14px; min-width: 60px; }
+            .cart-total-wrap { flex-direction: column; align-items: stretch; }
+            .cart-total-wrap .actions { justify-content: stretch; }
+            .cart-total-wrap .actions .btn-clear,
+            .cart-total-wrap .actions .btn-order { flex: 1; justify-content: center; }
+            .modal-box { padding: 20px 16px; }
+        }
+        @media (max-width: 480px) {
+            .cart-item { padding: 10px; }
+            .cart-item-img { width: 44px; height: 44px; }
+            .cart-item-name { font-size: 13px; }
+            .qty-btn { width: 24px; height: 24px; font-size: 14px; }
+            .qty-num { font-size: 13px; min-width: 22px; }
+            .cart-total-wrap .total-price { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<section class="cart-page">
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>
+                <i class="fas fa-shopping-bag"></i>
+                Корзина
+                <span class="count" id="cartCount">0 товаров</span>
+            </h1>
+            <a href="../catalog/" class="back-link">
+                <i class="fas fa-arrow-left"></i> В каталог
+            </a>
+        </div>
+
+        <div id="cartContent">
+            <!-- Рендерится через JS -->
+        </div>
+    </div>
+</section>
+
+<footer id="site-footer"></footer>
+
+<!-- Модалка -->
+<div class="modal-overlay" id="orderOverlay" onclick="closeModalOutside(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeOrderModal()">✕</button>
+
+        <div id="modalFormView">
+            <h3>📝 Оформление заказа</h3>
+            <p class="sub">Менеджер свяжется с вами для уточнения деталей</p>
+
+            <div class="modal-summary" id="orderSummary">
+                <div class="row"><span class="k">Товаров</span><span class="v" id="msCount">—</span></div>
+                <div class="row"><span class="k">Примерная сумма</span><span class="v" id="msTotal">—</span></div>
+            </div>
+
+            <div class="modal-items" id="orderItemsList"></div>
+
+            <div class="form-group">
+                <label>Ваше имя *</label>
+                <input type="text" id="modalName" placeholder="Иван Иванов">
+            </div>
+            <div class="form-group">
+                <label>Телефон *</label>
+                <input type="tel" id="modalPhone" placeholder="+7 (___) ___-__-__">
+            </div>
+            <div class="form-group">
+                <label>Кладбище</label>
+                <input type="text" id="modalCemetery" placeholder="Например, Хованское">
+            </div>
+            <div class="form-group">
+                <label>Комментарий</label>
+                <textarea id="modalComment" placeholder="Дополнительные пожелания..."></textarea>
+            </div>
+
+            <div class="opd">
+                <input type="checkbox" id="modalOpd">
+                <label for="modalOpd">
+                    Я даю согласие на <a href="../privacy-policy.html" target="_blank">обработку персональных данных</a>
+                </label>
+            </div>
+            <div class="opd-err" id="modalOpdErr">⚠️ Необходимо согласие</div>
+
+            <button class="btn-submit" onclick="submitOrder()">
+                <i class="fas fa-paper-plane"></i> Отправить заявку
+            </button>
+        </div>
+
+        <div class="modal-success" id="modalSuccess">
+            <i class="fas fa-check-circle"></i>
+            <h4>Заявка отправлена!</h4>
+            <p>Менеджер свяжется с вами в течение 15 минут</p>
+        </div>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/validation.js"></script>
+<script src="../js/header.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+(function() {
+    'use strict';
+
+    function esc(s) {
+        if (!s) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function fmt(n) {
+        return Number(n || 0).toLocaleString('ru-RU');
+    }
+
+    function getPhotoUrl(photoURL) {
+        if (!photoURL) return null;
+        if (photoURL.startsWith('http') || photoURL.startsWith('/')) {
+            return photoURL;
+        }
+        if (photoURL.startsWith('img/')) {
+            return '../' + photoURL;
+        }
+        if (photoURL.startsWith('../')) {
+            return photoURL;
+        }
+        return '../img/products-img/' + photoURL;
+    }
+
+    function renderCart() {
+        const container = document.getElementById('cartContent');
+        const countEl = document.getElementById('cartCount');
+        if (!container) return;
+
+        const items = window.Cart ? Cart.items : [];
+
+        if (items.length === 0) {
+            if (countEl) countEl.textContent = '0 товаров';
+            container.innerHTML = `
+                <div class="cart-empty">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>Корзина пуста</h3>
+                    <p>Добавьте товары из каталога</p>
+                    <a href="../catalog/" class="btn">Перейти в каталог</a>
+                </div>
+            `;
+            return;
+        }
+
+        let totalItems = 0;
+        let totalSum = 0;
+        let html = '<div class="cart-list">';
+
+        items.forEach(function(item, index) {
+            const photoUrl = getPhotoUrl(item.photoURL);
+            let photoHtml = '';
+            if (photoUrl) {
+                photoHtml = `<img src="${photoUrl}" alt="${esc(item.name)}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\\'fas fa-cube\\'></i>'">`;
+            } else {
+                photoHtml = `<i class="fas fa-cube"></i>`;
+            }
+
+            const itemTotal = item.price * item.quantity;
+            totalItems += item.quantity;
+            totalSum += itemTotal;
+
+            html += `
+                <div class="cart-item">
+                    <div class="cart-item-img">${photoHtml}</div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${esc(item.name)}</div>
+                        <div class="cart-item-params">
+                            <span><i class="fas fa-arrows-alt"></i> ${esc(item.size)}</span>
+                            <span><i class="fas fa-cube"></i> ${esc(item.material)}</span>
+                        </div>
+                    </div>
+                    <div class="cart-item-price">${fmt(item.price)} ₽</div>
+                    <div class="cart-item-actions">
+                        <div class="qty-wrap">
+                            <button class="qty-btn" onclick="updateItem(${index}, -1)">−</button>
+                            <span class="qty-num">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateItem(${index}, 1)">+</button>
+                        </div>
+                        <span class="item-total">${fmt(itemTotal)} ₽</span>
+                        <button class="item-remove" onclick="removeItem(${index})" title="Удалить">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+
+        html += `
+            <div class="cart-total-wrap">
+                <div>
+                    <div class="total-label">Всего товаров</div>
+                    <div class="total-price">${totalItems} <span class="rub">шт</span></div>
+                </div>
+                <div>
+                    <div class="total-label">Примерная стоимость</div>
+                    <div class="total-price">${fmt(totalSum)} <span class="rub">₽</span></div>
+                </div>
+                <div class="actions">
+                    <button class="btn-clear" onclick="if(confirm('Очистить корзину?')){clearCart();}">
+                        <i class="fas fa-trash-alt"></i> Очистить
+                    </button>
+                    <button class="btn-order" onclick="openCheckout()">
+                        <i class="fas fa-paper-plane"></i> Оформить
+                    </button>
+                </div>
+            </div>
+        `;
+
+        html += `
+            <div class="cart-note">
+                <i class="fas fa-info-circle"></i>
+                <strong>Важно:</strong> Итоговая стоимость рассчитывается после согласования с менеджером.
+            </div>
+        `;
+
+        container.innerHTML = html;
+        if (countEl) {
+            const words = ['товар', 'товара', 'товаров'];
+            const n = totalItems % 100;
+            const n1 = n % 10;
+            let word = words[2];
+            if (n > 10 && n < 20) word = words[2];
+            else if (n1 > 1 && n1 < 5) word = words[1];
+            else if (n1 === 1) word = words[0];
+            countEl.textContent = totalItems + ' ' + word;
+        }
+    }
+
+    window.updateItem = function(index, delta) {
+        if (typeof Cart !== 'undefined') {
+            const item = Cart.items[index];
+            if (item) {
+                const newQty = item.quantity + delta;
+                if (newQty <= 0) {
+                    Cart.removeItem(index);
+                } else {
+                    Cart.updateQuantity(index, newQty);
+                }
+                renderCart();
+            }
+        }
+    };
+
+    window.removeItem = function(index) {
+        if (typeof Cart !== 'undefined') {
+            Cart.removeItem(index);
+            renderCart();
+        }
+    };
+
+    window.clearCart = function() {
+        if (typeof Cart !== 'undefined') {
+            Cart.clearCart();
+            renderCart();
+        }
+    };
+
+    window.openCheckout = function() {
+        if (typeof Cart === 'undefined' || Cart.items.length === 0) return;
+
+        const items = Cart.items;
+        let total = 0;
+        items.forEach(function(item) {
+            total += item.price * item.quantity;
+        });
+
+        document.getElementById('msCount').textContent = items.length + ' товаров';
+        document.getElementById('msTotal').textContent = fmt(total) + ' ₽';
+
+        const listEl = document.getElementById('orderItemsList');
+        if (listEl) {
+            listEl.innerHTML = items.map(function(item) {
+                return '<div class="item">' +
+                    '<span>' + esc(item.name) + ' (' + esc(item.size) + ', ' + esc(item.material) + ')</span>' +
+                    '<span>' + fmt(item.price * item.quantity) + ' ₽</span>' +
+                    '</div>';
+            }).join('');
+        }
+
+        document.getElementById('modalName').value = '';
+        document.getElementById('modalPhone').value = '';
+        document.getElementById('modalCemetery').value = '';
+        document.getElementById('modalComment').value = '';
+        document.getElementById('modalOpd').checked = false;
+        document.getElementById('modalOpdErr').style.display = 'none';
+        document.getElementById('modalFormView').style.display = 'block';
+        document.getElementById('modalSuccess').style.display = 'none';
+
+        document.getElementById('orderOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeOrderModal = function() {
+        document.getElementById('orderOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    };
+
+    window.closeModalOutside = function(e) {
+        if (e.target === document.getElementById('orderOverlay')) closeOrderModal();
+    };
+
+    window.submitOrder = function() {
+        const name = (document.getElementById('modalName')?.value || '').trim();
+        const phone = (document.getElementById('modalPhone')?.value || '').trim();
+        const cemetery = (document.getElementById('modalCemetery')?.value || '').trim() || 'Не указано';
+        const comment = (document.getElementById('modalComment')?.value || '').trim() || 'Без комментария';
+        const opd = document.getElementById('modalOpd');
+
+        let isValid = true;
+
+        if (!name) {
+            isValid = false;
+            const field = document.getElementById('modalName');
+            if (field) { field.style.borderColor = '#d32f2f'; field.style.borderWidth = '2px'; }
+        } else {
+            const field = document.getElementById('modalName');
+            if (field) { field.style.borderColor = ''; field.style.borderWidth = ''; }
+        }
+
+        if (!phone || phone.replace(/\D/g, '').length < 11) {
+            isValid = false;
+            const field = document.getElementById('modalPhone');
+            if (field) { field.style.borderColor = '#d32f2f'; field.style.borderWidth = '2px'; }
+        } else {
+            const field = document.getElementById('modalPhone');
+            if (field) { field.style.borderColor = ''; field.style.borderWidth = ''; }
+        }
+
+        if (!opd || !opd.checked) {
+            document.getElementById('modalOpdErr').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('modalOpdErr').style.display = 'none';
+        }
+
+        if (!isValid) {
+            alert('Заполните все обязательные поля');
+            return;
+        }
+
+        const items = Cart.items || [];
+        let itemsText = '';
+        let totalSum = 0;
+        items.forEach(function(item) {
+            totalSum += item.price * item.quantity;
+            itemsText += item.name + ' (' + item.size + ', ' + item.material + ') × ' + item.quantity + ' = ' + fmt(item.price * item.quantity) + ' ₽\n';
+        });
+
+        const fullComment = 'Заказ из корзины:\n\n' + itemsText + '\nИтого: ' + fmt(totalSum) + ' ₽\nКладбище: ' + cemetery + '\nКомментарий: ' + comment;
+
+        fetch('/mail.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+                phone: phone,
+                interest: 'Заказ из корзины (' + items.length + ' товаров)',
+                comment: fullComment,
+                source: 'Корзина'
+            })
+        })
+        .then(function(response) {
+            if (response.ok) {
+                document.getElementById('modalFormView').style.display = 'none';
+                document.getElementById('modalSuccess').style.display = 'block';
+                if (typeof Cart !== 'undefined' && Cart.clearCart) {
+                    Cart.clearCart();
+                }
+                setTimeout(function() {
+                    closeOrderModal();
+                    renderCart();
+                }, 4000);
+            } else {
+                alert('Ошибка отправки. Попробуйте позже.');
+            }
+        })
+        .catch(function() {
+            alert('Ошибка. Позвоните: +7 (936) 2200-900');
+        });
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Cart !== 'undefined') {
+            Cart.init();
+            renderCart();
+            document.addEventListener('cartUpdated', renderCart);
+        }
+    });
+
+})();
+</script>
+</body>
+</html>

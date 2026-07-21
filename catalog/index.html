@@ -6,24 +6,27 @@
     <title>Каталог памятников и оград — ГраньВремени.рф</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="/logoico.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        /* ===== СТИЛИ ДЛЯ КАТАЛОГА ===== */
         .catalog-page {
             padding: 40px 20px 70px;
             background: var(--gray-bg);
             min-height: 80vh;
         }
-        .catalog-header {
+        .catalog-container {
             max-width: 1200px;
-            margin: 0 auto 30px;
+            margin: 0 auto;
+        }
+        .catalog-header {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
             gap: 16px;
+            margin-bottom: 30px;
         }
         .catalog-header h1 {
             font-size: 28px;
@@ -34,24 +37,47 @@
             font-size: 15px;
             color: var(--text-light);
         }
+
         .catalog-layout {
             display: grid;
-            grid-template-columns: 220px 1fr;
+            grid-template-columns: 260px 1fr;
             gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
-        /* ===== ФИЛЬТРЫ ===== */
         .catalog-filters {
             background: #fff;
             border-radius: 12px;
             padding: 20px 16px;
             box-shadow: 0 2px 16px rgba(0,0,0,0.06);
             height: fit-content;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
             position: sticky;
             top: 100px;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
+
+        .catalog-filters::-webkit-scrollbar {
+            width: 4px;
+        }
+        .catalog-filters::-webkit-scrollbar-track {
+            background: var(--gray-bg);
+            border-radius: 4px;
+        }
+        .catalog-filters::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 4px;
+        }
+        .catalog-filters::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-light);
+        }
+
+        .catalog-filters {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold) var(--gray-bg);
+        }
+
         .catalog-filters h3 {
             font-size: 14px;
             font-weight: 800;
@@ -62,7 +88,153 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            padding-bottom: 8px;
+            z-index: 2;
+            border-bottom: 1px solid var(--border);
         }
+        .catalog-filters h3 .filter-toggle {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 400;
+            transition: transform .2s;
+        }
+        .catalog-filters h3 .filter-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .filter-body {
+            display: block;
+            padding-top: 8px;
+        }
+        .filter-body.hidden {
+            display: none;
+        }
+
+        .category-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .cat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background .2s, color .2s;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Open Sans', sans-serif;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        .cat-item:hover {
+            background: var(--gray-bg);
+            color: var(--dark);
+        }
+        .cat-item.active {
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: 700;
+        }
+        .cat-item .cat-icon {
+            font-size: 16px;
+            width: 24px;
+            text-align: center;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+        .cat-item.active .cat-icon {
+            color: var(--dark);
+        }
+        .cat-item .cat-count {
+            margin-left: auto;
+            background: var(--gray-bg);
+            padding: 0 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .cat-item.active .cat-count {
+            background: rgba(0,0,0,0.1);
+            color: var(--dark);
+        }
+        .cat-item .cat-arrow {
+            font-size: 12px;
+            color: var(--text-light);
+            transition: transform .25s;
+            flex-shrink: 0;
+            margin-left: 4px;
+        }
+        .cat-item .cat-arrow.open {
+            transform: rotate(90deg);
+        }
+        .cat-item.active .cat-arrow {
+            color: var(--dark);
+        }
+
+        .sub-categories {
+            display: none;
+            padding-left: 32px;
+            margin-bottom: 4px;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .sub-categories.open {
+            display: flex;
+        }
+        .sub-cat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: background .2s, color .2s;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        .sub-cat-item:hover {
+            background: var(--gray-bg);
+            color: var(--dark);
+        }
+        .sub-cat-item.active {
+            color: var(--gold-dark);
+            font-weight: 600;
+        }
+        .sub-cat-item .cat-count {
+            background: var(--gray-bg);
+            padding: 0 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            color: var(--text-light);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .sub-cat-item.active .cat-count {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
         .filter-section {
             margin-bottom: 18px;
             border-bottom: 1px solid var(--border);
@@ -100,6 +272,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
         .filter-btn:hover {
             background: var(--gray-bg);
@@ -120,7 +293,6 @@
             background: rgba(0,0,0,0.1);
             color: var(--dark);
         }
-
         .filter-range {
             display: flex;
             gap: 6px;
@@ -162,23 +334,20 @@
             font-weight: 600;
             padding: 4px 0;
             margin-top: 6px;
+            display: inline-block;
         }
         .filter-clear:hover {
             text-decoration: underline;
         }
 
-        /* ===== СЕТКА ТОВАРОВ ===== */
         .catalog-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            max-width: 100%;
         }
         .catalog-grid.list-view {
             grid-template-columns: 1fr;
         }
-
-        /* ===== КАРТОЧКА ТОВАРА ===== */
         .catalog-item {
             background: #fff;
             border-radius: 14px;
@@ -194,52 +363,45 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 32px rgba(0,0,0,0.12);
         }
-
-        /* Фото */
         .catalog-item-img {
-            height: 350px;
+            height: 280px;
             background: #fff;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            padding: 0;
+            padding: 12px;
         }
         .catalog-item-img img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            object-position: bottom center;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.05));
             transition: transform .3s ease;
         }
         .catalog-item:hover .catalog-item-img img {
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
         .catalog-item-img .no-image {
-            font-size: 56px;
-            color: rgb(255, 255, 255);
+            font-size: 48px;
+            color: rgba(0,0,0,0.06);
         }
         .catalog-item-img .badge {
             position: absolute;
-            top: 12px;
-            left: 12px;
+            top: 10px;
+            left: 10px;
             background: var(--gold);
             color: var(--dark);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            padding: 3px 14px;
-            border-radius: 20px;
+            padding: 2px 12px;
+            border-radius: 16px;
             text-transform: uppercase;
             letter-spacing: 0.3px;
             z-index: 2;
         }
-
-        /* Тело карточки */
         .catalog-item-body {
             padding: 12px 14px 14px;
-            flex: 0 0 auto;
             display: flex;
             flex-direction: column;
         }
@@ -266,17 +428,6 @@
             font-weight: 400;
             color: var(--text-light);
         }
-        @media (max-width: 768px) {
-            .catalog-item-img { height: 300px; } /* На планшетах */
-        }
-
-        @media (max-width: 480px) {
-            .catalog-item-img { height: 250px; } /* На телефонах */
-            .catalog-item-body { padding: 12px; }
-            .catalog-item-body h3 { font-size: 14px; min-height: 36px; }
-            .catalog-item-body .price { font-size: 18px; }
-        }
-        /* ===== КНОПКИ В КАРТОЧКЕ ===== */
         .catalog-item-body .item-actions {
             display: flex;
             gap: 8px;
@@ -286,12 +437,8 @@
         .catalog-item-body .item-actions .btn-card {
             flex: 1;
             text-align: center;
-            padding: 9px 10px;
+            padding: 8px 10px;
             font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
             border: none;
             border-radius: var(--radius);
             cursor: pointer;
@@ -299,12 +446,13 @@
             font-weight: 700;
             transition: background .2s, transform .15s;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
         .catalog-item-body .item-actions .btn-card:hover {
             transform: translateY(-1px);
-        }
-        .catalog-item-body .item-actions .btn-card i {
-            font-size: 12px;
         }
         .btn-detail {
             background: var(--dark);
@@ -313,11 +461,9 @@
         .btn-detail:hover {
             background: #333;
         }
-
-        /* ===== КРУГЛЫЕ КНОПКИ С SVG ===== */
         .btn-icon {
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
@@ -327,7 +473,7 @@
             flex-shrink: 0;
             transition: transform .2s, box-shadow .2s, background .2s;
             background: rgba(0,0,0,0.04);
-            padding: 6px;
+            padding: 5px;
             text-decoration: none;
         }
         .btn-icon:hover {
@@ -339,16 +485,11 @@
             height: 100%;
             display: block;
         }
-
-        /* Цвета как в header.js */
         .btn-icon-tg { color: #0088cc; }
         .btn-icon-tg:hover { color: #006699; background: rgba(0, 136, 204, 0.12); }
         .btn-icon-wa { color: #25d366; }
         .btn-icon-wa:hover { color: #1da851; background: rgba(37, 211, 102, 0.12); }
-        .btn-icon-max { color: #6f42c1; }
-        .btn-icon-max:hover { color: #5530a3; background: rgba(111, 66, 193, 0.12); }
 
-        /* ===== ПАГИНАЦИЯ И ТУЛБАР ===== */
         .catalog-toolbar {
             display: flex;
             justify-content: space-between;
@@ -422,7 +563,6 @@
         .pagination button:hover:not(.active) {
             background: var(--gray-bg);
         }
-
         .catalog-empty {
             grid-column: 1 / -1;
             text-align: center;
@@ -435,83 +575,55 @@
             margin-bottom: 16px;
         }
 
-        /* ================================================================
-           АДАПТИВ — МОБИЛЬНЫЕ ФИЛЬТРЫ ВЕРТИКАЛЬНЫМ СПИСКОМ
-           ================================================================ */
-
-        /* ── Планшет и небольшой десктоп (до 1100px) ── */
         @media (max-width: 1100px) {
-            .catalog-layout { grid-template-columns: 200px 1fr; gap: 20px; }
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
-            .catalog-item-img { height: 260px; }
+            .catalog-item-img { height: 240px; }
         }
 
-        /* ── Планшет-портрет и крупный телефон (до 992px) ── */
         @media (max-width: 992px) {
             .catalog-page { padding: 28px 16px 60px; }
             .catalog-layout { grid-template-columns: 1fr; gap: 0; }
-
-            /* Фильтры — вертикальный список, компактный, сворачиваемый */
             .catalog-filters {
                 position: static;
-                display: block;
+                max-height: none;
                 padding: 16px 16px 12px;
                 border-radius: 10px;
                 margin-bottom: 16px;
-                background: #fff;
-                box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+                overflow-y: visible;
+                touch-action: auto;
             }
             .catalog-filters h3 {
-                width: 100%;
-                margin-bottom: 10px;
-                font-size: 14px;
+                position: static;
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+            .catalog-filters h3 {
                 cursor: pointer;
                 user-select: none;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
             }
-            .catalog-filters h3 .filter-toggle {
-                font-size: 12px;
-                color: var(--text-light);
-                font-weight: 400;
-                transition: transform .2s;
-            }
-            .catalog-filters h3 .filter-toggle.open {
-                transform: rotate(180deg);
-            }
-
-            .filter-body {
+            .filter-body.hidden {
                 display: none;
-                padding-top: 8px;
             }
-            .filter-body.open {
+            .filter-body:not(.hidden) {
                 display: block;
             }
-
             .filter-section {
                 margin-bottom: 0;
                 padding-bottom: 0;
                 border-bottom: none;
-                flex: 0 0 auto;
-                width: 100%;
             }
             .filter-section h4 {
                 display: block !important;
                 font-size: 11px;
-                font-weight: 700;
-                color: var(--text-light);
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                margin-bottom: 6px;
                 margin-top: 10px;
             }
             .filter-section h4:first-of-type {
                 margin-top: 0;
             }
-
             .filter-group {
-                display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
                 gap: 4px;
@@ -531,203 +643,79 @@
                 font-weight: 700;
             }
             .filter-btn .count-badge { display: none; }
-
             .filter-range {
                 display: flex;
                 gap: 6px;
-                align-items: center;
-                margin-top: 4px;
                 flex-wrap: wrap;
             }
-            .filter-range input {
-                width: 70px;
-                font-size: 12px;
-                padding: 5px 8px;
-                border: 1px solid var(--border);
-                border-radius: 6px;
-            }
-            .filter-range button {
-                padding: 5px 14px;
-                font-size: 12px;
-                background: var(--gold);
-                border: none;
-                border-radius: 6px;
-                font-weight: 700;
-                cursor: pointer;
-                color: var(--dark);
-            }
-
-            .filter-clear {
-                font-size: 12px;
-                padding: 6px 0 2px;
-                margin-top: 6px;
-                display: inline-block;
-                background: none;
-                border: none;
-                color: var(--gold);
-                cursor: pointer;
-                font-weight: 600;
-            }
-            .filter-clear:hover { text-decoration: underline; }
-
+            .filter-range input { width: 70px; font-size: 12px; padding: 5px 8px; }
+            .filter-range button { padding: 5px 14px; font-size: 12px; }
+            .filter-clear { font-size: 12px; padding: 6px 0 2px; margin-top: 6px; display: inline-block; }
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-            .catalog-item-img { height: 240px; }
+            .catalog-item-img { height: 220px; }
             .btn-icon { width: 34px; height: 34px; padding: 5px; }
+            .cat-item { font-size: 13px; padding: 6px 8px; }
+            .sub-cat-item { font-size: 12px; padding: 4px 8px; }
+            .sub-categories { padding-left: 24px; }
         }
 
-        /* ── Средние телефоны + планшет-портрет (до 768px) ── */
         @media (max-width: 768px) {
             .catalog-page { padding: 20px 12px 48px; }
             .catalog-header { flex-direction: column; align-items: flex-start; gap: 6px; }
             .catalog-header h1 { font-size: 22px; }
-
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-            .catalog-item-img { height: 210px; }
-            .catalog-item-body { padding: 12px 14px 14px; }
+            .catalog-item-img { height: 200px; }
+            .catalog-item-body { padding: 10px 12px; }
             .catalog-item-body h3 { font-size: 14px; }
             .catalog-item-body .dims { font-size: 12px; }
-            .catalog-item-body .price { font-size: 17px; margin-bottom: 10px; }
-
-            .item-actions { gap: 6px; }
-            .catalog-item-body .item-actions .btn-card {
-                font-size: 11px;
-                padding: 7px 8px;
-            }
-            .btn-icon { width: 32px; height: 32px; padding: 5px; }
-
+            .catalog-item-body .price { font-size: 16px; margin-bottom: 8px; }
+            .catalog-item-body .item-actions .btn-card { font-size: 11px; padding: 6px 8px; }
+            .btn-icon { width: 30px; height: 30px; padding: 4px; }
             .catalog-toolbar { gap: 8px; }
             .catalog-toolbar .sort label { font-size: 12px; }
             .catalog-toolbar .sort select { font-size: 12px; padding: 5px 10px; }
-
             .pagination button { padding: 6px 12px; font-size: 13px; }
-
             .filter-range input { width: 60px; }
         }
 
-        /* ── Телефоны (до 600px) ── */
         @media (max-width: 600px) {
             .catalog-page { padding: 16px 10px 40px; }
-            .catalog-header h1 { font-size: 20px; }
+            .catalog-header h1 { font-size: 18px; }
             .catalog-header .count { font-size: 13px; }
-
-            .catalog-filters {
-                padding: 12px 14px;
-            }
-            .catalog-filters h3 {
-                font-size: 13px;
-                margin-bottom: 6px;
-            }
-            .filter-section h4 {
-                font-size: 10px;
-                margin-top: 8px;
-            }
-            .filter-btn {
-                font-size: 11px;
-                padding: 4px 10px;
-            }
-            .filter-range input {
-                width: 55px;
-                font-size: 11px;
-                padding: 4px 6px;
-            }
-            .filter-range button {
-                font-size: 11px;
-                padding: 4px 10px;
-            }
-
-            .catalog-toolbar {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                gap: 8px;
-            }
+            .catalog-filters { padding: 12px 14px; }
+            .catalog-filters h3 { font-size: 13px; margin-bottom: 6px; }
+            .filter-section h4 { font-size: 10px; margin-top: 8px; }
+            .filter-btn { font-size: 11px; padding: 4px 10px; }
+            .filter-range input { width: 55px; font-size: 11px; padding: 4px 6px; }
+            .filter-range button { font-size: 11px; padding: 4px 10px; }
+            .catalog-toolbar { flex-direction: row; justify-content: space-between; align-items: center; gap: 8px; }
             .catalog-toolbar .sort { gap: 4px; }
             .catalog-toolbar .sort label { display: none; }
             .catalog-toolbar .sort select { font-size: 12px; padding: 5px 8px; }
-
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            
-            .catalog-item-body h3 { font-size: 13px; line-height: 1.25; }
-            .catalog-item-body .dims { font-size: 11px; margin-bottom: 6px; }
-            .catalog-item-body .price { font-size: 16px; margin-bottom: 8px; }
-            .catalog-item-body .price span { font-size: 12px; }
-
-            .item-actions { gap: 5px; }
-            .catalog-item-body .item-actions .btn-card {
-                font-size: 10px;
-                padding: 6px 6px;
-                gap: 3px;
-            }
+            .catalog-item-img { height: 170px; }
+            .catalog-item-body h3 { font-size: 13px; }
+            .catalog-item-body .dims { font-size: 11px; }
+            .catalog-item-body .price { font-size: 14px; margin-bottom: 6px; }
+            .catalog-item-body .item-actions .btn-card { font-size: 10px; padding: 5px 6px; }
             .catalog-item-body .item-actions .btn-card i { display: none; }
-            .btn-icon { width: 30px; height: 30px; padding: 4px; }
-
+            .btn-icon { width: 28px; height: 28px; padding: 3px; }
             .pagination { gap: 6px; margin-top: 20px; }
             .pagination button { padding: 6px 11px; font-size: 12px; }
+            .cat-item { font-size: 12px; padding: 5px 6px; gap: 6px; }
+            .cat-item .cat-icon { font-size: 14px; width: 20px; }
+            .sub-cat-item { font-size: 11px; padding: 3px 6px; }
+            .sub-categories { padding-left: 20px; }
         }
 
-        /* ── Маленькие телефоны (до 400px) ── */
         @media (max-width: 400px) {
-            .catalog-page { padding: 12px 8px 32px; }
-            .catalog-header h1 { font-size: 18px; }
-
             .catalog-grid { grid-template-columns: 1fr; gap: 12px; }
+            .catalog-item-img { height: 200px; }
             .catalog-item-body h3 { font-size: 16px; }
             .catalog-item-body .dims { font-size: 13px; }
-            .catalog-item-body .price { font-size: 20px; }
-            .catalog-item-body .item-actions .btn-card {
-                font-size: 12px;
-                padding: 8px 10px;
-            }
+            .catalog-item-body .price { font-size: 18px; }
+            .catalog-item-body .item-actions .btn-card { font-size: 12px; padding: 8px 10px; }
             .catalog-item-body .item-actions .btn-card i { display: inline; }
-            .btn-icon { width: 36px; height: 36px; padding: 6px; }
-
-            .filter-btn { font-size: 10px; padding: 3px 8px; }
-            .filter-range input { width: 50px; font-size: 10px; }
-
-            .pagination button { padding: 5px 9px; font-size: 11px; }
-        }
-
-        @media (max-width: 768px) {
-            .header-inner {
-                display: grid;
-                grid-template-columns: 1fr auto 1fr;
-                align-items: center;
-                padding: 10px 16px;
-            }
-            .logo { grid-column: 2; justify-self: center; }
-            .logo-sub { display: none; }
-            .burger { grid-column: 3; justify-self: end; display: flex; }
-            nav, .header-cta, .header-telegram { display: none; }
-            .mobile-nav {
-                display: none;
-                position: absolute;
-                top: 60px;
-                right: 0;
-                left: 0;
-                background: var(--dark);
-                padding: 16px 0 20px;
-                border-radius: 0 0 12px 12px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-                z-index: 999;
-                flex-direction: column;
-            }
-            .mobile-nav.open { display: flex; }
-            .mobile-nav a {
-                color: rgba(255,255,255,0.85);
-                font-size: 15px;
-                font-weight: 600;
-                padding: 10px 20px;
-                font-family: 'Montserrat', sans-serif;
-                transition: background .2s;
-                text-decoration: none;
-            }
-            .mobile-nav a:hover { background: rgba(255,255,255,0.06); }
-            .mobile-nav .phone-link {
-                color: var(--gold-light);
-                margin-top: 4px;
-                border-top: 1px solid rgba(255,255,255,0.08);
-                padding-top: 12px;
-            }
         }
     </style>
 </head>
@@ -736,59 +724,184 @@
 <header id="site-header"></header>
 
 <section class="catalog-page">
-    <div class="catalog-header">
-        <h1>Каталог товаров</h1>
-        <span class="count" id="totalCount">Загрузка...</span>
-    </div>
-    <div class="catalog-layout">
-        <aside class="catalog-filters" id="filters">
-            <h3 onclick="toggleFilters()">
-                <span><i class="fas fa-filter" style="margin-right:6px;font-size:12px;"></i>Фильтры</span>
-                <span class="filter-toggle" id="filterToggle">▼</span>
-            </h3>
-            <div class="filter-body" id="filterBody">
-                <div class="filter-section">
-                    <h4>Категория</h4>
-                    <div class="filter-group" id="categoryFilters">
-                        <button class="filter-btn active" data-filter="category" data-value="all">Все товары <span class="count-badge" id="countAll">0</span></button>
-                        <button class="filter-btn" data-filter="category" data-value="vertical">Вертикальные <span class="count-badge" id="countVertical">0</span></button>
-                        <button class="filter-btn" data-filter="category" data-value="horizontal">Горизонтальные <span class="count-badge" id="countHorizontal">0</span></button>
-                        <button class="filter-btn" data-filter="category" data-value="carved">Резные <span class="count-badge" id="countCarved">0</span></button>
-                        <button class="filter-btn" data-filter="category" data-value="double">Двойные <span class="count-badge" id="countDouble">0</span></button>
-                        <button class="filter-btn" data-filter="category" data-value="combined">Комбинированные <span class="count-badge" id="countCombined">0</span></button>
-                        <button class="filter-btn" data-filter="category" data-value="cross">С крестом <span class="count-badge" id="countCross">0</span></button>
-                        <button class="filter-btn" data-filter="category" data-value="complex">Комплексы <span class="count-badge" id="countComplex">0</span></button>
+    <div class="catalog-container">
+        <div class="catalog-header">
+            <h1>Каталог товаров</h1>
+            <span class="count" id="totalCount">Загрузка...</span>
+        </div>
+
+        <div class="catalog-layout">
+            <aside class="catalog-filters" id="filters">
+                <h3 onclick="toggleFilterBody(event)">
+                    <span><i class="fas fa-list" style="margin-right:6px;font-size:12px;"></i>Категории</span>
+                    <span class="filter-toggle open" id="filterToggle">▲</span>
+                </h3>
+                <div class="filter-body" id="filterBody">
+
+                    <div class="category-tree">
+                        <button class="cat-item active" data-category="all" onclick="safeSetCategory('all')">
+                            <span class="cat-icon"><i class="fas fa-th"></i></span>
+                            Все товары
+                            <span class="cat-count" id="countAll">0</span>
+                        </button>
+                    </div>
+
+                    <div style="margin-top:8px;">
+                        <button class="cat-item" onclick="toggleCategory('memorial')" style="font-weight:700;">
+                            <span class="cat-icon"><i class="fas fa-monument"></i></span>
+                            Памятники
+                            <span class="cat-arrow open" id="arrowMemorial">▶</span>
+                            <span class="cat-count" id="countMemorial">0</span>
+                        </button>
+                        <div class="sub-categories open" id="subMemorial">
+                            <button class="sub-cat-item" data-category="vertical" onclick="safeSetCategory('vertical')">
+                                Вертикальные <span class="cat-count" id="countVertical">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="memorial-milling" onclick="safeSetCategory('memorial-milling')">
+                                Фрезерные <span class="cat-count" id="countMemorialMilling">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="horizontal" onclick="safeSetCategory('horizontal')">
+                                Горизонтальные <span class="cat-count" id="countHorizontal">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="carved" onclick="safeSetCategory('carved')">
+                                Резные <span class="cat-count" id="countCarved">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="double" onclick="safeSetCategory('double')">
+                                Двойные <span class="cat-count" id="countDouble">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="memorial-arches" onclick="safeSetCategory('memorial-arches')">
+                                Арки и Колонны <span class="cat-count" id="countMemorialArches">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="memorial-elite" onclick="safeSetCategory('memorial-elite')">
+                                Элитные <span class="cat-count" id="countMemorialElite">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="cross" onclick="safeSetCategory('cross')">
+                                С крестом <span class="cat-count" id="countCross">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="memorial-exclusive" onclick="safeSetCategory('memorial-exclusive')">
+                                Эксклюзивные <span class="cat-count" id="countMemorialExclusive">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="memorial-chapels" onclick="safeSetCategory('memorial-chapels')">
+                                Часовни и Голгофы <span class="cat-count" id="countMemorialChapels">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="memorial-granite-crosses" onclick="safeSetCategory('memorial-granite-crosses')">
+                                Кресты из гранита <span class="cat-count" id="countMemorialGraniteCrosses">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="memorial-european" onclick="safeSetCategory('memorial-european')">
+                                Европейские <span class="cat-count" id="countMemorialEuropean">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="complex" onclick="safeSetCategory('complex')" style="border-top:1px solid var(--border);margin-top:4px;padding-top:6px;font-weight:600;">
+                                Комплексы <span class="cat-count" id="countComplex">0</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:4px;">
+                        <button class="cat-item" onclick="safeSetCategory('socle')" style="font-weight:700;">
+                            <span class="cat-icon"><i class="fas fa-archway"></i></span>
+                            Цоколь
+                            <span class="cat-count" id="countSocle">0</span>
+                        </button>
+                    </div>
+
+                    <div style="margin-top:2px;">
+                        <button class="cat-item" onclick="safeSetCategory('vases')" style="font-weight:700;">
+                            <span class="cat-icon"><i class="fas fa-flask"></i></span>
+                            Вазы
+                            <span class="cat-count" id="countVases">0</span>
+                        </button>
+                    </div>
+
+                    <div style="margin-top:4px;">
+                        <button class="cat-item" onclick="toggleCategory('design')" style="font-weight:700;">
+                            <span class="cat-icon"><i class="fas fa-pen-fancy"></i></span>
+                            Оформление
+                            <span class="cat-arrow open" id="arrowDesign">▶</span>
+                            <span class="cat-count" id="countDesign">0</span>
+                        </button>
+                        <div class="sub-categories open" id="subDesign">
+                            <button class="sub-cat-item" data-category="design-photo" onclick="safeSetCategory('design-photo')">
+                                Фотокерамика <span class="cat-count" id="countDesignPhoto">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-glass" onclick="safeSetCategory('design-glass')">
+                                Фото на стекле <span class="cat-count" id="countDesignGlass">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-angels" onclick="safeSetCategory('design-angels')">
+                                Ангелы <span class="cat-count" id="countDesignAngels">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-branches" onclick="safeSetCategory('design-branches')">
+                                Ветви <span class="cat-count" id="countDesignBranches">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-military" onclick="safeSetCategory('design-military')">
+                                Военным <span class="cat-count" id="countDesignMilitary">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-animals" onclick="safeSetCategory('design-animals')">
+                                Животные, птицы <span class="cat-count" id="countDesignAnimals">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-crosses" onclick="safeSetCategory('design-crosses')">
+                                Кресты <span class="cat-count" id="countDesignCrosses">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-moon" onclick="safeSetCategory('design-moon')">
+                                Луна (мусульманская) <span class="cat-count" id="countDesignMoon">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-music" onclick="safeSetCategory('design-music')">
+                                Музыкальная тематика <span class="cat-count" id="countDesignMusic">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-nature" onclick="safeSetCategory('design-nature')">
+                                Природа <span class="cat-count" id="countDesignNature">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-frames" onclick="safeSetCategory('design-frames')">
+                                Рамки <span class="cat-count" id="countDesignFrames">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-candles" onclick="safeSetCategory('design-candles')">
+                                Свечи <span class="cat-count" id="countDesignCandles">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-flowers" onclick="safeSetCategory('design-flowers')">
+                                Цветы <span class="cat-count" id="countDesignFlowers">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-icons" onclick="safeSetCategory('design-icons')" style="border-top:1px solid var(--border);margin-top:4px;padding-top:6px;">
+                                Иконы <span class="cat-count" id="countDesignIcons">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-churches" onclick="safeSetCategory('design-churches')">
+                                Церкви <span class="cat-count" id="countDesignChurches">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-mosques" onclick="safeSetCategory('design-mosques')">
+                                Мечети <span class="cat-count" id="countDesignMosques">0</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section" style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+                        <h4>Цена</h4>
+                        <div class="filter-range">
+                            <input type="number" id="priceMin" placeholder="от" min="0">
+                            <input type="number" id="priceMax" placeholder="до" min="0">
+                            <button onclick="applyPriceFilter()">OK</button>
+                        </div>
+                    </div>
+                    <button class="filter-clear" onclick="clearAllFilters()">Сбросить все фильтры</button>
+                </div>
+            </aside>
+
+            <div class="catalog-products">
+                <div class="catalog-toolbar">
+                    <div class="sort">
+                        <label for="sortSelect">Сортировать:</label>
+                        <select id="sortSelect" onchange="applySort()">
+                            <option value="default">По умолчанию</option>
+                            <option value="price_asc">Сначала дешёвые</option>
+                            <option value="price_desc">Сначала дорогие</option>
+                            <option value="name_asc">По названию (А–Я)</option>
+                        </select>
+                    </div>
+                    <div class="view">
+                        <button class="active" onclick="setView('grid')" title="Сетка"><i class="fas fa-th"></i></button>
+                        <button onclick="setView('list')" title="Список"><i class="fas fa-list"></i></button>
                     </div>
                 </div>
-                <div class="filter-section">
-                    <h4>Цена</h4>
-                    <div class="filter-range">
-                        <input type="number" id="priceMin" placeholder="от" min="0">
-                        <input type="number" id="priceMax" placeholder="до" min="0">
-                        <button onclick="applyPriceFilter()">OK</button>
-                    </div>
-                </div>
-                <button class="filter-clear" onclick="clearAllFilters()">Сбросить все фильтры</button>
+                <div class="catalog-grid" id="productGrid"></div>
+                <div class="pagination" id="pagination"></div>
             </div>
-        </aside>
-        <div class="catalog-products">
-            <div class="catalog-toolbar">
-                <div class="sort">
-                    <label for="sortSelect">Сортировать:</label>
-                    <select id="sortSelect" onchange="applySort()">
-                        <option value="default">По умолчанию</option>
-                        <option value="price_asc">Сначала дешёвые</option>
-                        <option value="price_desc">Сначала дорогие</option>
-                        <option value="name_asc">По названию (А–Я)</option>
-                    </select>
-                </div>
-                <div class="view">
-                    <button class="active" onclick="setView('grid')" title="Сетка"><i class="fas fa-th"></i></button>
-                    <button onclick="setView('list')" title="Список"><i class="fas fa-list"></i></button>
-                </div>
-            </div>
-            <div class="catalog-grid" id="productGrid"></div>
-            <div class="pagination" id="pagination"></div>
         </div>
     </div>
 </section>
@@ -796,357 +909,284 @@
 <footer id="site-footer"></footer>
 
 <script src="../js/main.js"></script>
+<script src="../js/validation.js"></script>
 <script src="../js/header.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/catalog.js"></script>
+
 <script>
-    function escapeHtml(unsafe) {
-        if (!unsafe) return '';
-        return unsafe
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-
-    // ── ПОСТРОЕНИЕ ПУТИ К ФОТО ──
-    function getPhotoUrl(product) {
-        if (!product.photoURL) return null;
-        if (product.photoURL.startsWith('http') || product.photoURL.startsWith('/')) {
-            return product.photoURL;
+const safeSetCategory = (category) => {
+    if (window.Catalog && typeof window.Catalog.setCategory === 'function') {
+        window.Catalog.setCategory(category);
+    } else if (window.Catalog) {
+        window.Catalog.currentCategory = category;
+        if (typeof window.Catalog.applyFilters === 'function') {
+            window.Catalog.applyFilters();
         }
-        var path = product.photoURL;
-        if (path.startsWith('img/products/')) {
-            path = path.replace('img/products/', 'img/products-img/');
-        }
-        return '../' + path;
-    }
-
-    function getTelegramSvg() {
-        return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>';
-    }
-
-    function getWhatsappSvg() {
-        return '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
-    }
-
-    // ── ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ──
-    var currentCategory = 'all';
-    var currentPage = 1;
-    var ITEMS_PER_PAGE = 20;
-    var allProducts = [];
-    var filteredProducts = [];
-    var currentView = 'grid';
-    var priceMin = 0;
-    var priceMax = Infinity;
-
-    // ── Toggle фильтров на мобильных ──
-    function toggleFilters() {
-        var body = document.getElementById('filterBody');
-        var toggle = document.getElementById('filterToggle');
-        if (body) {
-            body.classList.toggle('open');
-            if (toggle) {
-                toggle.classList.toggle('open');
-                toggle.textContent = body.classList.contains('open') ? '▲' : '▼';
-            }
-        }
-    }
-
-    // ── Автоматически открываем фильтры на десктопе ──
-    function initFiltersMobile() {
-        var body = document.getElementById('filterBody');
-        var toggle = document.getElementById('filterToggle');
-        if (window.innerWidth > 992) {
-            if (body) body.classList.add('open');
-            if (toggle) {
-                toggle.classList.add('open');
-                toggle.textContent = '▲';
-            }
-        } else {
-            if (body) body.classList.remove('open');
-            if (toggle) {
-                toggle.classList.remove('open');
-                toggle.textContent = '▼';
-            }
-        }
-    }
-
-    // ── ИНИЦИАЛИЗАЦИЯ ──
-    function initCatalog() {
-        var grid = document.getElementById('productGrid');
-        var count = document.getElementById('totalCount');
-        var pagination = document.getElementById('pagination');
-
-        if (!grid || !count || !pagination) return;
-
-        loadProducts(function(products) {
-            allProducts = products.filter(function(p) { return !p.hidden; });
-            applyFilters();
-        });
-    }
-
-    // ── ПРИМЕНЕНИЕ ФИЛЬТРОВ ──
-    function applyFilters() {
-        var result = allProducts;
-
-        if (currentCategory !== 'all') {
-            result = result.filter(function(p) {
-                return p.category === currentCategory;
-            });
-        }
-
-        result = result.filter(function(p) {
-            var price = p.price || 0;
-            return price >= priceMin && price <= priceMax;
-        });
-
-        filteredProducts = result;
-        updateCounters();
-        applySort();
-        currentPage = 1;
-        renderCatalog();
-    }
-
-    // ── ОБНОВЛЕНИЕ СЧЁТЧИКОВ ──
-    function updateCounters() {
-        var categories = ['all', 'vertical', 'horizontal', 'carved', 'double', 'combined', 'cross', 'complex'];
-        categories.forEach(function(cat) {
-            var count = allProducts.filter(function(p) {
-                if (cat === 'all') return true;
-                return p.category === cat;
-            }).length;
-            var badge = document.getElementById('count' + cat.charAt(0).toUpperCase() + cat.slice(1));
-            if (badge) {
-                badge.textContent = count;
-            }
-        });
-    }
-
-    // ── РЕНДЕР КАТАЛОГА ──
-    function renderCatalog() {
-        var grid = document.getElementById('productGrid');
-        var count = document.getElementById('totalCount');
-        var pagination = document.getElementById('pagination');
-
-        if (!grid) return;
-
-        var total = filteredProducts.length;
-        count.textContent = 'Найдено ' + total + ' товаров';
-
-        var totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-        if (currentPage > totalPages) currentPage = 1;
-        var start = (currentPage - 1) * ITEMS_PER_PAGE;
-        var paginated = filteredProducts.slice(start, start + ITEMS_PER_PAGE);
-
-        if (paginated.length === 0) {
-            grid.innerHTML = `
-                <div class="catalog-empty">
-                    <i class="fas fa-box-open"></i>
-                    <p>По вашим фильтрам ничего не найдено</p>
-                    <button onclick="clearAllFilters()" style="margin-top:12px; padding:8px 20px; background:var(--gold); border:none; border-radius:6px; font-weight:700; cursor:pointer;">Сбросить фильтры</button>
-                </div>
-            `;
-        } else {
-            var viewClass = currentView === 'list' ? 'list-view' : '';
-            grid.className = 'catalog-grid ' + viewClass;
-
-            grid.innerHTML = paginated.map(function(p) {
-                var badgeHtml = p.badge ? '<span class="badge">' + escapeHtml(p.badge) + '</span>' : '';
-
-                var photoUrl = getPhotoUrl(p);
-                var imgHtml = '';
-                if (photoUrl) {
-                    imgHtml = '<img src="' + photoUrl + '" alt="' + escapeHtml(p.name) + '" loading="lazy" onerror="this.style.display=\'none\'; this.parentNode.querySelector(\'.no-image\').style.display=\'flex\'" />' +
-                        '<div class="no-image" style="display:none;"><i class="fas fa-' + escapeHtml(p.imageIcon || 'mountain') + '"></i></div>';
-                } else {
-                    var icon = p.imageIcon || 'mountain';
-                    imgHtml = '<div class="no-image"><i class="fas fa-' + escapeHtml(icon) + '"></i></div>';
+    } else {
+        setTimeout(() => {
+            if (window.Catalog && typeof window.Catalog.setCategory === 'function') {
+                window.Catalog.setCategory(category);
+            } else if (window.Catalog) {
+                window.Catalog.currentCategory = category;
+                if (typeof window.Catalog.applyFilters === 'function') {
+                    window.Catalog.applyFilters();
                 }
-
-                var firstSize = '';
-                try {
-                    if (p.sizes && p.sizes.length > 0) {
-                        if (typeof p.sizes[0] === 'object' && p.sizes[0] !== null) {
-                            firstSize = p.sizes[0].label || 'Стандартный';
-                        } else {
-                            firstSize = p.sizes[0] || 'Стандартный';
-                        }
-                    } else {
-                        firstSize = 'Стандартный';
-                    }
-                } catch(e) {
-                    firstSize = 'Стандартный';
-                }
-                var dimsHtml = '<div class="dims">' + escapeHtml(firstSize) + '</div>';
-
-                var links = window.getMessengerLinks ? 
-                    window.getMessengerLinks(p.name, p.price) : 
-                    { tg: 'https://t.me/granvremenirf', wa: 'https://wa.me/79362200900' };
-
-                return `
-                    <div class="catalog-item" onclick="window.location.href='../product/?id=${p.id}'">
-                        <div class="catalog-item-img">
-                            ${imgHtml}
-                            ${badgeHtml}
-                        </div>
-                        <div class="catalog-item-body">
-                            <h3>${escapeHtml(p.name)}</h3>
-                            ${dimsHtml}
-                            <div class="price"><span>От</span> ${p.price.toLocaleString('ru-RU')}<span> ₽</span></div>
-                            <div class="item-actions">
-                                <a href="../product/?id=${p.id}" class="btn-card btn-detail" onclick="event.stopPropagation();">
-                                    <i class="fas fa-calculator"></i> Рассчитать
-                                </a>
-                                <a href="${links.tg}" target="_blank" rel="noopener noreferrer" class="btn-icon btn-icon-tg" onclick="event.stopPropagation();" title="Telegram">
-                                    ${getTelegramSvg()}
-                                </a>
-                                <a href="${links.wa}" target="_blank" rel="noopener noreferrer" class="btn-icon btn-icon-wa" onclick="event.stopPropagation();" title="WhatsApp">
-                                    ${getWhatsappSvg()}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        if (totalPages <= 1) {
-            pagination.innerHTML = '';
-            return;
-        }
-
-        var pagHtml = '';
-        for (var i = 1; i <= totalPages; i++) {
-            pagHtml += '<button class="' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-        }
-        pagination.innerHTML = pagHtml;
+            }
+        }, 300);
     }
+    updateActiveCategory(category);
+};
 
-    function goToPage(page) {
-        currentPage = page;
-        renderCatalog();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+const updateActiveCategory = (category) => {
+    document.querySelectorAll('.cat-item, .sub-cat-item').forEach((el) => {
+        el.classList.toggle('active', el.dataset.category === category);
+    });
 
-    function applySort() {
-        var sort = document.getElementById('sortSelect')?.value || 'default';
+    const memorialKeys = ['vertical', 'memorial-milling', 'horizontal', 'carved', 'double', 'memorial-arches', 'memorial-elite', 'cross', 'memorial-exclusive', 'memorial-chapels', 'memorial-granite-crosses', 'memorial-european', 'complex'];
+    const designKeys = ['design-photo', 'design-glass', 'design-angels', 'design-branches', 'design-military', 'design-animals', 'design-crosses', 'design-moon', 'design-music', 'design-nature', 'design-frames', 'design-candles', 'design-flowers', 'design-icons', 'design-churches', 'design-mosques'];
 
-        switch (sort) {
-            case 'price_asc':
-                filteredProducts.sort(function(a, b) { return (a.price || 0) - (b.price || 0); });
-                break;
-            case 'price_desc':
-                filteredProducts.sort(function(a, b) { return (b.price || 0) - (a.price || 0); });
-                break;
-            case 'name_asc':
-                filteredProducts.sort(function(a, b) { return a.name.localeCompare(b.name); });
-                break;
-            default:
-                break;
+    document.querySelectorAll('.cat-item').forEach((el) => {
+        const text = el.textContent.trim();
+        if (text.includes('Памятники') && memorialKeys.includes(category)) {
+            el.classList.add('active');
+        } else if (text.includes('Оформление') && designKeys.includes(category)) {
+            el.classList.add('active');
+        } else if (text.includes('Цоколь') && category === 'socle') {
+            el.classList.add('active');
+        } else if (text.includes('Вазы') && category === 'vases') {
+            el.classList.add('active');
         }
+    });
+};
 
-        renderCatalog();
+const toggleCategory = (id) => {
+    const map = {
+        'memorial': { sub: 'subMemorial', arrow: 'arrowMemorial' },
+        'design': { sub: 'subDesign', arrow: 'arrowDesign' }
+    };
+    const item = map[id];
+    if (!item) return;
+    const sub = document.getElementById(item.sub);
+    const arrow = document.getElementById(item.arrow);
+    if (sub) {
+        sub.classList.toggle('open');
+        if (arrow) {
+            arrow.textContent = sub.classList.contains('open') ? '▶' : '▶';
+        }
     }
+};
 
-    function setView(view) {
-        currentView = view;
-        document.querySelectorAll('.view button').forEach(function(btn) {
+const toggleFilterBody = (e) => {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    const body = document.getElementById('filterBody');
+    const toggle = document.getElementById('filterToggle');
+    if (body) {
+        body.classList.toggle('hidden');
+        if (toggle) {
+            toggle.classList.toggle('open');
+            toggle.textContent = body.classList.contains('hidden') ? '▼' : '▲';
+        }
+    }
+};
+
+const applyPriceFilter = () => {
+    if (window.Catalog && typeof window.Catalog.applyPriceFilter === 'function') {
+        window.Catalog.applyPriceFilter();
+    } else if (window.Catalog) {
+        const minInput = document.getElementById('priceMin');
+        const maxInput = document.getElementById('priceMax');
+        window.Catalog.priceMin = parseInt(minInput.value) || 0;
+        window.Catalog.priceMax = parseInt(maxInput.value) || Infinity;
+        window.Catalog.applyFilters();
+    }
+};
+
+const clearAllFilters = () => {
+    if (window.Catalog && typeof window.Catalog.clearAllFilters === 'function') {
+        window.Catalog.clearAllFilters();
+    } else if (window.Catalog) {
+        window.Catalog.currentCategory = 'all';
+        document.getElementById('priceMin').value = '';
+        document.getElementById('priceMax').value = '';
+        window.Catalog.priceMin = 0;
+        window.Catalog.priceMax = Infinity;
+        document.getElementById('sortSelect').value = 'default';
+        window.Catalog.applyFilters();
+    }
+    updateActiveCategory('all');
+};
+
+const applySort = () => {
+    if (window.Catalog && typeof window.Catalog.applySort === 'function') {
+        window.Catalog.applySort();
+    } else if (window.Catalog) {
+        const sortSelect = document.getElementById('sortSelect');
+        window.Catalog.sortBy = sortSelect.value;
+        window.Catalog.applySort();
+        window.Catalog.render();
+    }
+};
+
+const setView = (view) => {
+    if (window.Catalog && typeof window.Catalog.setView === 'function') {
+        window.Catalog.setView(view);
+    } else if (window.Catalog) {
+        window.Catalog.currentView = view;
+        document.querySelectorAll('.view button').forEach((btn) => {
             btn.classList.remove('active');
         });
         if (view === 'grid') {
-            document.querySelector('.view button:first-child')?.classList.add('active');
+            const gridBtn = document.querySelector('.view button:first-child');
+            if (gridBtn) gridBtn.classList.add('active');
         } else {
-            document.querySelector('.view button:last-child')?.classList.add('active');
+            const listBtn = document.querySelector('.view button:last-child');
+            if (listBtn) listBtn.classList.add('active');
         }
-        renderCatalog();
+        window.Catalog.render();
     }
+};
 
-    function applyPriceFilter() {
-        var minInput = document.getElementById('priceMin');
-        var maxInput = document.getElementById('priceMax');
-
-        priceMin = parseInt(minInput.value) || 0;
-        priceMax = parseInt(maxInput.value) || Infinity;
-
-        applyFilters();
-    }
-
-    function clearAllFilters() {
-        currentCategory = 'all';
-        document.querySelectorAll('.filter-btn[data-filter="category"]').forEach(function(btn) {
-            btn.classList.toggle('active', btn.dataset.value === 'all');
-        });
-
-        document.getElementById('priceMin').value = '';
-        document.getElementById('priceMax').value = '';
-        priceMin = 0;
-        priceMax = Infinity;
-
-        document.getElementById('sortSelect').value = 'default';
-
-        var url = new URL(window.location);
-        url.searchParams.delete('category');
-        window.history.pushState({}, '', url);
-
-        applyFilters();
-    }
-
-    // ── ОБРАБОТЧИКИ ──
-    document.addEventListener('DOMContentLoaded', function() {
-        // Фильтры
-        document.querySelectorAll('.filter-btn[data-filter="category"]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var value = this.dataset.value;
-                currentCategory = value;
-
-                document.querySelectorAll('.filter-btn[data-filter="category"]').forEach(function(b) {
-                    b.classList.toggle('active', b.dataset.value === value);
-                });
-
-                var url = new URL(window.location);
-                if (value === 'all') {
-                    url.searchParams.delete('category');
-                } else {
-                    url.searchParams.set('category', value);
+document.addEventListener('DOMContentLoaded', () => {
+    // Исправляем подсчет категорий
+    setTimeout(() => {
+        if (window.Catalog && Catalog.products) {
+            const products = Catalog.products;
+            
+            // Функция проверки наличия категории у товара
+            const productHasCategory = (product, cat) => {
+                if (!product) return false;
+                if (product.categories && Array.isArray(product.categories)) {
+                    return product.categories.includes(cat);
                 }
-                window.history.pushState({}, '', url);
+                if (product.category) {
+                    return product.category === cat;
+                }
+                return false;
+            };
+            
+            const categories = {
+                'all': 'countAll',
+                'vertical': 'countVertical',
+                'memorial-milling': 'countMemorialMilling',
+                'horizontal': 'countHorizontal',
+                'carved': 'countCarved',
+                'double': 'countDouble',
+                'memorial-arches': 'countMemorialArches',
+                'memorial-elite': 'countMemorialElite',
+                'cross': 'countCross',
+                'memorial-exclusive': 'countMemorialExclusive',
+                'memorial-chapels': 'countMemorialChapels',
+                'memorial-granite-crosses': 'countMemorialGraniteCrosses',
+                'memorial-european': 'countMemorialEuropean',
+                'complex': 'countComplex',
+                'socle': 'countSocle',
+                'vases': 'countVases',
+                'design-photo': 'countDesignPhoto',
+                'design-glass': 'countDesignGlass',
+                'design-angels': 'countDesignAngels',
+                'design-branches': 'countDesignBranches',
+                'design-military': 'countDesignMilitary',
+                'design-animals': 'countDesignAnimals',
+                'design-crosses': 'countDesignCrosses',
+                'design-moon': 'countDesignMoon',
+                'design-music': 'countDesignMusic',
+                'design-nature': 'countDesignNature',
+                'design-frames': 'countDesignFrames',
+                'design-candles': 'countDesignCandles',
+                'design-flowers': 'countDesignFlowers',
+                'design-icons': 'countDesignIcons',
+                'design-churches': 'countDesignChurches',
+                'design-mosques': 'countDesignMosques'
+            };
 
-                applyFilters();
-            });
-        });
+            const memorialKeys = ['vertical', 'memorial-milling', 'horizontal', 'carved', 'double', 'memorial-arches', 'memorial-elite', 'cross', 'memorial-exclusive', 'memorial-chapels', 'memorial-granite-crosses', 'memorial-european', 'complex'];
+            const designKeys = ['design-photo', 'design-glass', 'design-angels', 'design-branches', 'design-military', 'design-animals', 'design-crosses', 'design-moon', 'design-music', 'design-nature', 'design-frames', 'design-candles', 'design-flowers', 'design-icons', 'design-churches', 'design-mosques'];
 
-        document.getElementById('priceMin')?.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') applyPriceFilter();
-        });
-        document.getElementById('priceMax')?.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') applyPriceFilter();
-        });
+            let memorialTotal = 0;
+            let designTotal = 0;
 
-        var params = new URLSearchParams(window.location.search);
-        var catFromUrl = params.get('category');
-        if (catFromUrl) {
-            currentCategory = catFromUrl;
-            document.querySelectorAll('.filter-btn[data-filter="category"]').forEach(function(btn) {
-                btn.classList.toggle('active', btn.dataset.value === catFromUrl);
-            });
+            for (const [cat, elId] of Object.entries(categories)) {
+                const count = products.filter((p) => productHasCategory(p, cat)).length;
+                const el = document.getElementById(elId);
+                if (el) el.textContent = count;
+
+                if (memorialKeys.includes(cat)) memorialTotal += count;
+                if (designKeys.includes(cat)) designTotal += count;
+            }
+
+            const totalCount = products.filter((p) => !p.hidden).length;
+            document.getElementById('countAll').textContent = totalCount;
+            document.getElementById('countMemorial').textContent = memorialTotal;
+            document.getElementById('countDesign').textContent = designTotal;
+            document.getElementById('totalCount').textContent = 'Найдено ' + totalCount + ' товаров';
         }
+    }, 500);
 
-        initCatalog();
-        initFiltersMobile();
+    document.addEventListener('catalogUpdated', () => {
+        setTimeout(() => {
+            if (window.Catalog && Catalog.products) {
+                const products = Catalog.products;
+                const totalCount = products.filter((p) => !p.hidden).length;
+                document.getElementById('totalCount').textContent = 'Найдено ' + totalCount + ' товаров';
+            }
+        }, 100);
+    });
+});
+
+(() => {
+    const filterBody = document.getElementById('filterBody');
+    const filterToggle = document.getElementById('filterToggle');
+    const filters = document.getElementById('filters');
+
+    if (!filterBody || !filterToggle || !filters) return;
+
+    const h3 = filters.querySelector('h3');
+    if (h3) {
+        h3.onclick = (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            filterBody.classList.toggle('hidden');
+            filterToggle.classList.toggle('open');
+            filterToggle.textContent = filterBody.classList.contains('hidden') ? '▼' : '▲';
+        };
+    }
+
+    filters.addEventListener('touchstart', (e) => {
+        const target = e.target;
+        if (target.closest('.cat-item') || target.closest('.sub-cat-item') || target.closest('h3')) {
+            return;
+        }
+        e.stopPropagation();
+    }, { passive: true });
+
+    filters.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.closest('.cat-item') || target.closest('.sub-cat-item') || target.closest('h3')) {
+            return;
+        }
+        e.stopPropagation();
     });
 
-    // При ресайзе обновляем состояние фильтров
-    window.addEventListener('resize', function() {
-        initFiltersMobile();
-    });
+    filterBody.addEventListener('touchmove', (e) => {
+        e.stopPropagation();
+    }, { passive: true });
 
-    // Делаем функцию toggle глобальной для onclick
-    window.toggleFilters = toggleFilters;
-    window.applyPriceFilter = applyPriceFilter;
-    window.clearAllFilters = clearAllFilters;
-    window.applySort = applySort;
-    window.setView = setView;
-    window.goToPage = goToPage;
+    filterBody.addEventListener('scroll', (e) => {
+        e.stopPropagation();
+    });
+})();
+
+window.safeSetCategory = safeSetCategory;
+window.toggleCategory = toggleCategory;
+window.toggleFilterBody = toggleFilterBody;
+window.applyPriceFilter = applyPriceFilter;
+window.clearAllFilters = clearAllFilters;
+window.applySort = applySort;
+window.setView = setView;
 </script>
 </body>
 </html>
