@@ -81,7 +81,34 @@ function loadProducts(): array {
     if (!file_exists(PRODUCTS_FILE)) return [];
     $json = file_get_contents(PRODUCTS_FILE);
     $data = json_decode($json, true);
-    return is_array($data) ? $data : [];
+    $products = is_array($data) ? $data : [];
+
+    $changed = false;
+    foreach ($products as &$p) {
+        if (empty($p['sku'])) {
+            $p['sku'] = generateSku($products);
+            $changed = true;
+        }
+    }
+    unset($p);
+    if ($changed) {
+        saveProducts($products);
+    }
+
+    return $products;
+}
+
+function generateSku(array $products): string {
+    $existing = [];
+    foreach ($products as $p) {
+        if (!empty($p['sku'])) {
+            $existing[(string)$p['sku']] = true;
+        }
+    }
+    do {
+        $sku = str_pad((string)rand(0, 999999), 6, '0', STR_PAD_LEFT);
+    } while (isset($existing[$sku]));
+    return $sku;
 }
 
 function saveProducts(array $products): bool {
@@ -215,351 +242,6 @@ function uploadMaterialPhoto(array $file): string|false {
     return MATERIALS_UPLOAD_URL . $name;
 }
 
-function getCategoryTemplates(): array {
-    return [
-        'vertical' => [
-            'sizes' => [
-                '80×40×5 см', '100×50×5 см', '120×60×5 см',
-                '80×40×8 см', '100×50×8 см', '120×60×8 см',
-                '140×70×8 см', '80×40×10 см', '100×50×10 см',
-                '120×60×10 см', '140×70×10 см', '160×80×10 см',
-                '100×50×12 см', '120×60×12 см', '140×70×12 см',
-                '160×80×12 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит габбро', 'photo' => ''],
-                ['label' => 'Гранит красный', 'photo' => ''],
-                ['label' => 'Мрамор белый', 'photo' => ''],
-                ['label' => 'Карельский гранит', 'photo' => ''],
-                ['label' => 'Мансуровский гранит', 'photo' => ''],
-                ['label' => 'Коелга мрамор', 'photo' => ''],
-                ['label' => 'Дымовский гранит', 'photo' => ''],
-                ['label' => 'Винга гранит', 'photo' => ''],
-                ['label' => 'Гранатовый амфибол', 'photo' => ''],
-                ['label' => 'Калгуваара', 'photo' => ''],
-                ['label' => 'Сибирский гранит', 'photo' => ''],
-                ['label' => 'Санарский гранит', 'photo' => ''],
-                ['label' => 'Сопка Бунтина', 'photo' => ''],
-                ['label' => 'Хакосельский гранит', 'photo' => ''],
-                ['label' => 'Змеевик', 'photo' => ''],
-                ['label' => 'Блю Перл', 'photo' => ''],
-                ['label' => 'Балтик Грин', 'photo' => ''],
-                ['label' => 'Балморал Ред', 'photo' => ''],
-                ['label' => 'Амадеус', 'photo' => ''],
-                ['label' => 'Куру Грей', 'photo' => ''],
-                ['label' => 'Лезниковский гранит', 'photo' => ''],
-                ['label' => 'Лабрадорит Волга Блю', 'photo' => ''],
-                ['label' => 'Масловский гранит', 'photo' => '']
-            ]
-        ],
-        'horizontal' => [
-            'sizes' => [
-                '80×40×5 см', '100×50×5 см', '120×60×5 см',
-                '80×40×8 см', '100×50×8 см', '120×60×8 см',
-                '140×70×8 см', '100×50×10 см', '120×60×10 см',
-                '140×70×10 см', '160×80×10 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит габбро', 'photo' => ''],
-                ['label' => 'Гранит серый', 'photo' => ''],
-                ['label' => 'Мрамор белый', 'photo' => ''],
-                ['label' => 'Карельский гранит', 'photo' => ''],
-                ['label' => 'Мансуровский гранит', 'photo' => ''],
-                ['label' => 'Коелга мрамор', 'photo' => ''],
-                ['label' => 'Дымовский гранит', 'photo' => ''],
-                ['label' => 'Винга гранит', 'photo' => ''],
-                ['label' => 'Гранатовый амфибол', 'photo' => ''],
-                ['label' => 'Калгуваара', 'photo' => ''],
-                ['label' => 'Сибирский гранит', 'photo' => ''],
-                ['label' => 'Санарский гранит', 'photo' => ''],
-                ['label' => 'Сопка Бунтина', 'photo' => ''],
-                ['label' => 'Хакосельский гранит', 'photo' => ''],
-                ['label' => 'Змеевик', 'photo' => ''],
-                ['label' => 'Блю Перл', 'photo' => ''],
-                ['label' => 'Балтик Грин', 'photo' => ''],
-                ['label' => 'Балморал Ред', 'photo' => '']
-            ]
-        ],
-        'carved' => [
-            'sizes' => [
-                '80×40×5 см', '100×50×5 см', '120×60×5 см',
-                '80×40×8 см', '100×50×8 см', '120×60×8 см',
-                '140×70×8 см', '100×50×10 см', '120×60×10 см',
-                '140×70×10 см', '160×80×10 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит габбро', 'photo' => ''],
-                ['label' => 'Гранит красный', 'photo' => ''],
-                ['label' => 'Мрамор белый', 'photo' => ''],
-                ['label' => 'Карельский гранит', 'photo' => ''],
-                ['label' => 'Мансуровский гранит', 'photo' => ''],
-                ['label' => 'Коелга мрамор', 'photo' => ''],
-                ['label' => 'Дымовский гранит', 'photo' => ''],
-                ['label' => 'Винга гранит', 'photo' => ''],
-                ['label' => 'Гранатовый амфибол', 'photo' => '']
-            ]
-        ],
-        'double' => [
-            'sizes' => [
-                '120×60×8 см', '140×70×8 см', '160×80×10 см',
-                '120×60×10 см', '140×70×10 см', '160×80×12 см',
-                '180×90×12 см', '200×100×12 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит габбро', 'photo' => ''],
-                ['label' => 'Гранит красный', 'photo' => ''],
-                ['label' => 'Гранит серый', 'photo' => ''],
-                ['label' => 'Карельский гранит', 'photo' => ''],
-                ['label' => 'Мансуровский гранит', 'photo' => ''],
-                ['label' => 'Коелга мрамор', 'photo' => ''],
-                ['label' => 'Дымовский гранит', 'photo' => ''],
-                ['label' => 'Винга гранит', 'photo' => '']
-            ]
-        ],
-        'combined' => [
-            'sizes' => [
-                '120×60×8 см', '140×70×8 см', '160×80×10 см',
-                '120×60×10 см', '140×70×10 см', '160×80×12 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит габбро', 'photo' => ''],
-                ['label' => 'Гранит красный', 'photo' => ''],
-                ['label' => 'Гранит серый', 'photo' => ''],
-                ['label' => 'Карельский гранит', 'photo' => ''],
-                ['label' => 'Мансуровский гранит', 'photo' => ''],
-                ['label' => 'Коелга мрамор', 'photo' => '']
-            ]
-        ],
-        'cross' => [
-            'sizes' => [
-                '80×40×5 см', '100×50×5 см', '120×60×5 см',
-                '80×40×8 см', '100×50×8 см', '120×60×8 см',
-                '140×70×8 см', '100×50×10 см', '120×60×10 см',
-                '140×70×10 см', '160×80×10 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит габбро', 'photo' => ''],
-                ['label' => 'Гранит красный', 'photo' => ''],
-                ['label' => 'Гранит серый', 'photo' => ''],
-                ['label' => 'Карельский гранит', 'photo' => ''],
-                ['label' => 'Мансуровский гранит', 'photo' => ''],
-                ['label' => 'Коелга мрамор', 'photo' => ''],
-                ['label' => 'Дымовский гранит', 'photo' => ''],
-                ['label' => 'Винга гранит', 'photo' => '']
-            ]
-        ],
-        'complex' => [
-            'sizes' => [
-                '150×120 см', '200×150 см', '250×200 см',
-                '300×250 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит габбро', 'photo' => ''],
-                ['label' => 'Гранит красный', 'photo' => ''],
-                ['label' => 'Гранит + металл', 'photo' => ''],
-                ['label' => 'Гранит + кованый металл', 'photo' => ''],
-                ['label' => 'Карельский гранит', 'photo' => ''],
-                ['label' => 'Мансуровский гранит', 'photo' => ''],
-                ['label' => 'Коелга мрамор', 'photo' => '']
-            ]
-        ],
-        'fence' => [
-            'sizes' => [
-                '1.5×1 м', '2×1.5 м', '2.5×2 м', '3×2 м'
-            ],
-            'materials' => [
-                ['label' => 'Металл с покраской', 'photo' => ''],
-                ['label' => 'Металл с порошковым покрытием', 'photo' => ''],
-                ['label' => 'Кованый металл', 'photo' => ''],
-                ['label' => 'Кованый металл с позолотой', 'photo' => '']
-            ]
-        ],
-        'socle' => [
-            'sizes' => [
-                '150×80 см', '200×100 см', '240×120 см',
-                '280×140 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит полированный', 'photo' => ''],
-                ['label' => 'Гранит шлифованный', 'photo' => ''],
-                ['label' => 'Мрамор полированный', 'photo' => ''],
-                ['label' => 'Мрамор шлифованный', 'photo' => '']
-            ]
-        ],
-        'vases' => [
-            'sizes' => [
-                '30×50 см', '40×60 см', '50×80 см'
-            ],
-            'materials' => [
-                ['label' => 'Гранит полированный', 'photo' => ''],
-                ['label' => 'Мрамор полированный', 'photo' => '']
-            ]
-        ],
-        'design-photo' => [
-            'sizes' => ['20×30 см', '30×40 см', '40×50 см'],
-            'materials' => [
-                ['label' => 'Керамика', 'photo' => ''],
-                ['label' => 'Стекло', 'photo' => '']
-            ]
-        ],
-        'design-glass' => [
-            'sizes' => ['20×30 см', '30×40 см', '40×50 см'],
-            'materials' => [
-                ['label' => 'Стекло', 'photo' => ''],
-                ['label' => 'Стекло с подсветкой', 'photo' => '']
-            ]
-        ],
-        'design-angels' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => ''],
-                ['label' => 'Бронза', 'photo' => '']
-            ]
-        ],
-        'design-branches' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'design-military' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => ''],
-                ['label' => 'Бронза', 'photo' => '']
-            ]
-        ],
-        'design-animals' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => ''],
-                ['label' => 'Бронза', 'photo' => '']
-            ]
-        ],
-        'design-crosses' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => ''],
-                ['label' => 'Дерево', 'photo' => '']
-            ]
-        ],
-        'design-moon' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'design-music' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'design-nature' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'design-frames' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'design-candles' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'design-flowers' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => ''],
-                ['label' => 'Керамика', 'photo' => '']
-            ]
-        ],
-        'design-icons' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => ''],
-                ['label' => 'Керамика', 'photo' => '']
-            ]
-        ],
-        'design-churches' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'design-mosques' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => '']
-            ]
-        ],
-        'decor-acrylic' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Акрил', 'photo' => ''],
-                ['label' => 'Цветной акрил', 'photo' => '']
-            ]
-        ],
-        'decor-composite' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Композит', 'photo' => ''],
-                ['label' => 'Полистоун', 'photo' => '']
-            ]
-        ],
-        'decor-bronze' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Бронза', 'photo' => ''],
-                ['label' => 'Латунь', 'photo' => '']
-            ]
-        ],
-        'decor-metal' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Металл', 'photo' => ''],
-                ['label' => 'Нержавейка', 'photo' => '']
-            ]
-        ],
-        'decor-sculpture' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Гранит', 'photo' => ''],
-                ['label' => 'Мрамор', 'photo' => ''],
-                ['label' => 'Бронза', 'photo' => '']
-            ]
-        ],
-        'decor-flowers' => [
-            'sizes' => ['Стандартный'],
-            'materials' => [
-                ['label' => 'Керамика', 'photo' => ''],
-                ['label' => 'Металл', 'photo' => ''],
-                ['label' => 'Пластик', 'photo' => '']
-            ]
-        ]
-    ];
-}
-
 function getDefaultOptions(string $category): array {
     $options = [
         'engravings' => [
@@ -645,6 +327,7 @@ if ($authed) {
         }
         if ($clone) {
             $clone['id'] = generateId();
+            $clone['sku'] = generateSku($products);
             $clone['name'] = $clone['name'] . ' (копия)';
             $clone['photoURL'] = '';
             $clone['hidden'] = true;
@@ -660,12 +343,11 @@ if ($authed) {
     
     if ($action === 'quick_add' && isset($_POST['category']) && isset($_POST['name'])) {
         $products = loadProducts();
-        $templates = getCategoryTemplates();
-        $template = $templates[$_POST['category']] ?? $templates['vertical'];
         $options = getDefaultOptions($_POST['category']);
         
         $product = [
             'id' => generateId(),
+            'sku' => generateSku($products),
             'name' => trim($_POST['name']),
             'categories' => [$_POST['category']],
             'price' => (int)($_POST['price'] ?? 0),
@@ -677,8 +359,8 @@ if ($authed) {
             'sortOrder' => count($products) + 1,
             'description' => trim($_POST['description'] ?? ''),
             'components' => [],
-            'sizes' => $template['sizes'],
-            'materials' => $template['materials'],
+            'sizes' => [],
+            'materials' => [],
             'engravings' => $options['engravings'],
             'finishes' => $options['finishes'],
             'services' => $options['services']
@@ -687,28 +369,6 @@ if ($authed) {
         $products[] = $product;
         saveProducts($products);
         header('Location: index.php?quick_added=1');
-        exit;
-    }
-    
-    if ($action === 'apply_template' && isset($_POST['category']) && isset($_POST['product_id'])) {
-        $products = loadProducts();
-        $templates = getCategoryTemplates();
-        $template = $templates[$_POST['category']] ?? $templates['vertical'];
-        $options = getDefaultOptions($_POST['category']);
-        
-        foreach ($products as &$p) {
-            if ($p['id'] === $_POST['product_id']) {
-                $p['sizes'] = $template['sizes'];
-                $p['materials'] = $template['materials'];
-                $p['engravings'] = $options['engravings'];
-                $p['finishes'] = $options['finishes'];
-                $p['services'] = $options['services'];
-                break;
-            }
-        }
-        saveProducts($products);
-        header('Content-Type: application/json');
-        echo json_encode(['ok' => true]);
         exit;
     }
     
@@ -775,9 +435,23 @@ if ($authed) {
         $engravings = parseOptionRows('engravings', $_POST);
         $finishes = parseOptionRows('finishes', $_POST);
         $services = parseOptionRows('services', $_POST);
+
+        if ($isNew) {
+            $sku = generateSku($products);
+        } else {
+            $sku = '';
+            foreach ($products as $oldP) {
+                if ($oldP['id'] === $id) {
+                    $sku = $oldP['sku'] ?? '';
+                    break;
+                }
+            }
+            if ($sku === '') $sku = generateSku($products);
+        }
         
         $product = [
             'id'          => $id,
+            'sku'         => $sku,
             'name'        => trim($_POST['name'] ?? ''),
             'categories'  => $categories,
             'price'       => (int)($_POST['price'] ?? 0),
@@ -838,42 +512,50 @@ $products = $authed ? loadProducts() : [];
 $visibleProducts = array_filter($products, fn($p) => ($p['categories'] ?? [$p['category'] ?? ''])[0] !== '_component');
 $visibleProducts = array_values($visibleProducts);
 
+// ===== ВСЕ КАТЕГОРИИ (синхронизированы с каталогом) =====
 $categories = [
+    // ===== ОСНОВНЫЕ =====
     'vertical'   => 'Вертикальные',
+    'memorial-milling' => 'Фрезерные',
     'horizontal' => 'Горизонтальные',
-    'carved'     => 'Резные',
     'double'     => 'Двойные',
-    'combined'   => 'Комбинированные',
+    'memorial-arches' => 'Арки и Колонны',
+    'memorial-elite' => 'Элитные',
     'cross'      => 'С крестом',
+    'memorial-exclusive' => 'Эксклюзивные',
+    'memorial-chapels' => 'Часовни и Голгофы',
+    'memorial-granite-crosses' => 'Кресты из гранита',
+    'memorial-european' => 'Европейские',
     'complex'    => 'Комплексы',
     'fence'      => 'Ограды',
     'socle'      => 'Цоколь',
     'vases'      => 'Вазы',
-    'decor-acrylic' => 'Акрил',
-    'decor-composite' => 'Композитные цветы',
-    'decor-bronze' => 'Бронза',
-    'decor-metal' => 'Металл',
-    'decor-sculpture' => 'Скульптура',
-    'decor-flowers' => 'Цветы',
+
+    // ===== ОФОРМЛЕНИЕ — ФОТО (3) =====
     'design-photo' => 'Фотокерамика',
     'design-glass' => 'Фото на стекле',
+    'design-metal-photo' => 'Фото на металле',
+
+    // ===== ОФОРМЛЕНИЕ — ОСТАЛЬНЫЕ (18) =====
     'design-angels' => 'Ангелы',
-    'design-branches' => 'Ветви',
+    'design-crosses' => 'Кресты',
+    'design-candles' => 'Свечи',
+    'design-vertical' => 'На вертикальные памятники',
+    'design-horizontal' => 'На горизонтальные памятники',
+    'design-branches' => 'Ветви, деревья',
     'design-military' => 'Военным',
     'design-animals' => 'Животные, птицы',
-    'design-crosses' => 'Кресты',
     'design-moon' => 'Луна (мусульманская)',
     'design-music' => 'Музыкальная тематика',
-    'design-nature' => 'Природа',
     'design-frames' => 'Рамки',
-    'design-candles' => 'Свечи',
+    'design-heraldry' => 'Символика, геральдика',
     'design-flowers' => 'Цветы',
-    'design-icons' => 'Иконы',
-    'design-churches' => 'Церкви',
+    'design-churches' => 'Церкви, храмы',
     'design-mosques' => 'Мечети',
+    'design-icons' => 'Иконы',
+    'design-landscapes' => 'Пейзажи',
+    'design-nature' => 'Природа',
 ];
-
-$templates = getCategoryTemplates();
 
 ?><!DOCTYPE html>
 <html lang="ru">
@@ -1035,12 +717,14 @@ tr.drag-over { border-top: 2px solid var(--gold); }
 
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 6px 12px;
     padding: 10px 12px;
     background: var(--gray-bg);
     border-radius: var(--radius);
     border: 1px solid var(--border);
+    max-height: 400px;
+    overflow-y: auto;
 }
 .category-check {
     display: flex;
@@ -1065,6 +749,22 @@ tr.drag-over { border-top: 2px solid var(--gold); }
 .category-check input[type="checkbox"]:checked + span {
     font-weight: 700;
     color: var(--gold-dark);
+}
+
+.categories-grid .group-header {
+    grid-column: 1 / -1;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 0 2px;
+    border-bottom: 1px solid var(--border);
+    margin-top: 6px;
+}
+.categories-grid .group-header:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
 }
 
 @media (max-width: 700px) {
@@ -1198,10 +898,6 @@ tr.drag-over { border-top: 2px solid var(--gold); }
     width: 100%; text-align: center; transition: .2s; }
 .btn-add-option:hover { border-color: var(--gold); color: var(--gold); }
 
-.template-btn { background: var(--gray); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 4px 12px; font-size: 12px; cursor: pointer; transition: .2s; }
-.template-btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
-
 .confirm-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5);
     z-index: 600; align-items: center; justify-content: center; padding: 20px; }
 .confirm-overlay.open { display: flex; }
@@ -1287,16 +983,13 @@ tr.drag-over { border-top: 2px solid var(--gold); }
     <div class="notice"><i class="fas fa-copy"></i> Товар скопирован!</div>
   <?php endif; ?>
   <?php if (isset($_GET['quick_added'])): ?>
-    <div class="notice"><i class="fas fa-bolt"></i> Товар создан из шаблона!</div>
+    <div class="notice"><i class="fas fa-bolt"></i> Товар создан!</div>
   <?php endif; ?>
 
-  <div class="quick-tools">
+  <div class="quick-tools" style="display:none;">
     <span class="label"><i class="fas fa-magic"></i> Шаблоны:</span>
     <select id="templateCategory">
       <option value="">Выберите категорию...</option>
-      <?php foreach ($categories as $key => $label): ?>
-        <option value="<?= $key ?>"><?= htmlspecialchars($label) ?></option>
-      <?php endforeach; ?>
     </select>
     <button class="btn btn-sm btn-dark" onclick="applyTemplateToCurrent()">
       <i class="fas fa-copy"></i> Применить к текущему
@@ -1337,6 +1030,7 @@ tr.drag-over { border-top: 2px solid var(--gold); }
         <tr>
           <th style="width:32px"></th>
           <th style="width:70px">Фото</th>
+          <th style="width:80px">Артикул</th>
           <th>Название</th>
           <th class="td-cat">Категории</th>
           <th>Цена</th>
@@ -1370,6 +1064,7 @@ tr.drag-over { border-top: 2px solid var(--gold); }
               <div class="no-img"><i class="fas fa-image"></i></div>
             <?php endif; ?>
           </td>
+          <td class="td-sku" style="font-family:monospace; color:var(--text-light);"><?= htmlspecialchars($p['sku'] ?? '—') ?></td>
           <td class="td-name">
             <?= htmlspecialchars($p['name']) ?>
             <?php if (!empty($p['badge'])): ?>
@@ -1419,6 +1114,10 @@ tr.drag-over { border-top: 2px solid var(--gold); }
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
         <div class="form-grid">
+          <div class="fgroup full" id="skuDisplayWrap" style="display:none;">
+            <label>Артикул</label>
+            <input type="text" id="f_sku_display" readonly disabled style="width:140px; font-family:monospace; background:var(--gray-bg); color:var(--text-light);">
+          </div>
           <div class="fgroup full">
             <label>Название товара *</label>
             <input type="text" name="name" id="f_name" required placeholder="Вертикальный «Классик»">
@@ -1427,10 +1126,54 @@ tr.drag-over { border-top: 2px solid var(--gold); }
           <div class="fgroup">
             <label>Категории *</label>
             <div class="categories-grid" id="categoriesGrid">
-              <?php foreach ($categories as $val => $lbl): ?>
+              <!-- ===== ОСНОВНЫЕ ===== -->
+              <div class="group-header"> Основные категории</div>
+              <?php 
+              $mainCategories = [
+                  'vertical', 'memorial-milling', 'horizontal', 'double',
+                  'memorial-arches', 'memorial-elite', 'cross', 'memorial-exclusive',
+                  'memorial-chapels', 'memorial-granite-crosses', 'memorial-european',
+                  'complex', 'fence', 'socle', 'vases'
+              ];
+              foreach ($mainCategories as $val): 
+                  if (!isset($categories[$val])) continue;
+              ?>
                 <label class="category-check">
                   <input type="checkbox" name="categories[]" value="<?= $val ?>">
-                  <span><?= htmlspecialchars($lbl) ?></span>
+                  <span><?= htmlspecialchars($categories[$val]) ?></span>
+                </label>
+              <?php endforeach; ?>
+
+              <!-- ===== ОФОРМЛЕНИЕ — ФОТО ===== -->
+              <div class="group-header"> Оформление — Фото</div>
+              <?php 
+              $designPhoto = ['design-photo', 'design-glass', 'design-metal-photo'];
+              foreach ($designPhoto as $val): 
+                  if (!isset($categories[$val])) continue;
+              ?>
+                <label class="category-check">
+                  <input type="checkbox" name="categories[]" value="<?= $val ?>">
+                  <span><?= htmlspecialchars($categories[$val]) ?></span>
+                </label>
+              <?php endforeach; ?>
+
+              <!-- ===== ОФОРМЛЕНИЕ — ОСТАЛЬНЫЕ ===== -->
+              <div class="group-header"> Оформление — Остальные</div>
+              <?php 
+              $designOther = [
+                  'design-angels', 'design-crosses', 'design-candles',
+                  'design-vertical', 'design-horizontal', 'design-branches',
+                  'design-military', 'design-animals', 'design-moon',
+                  'design-music', 'design-frames', 'design-heraldry',
+                  'design-flowers', 'design-churches', 'design-mosques',
+                  'design-icons', 'design-landscapes', 'design-nature'
+              ];
+              foreach ($designOther as $val): 
+                  if (!isset($categories[$val])) continue;
+              ?>
+                <label class="category-check">
+                  <input type="checkbox" name="categories[]" value="<?= $val ?>">
+                  <span><?= htmlspecialchars($categories[$val]) ?></span>
                 </label>
               <?php endforeach; ?>
             </div>
@@ -1458,9 +1201,6 @@ tr.drag-over { border-top: 2px solid var(--gold); }
             <label class="check-row">
               <input type="checkbox" name="hidden" id="f_hidden"> Скрыть из каталога
             </label>
-            <button type="button" class="template-btn" onclick="loadTemplate()">
-              <i class="fas fa-magic"></i> Заполнить шаблоном
-            </button>
           </div>
 
           <div class="fgroup full">
@@ -1499,7 +1239,6 @@ tr.drag-over { border-top: 2px solid var(--gold); }
           </div>
         </div>
 
-        <!-- МАТЕРИАЛЫ С ФОТО -->
         <div class="section-title">
           <span><i class="fas fa-cube"></i> Материалы</span>
           <button type="button" class="btn btn-sm btn-dark" onclick="addMaterialRow()">
@@ -1507,7 +1246,6 @@ tr.drag-over { border-top: 2px solid var(--gold); }
           </button>
         </div>
         <div class="materials-grid" id="materialsGrid">
-          <!-- Рендерится через JS -->
         </div>
 
         <div class="section-title">
@@ -1589,7 +1327,7 @@ tr.drag-over { border-top: 2px solid var(--gold); }
 
         <div style="background:#f9f9f9; border-radius:8px; padding:12px; margin-bottom:12px; font-size:13px; color:var(--text-light);">
           <i class="fas fa-info-circle" style="color:var(--gold);"></i>
-          Размеры и материалы будут автоматически подставлены из шаблона для выбранной категории.
+          Размеры и материалы нужно будет заполнить вручную после создания.
           Товар будет создан скрытым — вы сможете отредактировать его позже.
         </div>
 
@@ -1616,54 +1354,6 @@ tr.drag-over { border-top: 2px solid var(--gold); }
 </div>
 
 <script>
-const CATEGORY_TEMPLATES = <?= json_encode($templates, JSON_UNESCAPED_UNICODE) ?>;
-
-let materialPhotoIndex = 0;
-
-function loadTemplate() {
-    const select = document.getElementById('f_category');
-    if (!select) {
-        alert('Ошибка: не найден выбор категории');
-        return;
-    }
-    
-    const category = select.value;
-    const template = CATEGORY_TEMPLATES[category];
-    
-    if (!template) {
-        alert('Для этой категории нет шаблона');
-        return;
-    }
-
-    const sizesField = document.getElementById('f_sizes');
-    const materialsGrid = document.getElementById('materialsGrid');
-    
-    if (sizesField && template.sizes) {
-        sizesField.value = template.sizes.join('\n');
-    }
-    
-    if (materialsGrid && template.materials) {
-        materialsGrid.innerHTML = '';
-        template.materials.forEach(function(material) {
-            addMaterialRow(material.label, material.photo || '');
-        });
-    }
-    
-    // Показываем уведомление
-    const btn = document.querySelector('.template-btn');
-    if (btn) {
-        const origText = btn.textContent;
-        btn.textContent = '✅ Шаблон применён!';
-        btn.style.background = '#27ae60';
-        btn.style.color = '#fff';
-        setTimeout(function() {
-            btn.textContent = origText;
-            btn.style.background = '';
-            btn.style.color = '';
-        }, 2000);
-    }
-}
-
 function addMaterialRow(label, photo) {
     label = label || '';
     photo = photo || '';
@@ -1672,15 +1362,31 @@ function addMaterialRow(label, photo) {
     row.className = 'material-row';
     const idx = materialPhotoIndex++;
 
+    const safeLabel = label
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/,/g, '&#44;')
+        .replace(/\./g, '&#46;')
+        .replace(/\+/g, '&#43;')
+        .replace(/\//g, '&#47;')
+        .replace(/\\/g, '&#92;');
+
+    const safePhoto = photo
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/,/g, '&#44;')
+        .replace(/\./g, '&#46;')
+        .replace(/\+/g, '&#43;');
+
     let previewHtml = '';
     if (photo) {
-        previewHtml = '<img src="../' + photo + '" alt="Фото материала">';
+        previewHtml = '<img src="../' + safePhoto + '" alt="Фото материала">';
     } else {
         previewHtml = '<i class="fas fa-image"></i>';
     }
 
     row.innerHTML = `
-        <input type="text" name="materials_label[]" placeholder="Название материала" value="${escHtml(label)}" style="flex:1;">
+        <input type="text" name="materials_label[]" placeholder="Название материала" value="${safeLabel}" style="flex:1;">
         <div class="material-photo-wrap">
             <div class="material-preview" id="materialPreview_${idx}">
                 ${previewHtml}
@@ -1688,7 +1394,7 @@ function addMaterialRow(label, photo) {
             <button type="button" class="material-upload-btn" onclick="document.getElementById('materialPhotoInput').click(); window._currentMaterialIdx = ${idx};">
                 <i class="fas fa-upload"></i>
             </button>
-            <input type="hidden" name="materials_photo[]" id="materialPhoto_${idx}" value="${escHtml(photo)}">
+            <input type="hidden" name="materials_photo[]" id="materialPhoto_${idx}" value="${safePhoto}">
         </div>
         <button type="button" class="btn-remove-material" onclick="this.closest('.material-row').remove()">
             <i class="fas fa-times"></i>
@@ -1698,67 +1404,58 @@ function addMaterialRow(label, photo) {
 }
 
 function uploadMaterialPhoto(input) {
-    if (!input.files || !input.files[0]) return;
+    if (!input.files || !input.files[0]) {
+        alert('Выберите файл');
+        return;
+    }
+    
     const idx = window._currentMaterialIdx;
-    if (idx === undefined) return;
+    if (idx === undefined) {
+        alert('Ошибка: не найден индекс материала');
+        return;
+    }
 
     const formData = new FormData();
     formData.append('photo', input.files[0]);
+
+    const preview = document.getElementById('materialPreview_' + idx);
+    if (preview) {
+        preview.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:24px;color:#b8944a;"></i>';
+    }
 
     fetch('upload_material_photo.php', {
         method: 'POST',
         body: formData
     })
-    .then(r => r.json())
+    .then(response => response.json())
     .then(data => {
+        console.log('Upload response:', data);
+        
         if (data.ok && data.path) {
             const preview = document.getElementById('materialPreview_' + idx);
             const hidden = document.getElementById('materialPhoto_' + idx);
+            
             if (preview) {
-                preview.innerHTML = '<img src="../' + data.path + '" alt="Фото материала">';
+                preview.innerHTML = '<img src="../' + data.path + '" alt="Фото материала" style="width:100%;height:100%;object-fit:cover;">';
             }
             if (hidden) {
                 hidden.value = data.path;
             }
+            alert('✅ Фото загружено!');
         } else {
-            alert('Ошибка загрузки фото');
+            alert('❌ Ошибка: ' + (data.error || 'неизвестная ошибка'));
         }
     })
-    .catch(() => {
-        alert('Ошибка загрузки');
+    .catch(error => {
+        console.error('Fetch error:', error);
+        alert('❌ Ошибка подключения к серверу');
     });
 
     input.value = '';
 }
 
 function applyTemplateToCurrent() {
-    const select = document.getElementById('templateCategory');
-    const category = select.value;
-    if (!category) {
-        alert('Выберите категорию');
-        return;
-    }
-
-    const id = document.getElementById('f_id')?.value;
-    if (!id) {
-        alert('Сначала откройте товар для редактирования');
-        return;
-    }
-
-    if (!confirm('Применить шаблон "' + category + '" к текущему товару?\nБудут заменены размеры и материалы.')) return;
-
-    fetch('index.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'action=apply_template&category=' + encodeURIComponent(category) + '&product_id=' + encodeURIComponent(id) + '&csrf_token=<?= htmlspecialchars($_SESSION['csrf_token']) ?>'
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.ok) {
-            alert('Шаблон применён! Страница обновится.');
-            location.reload();
-        }
-    });
+    alert('Шаблоны временно отключены. Заполните размеры и материалы вручную.');
 }
 
 function cloneProduct(id) {
@@ -1869,6 +1566,7 @@ function resetForm() {
     var form = document.getElementById('productForm');
     form.reset();
     document.getElementById('f_id').value = '';
+    document.getElementById('skuDisplayWrap').style.display = 'none';
     document.getElementById('f_photoURL').value = '';
     document.getElementById('f_photoURLInput').value = '';
     document.getElementById('photoPreview').classList.remove('show');
@@ -1893,18 +1591,16 @@ function editProduct(id) {
         resetForm();
         document.getElementById('modalTitle').textContent = 'Редактировать: ' + p.name;
         document.getElementById('f_id').value = p.id || '';
+        if (p.sku) {
+            document.getElementById('f_sku_display').value = p.sku;
+            document.getElementById('skuDisplayWrap').style.display = '';
+        }
         document.getElementById('f_name').value = p.name || '';
         
         const categories = p.categories || ['vertical'];
         document.querySelectorAll('#categoriesGrid input[type="checkbox"]').forEach(function(cb) {
             cb.checked = categories.includes(cb.value);
         });
-        
-        // Устанавливаем выбранную категорию в select (для шаблона)
-        const categorySelect = document.getElementById('f_category');
-        if (categorySelect && p.categories && p.categories.length > 0) {
-            categorySelect.value = p.categories[0];
-        }
         
         document.getElementById('f_price').value = p.price || '';
         document.getElementById('f_sortOrder').value = p.sortOrder || '';
@@ -1999,21 +1695,9 @@ document.getElementById('confirmOverlay').addEventListener('click', function(e) 
     if (e.target === this) closeConfirm();
 });
 
-// Автозаполнение при выборе категории (только для новых товаров)
-document.addEventListener('DOMContentLoaded', function() {
-    const catSelect = document.getElementById('f_category');
-    if (catSelect) {
-        catSelect.addEventListener('change', function() {
-            const idField = document.getElementById('f_id');
-            if (idField && idField.value === '') {
-                loadTemplate();
-            }
-        });
-    }
-});
+let materialPhotoIndex = 0;
 
 window.addMaterialRow = addMaterialRow;
-window.loadTemplate = loadTemplate;
 </script>
 
 <?php endif; ?>

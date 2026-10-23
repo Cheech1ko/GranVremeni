@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Политика конфиденциальности — Сон Души</title>
+    <title>Политика конфиденциальности — ГраньВремени.рф</title>
     <meta name="description" content="Политика обработки персональных данных Сон Души в соответствии с ФЗ-152.">
     <meta name="robots" content="noindex, follow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .policy-hero {
+.policy-hero {
             background: var(--dark);
             padding: 52px 20px 44px;
             text-align: center;
@@ -130,7 +130,32 @@
             margin-bottom: 30px;
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .policy-updated .cookies-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .2s, transform .15s;
+            font-family: 'Montserrat', sans-serif;
+            margin-left: auto;
+        }
+        .policy-updated .cookies-btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+        }
+        .policy-updated .cookies-btn i {
+            font-size: 13px;
         }
         .back-btn {
             display: inline-flex;
@@ -150,7 +175,19 @@
             .policy-nav ol { grid-template-columns: 1fr; }
             .policy-section h2 { font-size: 16px; }
             .policy-section p, .policy-section li { font-size: 14px; }
+            .policy-updated {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .policy-updated .cookies-btn {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center;
+                padding: 6px 14px;
+            }
         }
+
     </style>
 </head>
 <body>
@@ -172,6 +209,9 @@
     <div class="policy-updated">
         <i class="fas fa-calendar-alt"></i>
         Последнее обновление: <strong>25 июня 2026 г.</strong>
+        <a href="/cookies.html" class="cookies-btn">
+            <i class="fas fa-cookie-bite"></i> Политика cookies
+        </a>
     </div>
 
     <div class="policy-nav">
@@ -192,7 +232,7 @@
 
     <div class="policy-section" id="s1">
         <h2><span class="num">1</span> Общие положения</h2>
-        <p>Настоящая Политика конфиденциальности (далее — «Политика») определяет порядок обработки персональных данных пользователей сайта <strong>ГраньВремени.ru</strong> (далее — «Сайт») и распространяется на все персональные данные, которые Оператор может получить от пользователя при использовании Сайта и заполнении форм обратной связи.</p>
+        <p>Настоящая Политика конфиденциальности (далее — «Политика») определяет порядок обработки персональных данных пользователей сайта <strong>ГраньВремени.рф</strong> (далее — «Сайт») и распространяется на все персональные данные, которые Оператор может получить от пользователя при использовании Сайта и заполнении форм обратной связи.</p>
         <p>Политика разработана в соответствии с требованиями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» и иных нормативных правовых актов Российской Федерации в области защиты персональных данных.</p>
         <p>Использование Сайта и отправка любой формы обратной связи означает безоговорочное согласие с настоящей Политикой. Если вы не согласны с её условиями — воздержитесь от использования форм на Сайте.</p>
     </div>
@@ -202,12 +242,13 @@
         <p>Оператором персональных данных является:</p>
         <div class="requisites-box">
             <p><strong>Наименование:</strong> <span class="placeholder">ИП СВЕЖОВ СЕРГЕЙ АЛЕКСАНДРОВИЧ</span></p>
-            <p><strong>ОГРН / ОГРНИП:</strong> <span class="placeholder">(указан в свидетельстве о регистрации ИП)</span></p>
+            <p><strong>ОГРНИП:</strong> <span class="placeholder"> 326028000093197</span></p>
             <p><strong>ИНН:</strong> <span class="placeholder">026804811193</span></p>
             <p><strong>Юридический адрес:</strong> <span class="placeholder">453100, РОССИЯ, РЕСПУБЛИКА БАШКОРТОСТАН, СТЕРЛИТАМАК, УЛ, АРТЕМА, 131, КВ. 66</span></p>
             <p><strong>Регион деятельности:</strong> г. Москва и Московская область</p>
             <p><strong>E-mail:</strong> <a href="mailto:info@granvremeni.ru" class="gold-link">info@granvremeni.ru</a></p>
-            <p><strong>Телефон:</strong> <a href="tel:+78412000000" class="gold-link">+7 (8412) 00-00-00</a></p>
+            <p><strong>Телефон:</strong> <a href="tel:+79362200900" class="gold-link">+7 (936) 2200-900</a></p>
+            <p>Оператор зарегистрирован в реестре операторов ПД Роскомнадзора.</p>
         </div>
     </div>
 
@@ -234,6 +275,7 @@
             <li>Улучшение качества обслуживания и работы Сайта.</li>
         </ul>
         <p>Мы не используем ваши данные для рекламных рассылок без вашего отдельного явного согласия.</p>
+        <p>При посещении Сайта автоматически могут фиксироваться технические данные: IP-адрес, тип браузера, просмотренные страницы — в анонимизированном виде через сервисы аналитики. Эти данные не позволяют идентифицировать личность.</p>
     </div>
 
     <div class="policy-section" id="s5">
@@ -248,13 +290,13 @@
 
     <div class="policy-section" id="s6">
         <h2><span class="num">6</span> Передача данных третьим лицам</h2>
-        <p>Персональные данные не передаются и не продаются третьим лицам в коммерческих целях.</p>
+        <p>Администратором на обработку персональных данных, определяется Администратором самостоятельно. Пользователь дает полное и безоговорочное согласие на передачу Администратором персональных данных третьим лицам, выбранным Администратором.</p>
         <p>Ограниченная техническая передача возможна только в следующих случаях:</p>
         <ul>
-            <li><strong>Сервис Formspree</strong> (formspree.io) — используется для доставки уведомлений о новых заявках. Данные передаются только для технической доставки письма. Политика: <a href="https://formspree.io/legal/privacy-policy" target="_blank" class="gold-link">formspree.io/legal/privacy-policy</a>.</li>
             <li><strong>По требованию закона</strong> — если обязанность раскрытия данных установлена нормативным актом или предписанием уполномоченного органа.</li>
         </ul>
         <p>Трансграничная передача персональных данных (за пределы РФ) не осуществляется.</p>
+        <p>Все заявки с сайта обрабатываются с использованием собственной почтовой системы хостинга Beget.</p>
     </div>
 
     <div class="policy-section" id="s7">
@@ -293,7 +335,6 @@
     <div class="policy-section" id="s10">
         <h2><span class="num">10</span> Изменение политики</h2>
         <p>Оператор оставляет за собой право вносить изменения в Политику. Новая редакция вступает в силу с момента размещения на Сайте. Продолжение использования Сайта после публикации изменений означает согласие с обновлённой Политикой.</p>
-        <p>Актуальная версия всегда доступна по адресу: <strong>granvremeni.ru/privacy-policy.html</strong></p>
         <p>По всем вопросам обращайтесь: <a href="mailto:info@granvremeni.ru" class="gold-link">info@granvremeni.ru</a></p>
     </div>
 

@@ -273,4 +273,3 @@
     document.head.appendChild(styleElement);
 
 }());
-

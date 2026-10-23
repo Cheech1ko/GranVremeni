@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/cart.css">
+    <link rel="stylesheet" href="../css/portfolio-fx.css">
     <style>
         :root {
             --gold: #C8A84B;
@@ -97,39 +97,6 @@
             border-radius: 20px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-        }
-
-        .product-gallery .thumbs {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .product-gallery .thumbs .thumb {
-            width: 70px;
-            height: 70px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #fafafa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: border-color 0.2s;
-            overflow: hidden;
-        }
-        .product-gallery .thumbs .thumb:hover {
-            border-color: var(--gold);
-        }
-        .product-gallery .thumbs .thumb.active {
-            border-color: var(--gold);
-            background: #fffbf0;
-        }
-        .product-gallery .thumbs .thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .product-info {
@@ -602,6 +569,8 @@
         }
         .btn-tg  { background: #0088cc; color: #fff; }
         .btn-wa  { background: #25d366; color: #fff; }
+        .btn-max { background: linear-gradient(135deg, #4A90E2, #9B59D6); color: #fff; }
+        .btn-max img { width: 16px; height: 16px; display: block; filter: brightness(0) invert(1); }
 
         .similar-section {
             margin-top: 48px;
@@ -992,6 +961,7 @@
 </div>
 
 <script src="../js/main.js"></script>
+<script src="../js/portfolio-fx.js"></script>
 <script src="../js/validation.js"></script>
 <script src="../js/header.js"></script>
 <script src="../js/cart.js"></script>
@@ -1142,7 +1112,6 @@
                 'Размер: <strong>' + esc(sizeText) + '</strong> &nbsp;|&nbsp; ' +
                 'Материал: <strong>' + esc(materialText) + '</strong>';
         }
-        // Обновляем состояние кнопок
         updateButtons();
     }
 
@@ -1299,14 +1268,31 @@
             return typeof m === 'string' ? m : m.label;
         });
 
+        const materialPhotos = materials.map(function(m) {
+            return typeof m === 'string' ? '' : (m.photo || '');
+        });
+
         const firstMaterial = materialNames[0] || '';
-        const firstFileName = transliterate(firstMaterial).toLowerCase().replace(/\s+/g, '-') + '.jpg';
-        const firstImgPath = '../img/products-img/materials/' + firstFileName;
+        const firstPhoto = materialPhotos[0] || '';
+
+        let firstImgPath;
+        if (firstPhoto) {
+            firstImgPath = '../' + firstPhoto;
+        } else {
+            const fileName = transliterate(firstMaterial).toLowerCase().replace(/\s+/g, '-') + '.jpg';
+            firstImgPath = '../img/products-img/materials/' + fileName;
+        }
         const firstColor = getMaterialColor(firstMaterial);
 
-        let optionsHtml = materialNames.map(function(name) {
-            const fileName = transliterate(name).toLowerCase().replace(/\s+/g, '-') + '.jpg';
-            const imgPath = '../img/products-img/materials/' + fileName;
+        let optionsHtml = materialNames.map(function(name, index) {
+            let imgPath;
+            const photo = materialPhotos[index] || '';
+            if (photo) {
+                imgPath = '../' + photo;
+            } else {
+                const fileName = transliterate(name).toLowerCase().replace(/\s+/g, '-') + '.jpg';
+                imgPath = '../img/products-img/materials/' + fileName;
+            }
             const color = getMaterialColor(name);
             const safeName = esc(name).replace(/'/g, "\\'");
             const isActive = name === firstMaterial ? 'active' : '';
@@ -1366,12 +1352,6 @@
 
         const badgeHtml = product.badge ? '<span class="badge">' + esc(product.badge) + '</span>' : '';
 
-        let thumbsHtml = '';
-        if (photoUrl) {
-            thumbsHtml += '<div class="thumb active"><img src="' + photoUrl + '" alt="Фото 1" /></div>';
-        } else {
-            thumbsHtml += '<div class="thumb active"><i class="fas fa-camera"></i></div>';
-        }
 
         const specRows = [];
 
@@ -1413,6 +1393,7 @@
 
         const tgLink = 'https://t.me/granvremenirf?text=Здравствуйте!%20Меня%20интересует%20' + encodeURIComponent(product.name);
         const waLink = 'https://wa.me/79362200900?text=Здравствуйте!%20Меня%20интересует%20' + encodeURIComponent(product.name);
+        const maxLink = 'https://max.ru/u/f9LHodD0cOJ4fY0Yk90kATZwhCRAgNrlUY7v9LG-XOLpI5FXH233ff9Q-6A';
 
         card.innerHTML =
             '<div class="product-gallery">' +
@@ -1421,12 +1402,11 @@
             badgeHtml +
             '</div>' +
             '<div class="thumbs">' +
-            thumbsHtml +
             '</div>' +
             '</div>' +
 
             '<div class="product-info">' +
-            '<div class="sku">Артикул: <span>' + esc(product.sku || 'SD-' + product.id) + '</span></div>' +
+            '<div class="sku">Артикул: <span>' + esc(product.sku ? 'SD-' + product.sku : 'SD-' + product.id) + '</span></div>' +
             '<h1>' + esc(product.name) + '</h1>' +
 
             '<div class="price-block">' +
@@ -1459,6 +1439,9 @@
             '</a>' +
             '<a href="' + waLink + '" target="_blank" rel="noopener" class="btn-messenger btn-wa" title="WhatsApp">' +
             '<i class="fab fa-whatsapp"></i> WA' +
+            '</a>' +
+            '<a href="' + maxLink + '" target="_blank" rel="noopener" class="btn-messenger btn-max" title="MAX">' +
+            '<img src="../img/max.svg" alt="MAX"> MAX' +
             '</a>' +
             '</div>' +
             '</div>';
@@ -1525,7 +1508,6 @@
         }).join('');
     }
 
-
     window.addToCart = function() {
         if (!currentProduct) return;
         const size = getSelectedSize();
@@ -1537,7 +1519,7 @@
         }
 
         if (typeof Cart !== 'undefined' && Cart.addItem) {
-            Cart.addItem(currentProduct, size, material);
+            Cart.addItem(currentProduct, size, material, 1);
             const btn = document.getElementById('addToCartBtn');
             if (btn) {
                 btn.innerHTML = '<i class="fas fa-check"></i> Добавлено!';
@@ -1564,17 +1546,14 @@
             return;
         }
 
-        // Заполняем модалку данными товара
         setText('ms-product', currentProduct.name);
         setText('ms-size', size);
         setText('ms-material', material);
         setText('ms-price', fmt(currentProduct.price) + ' ₽');
 
-        // Скрываем список товаров (он для корзины)
         const listEl = document.getElementById('orderItemsList');
         if (listEl) listEl.style.display = 'none';
 
-        // Очищаем поля
         document.getElementById('modalName').value = '';
         document.getElementById('modalPhone').value = '';
         document.getElementById('mcemetery').value = '';
@@ -1636,14 +1615,15 @@
             return;
         }
 
-
         const productName = document.getElementById('ms-product')?.textContent || 'Товар';
         const size = document.getElementById('ms-size')?.textContent || 'не выбран';
         const material = document.getElementById('ms-material')?.textContent || 'не выбран';
         const price = document.getElementById('ms-price')?.textContent || '0 ₽';
+        const sku = currentProduct.sku || '';
 
         const fullComment = 'Заказ в 1 клик:\n\n' +
             'Товар: ' + productName + '\n' +
+            (sku ? 'Артикул: ' + sku + '\n' : '') +
             'Размер: ' + size + '\n' +
             'Материал: ' + material + '\n' +
             'Цена: ' + price + '\n\n' +
@@ -1657,6 +1637,7 @@
                 name: name,
                 phone: phone,
                 interest: 'Заказ в 1 клик: ' + productName,
+                sku: sku,
                 comment: fullComment,
                 source: '1 клик'
             })

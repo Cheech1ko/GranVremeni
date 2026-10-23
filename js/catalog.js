@@ -8,12 +8,14 @@ const Catalog = {
     priceMin: 0,
     priceMax: Infinity,
     sortBy: 'default',
+    searchQuery: '',
 
     init() {
         this.loadProducts();
         this.setupFilters();
         this.setupSort();
         this.setupViewToggle();
+        this.setupSearch();
         this.restoreStateFromURL();
     },
 
@@ -78,6 +80,17 @@ const Catalog = {
             const price = p.price || 0;
             return price >= this.priceMin && price <= this.priceMax;
         }, this);
+
+        if (this.searchQuery) {
+            const q = this.searchQuery.trim().toLowerCase();
+            if (q) {
+                result = result.filter(function(p) {
+                    const nameMatch = (p.name || '').toLowerCase().includes(q);
+                    const skuMatch = (p.sku || '').toLowerCase().includes(q);
+                    return nameMatch || skuMatch;
+                });
+            }
+        }
 
         this.filteredProducts = result;
         this.updateCounters();
@@ -339,6 +352,49 @@ const Catalog = {
         }
     },
 
+    setupSearch() {
+        const self = this;
+        const input = document.getElementById('catalogSearch');
+        if (!input) return;
+
+        let debounceTimer = null;
+        input.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            const value = this.value;
+            debounceTimer = setTimeout(function() {
+                self.applySearch(value);
+            }, 300);
+        });
+
+        const clearBtn = document.getElementById('catalogSearchClear');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                input.value = '';
+                self.applySearch('');
+                input.focus();
+            });
+        }
+    },
+
+    applySearch(value) {
+        this.searchQuery = value || '';
+
+        const clearBtn = document.getElementById('catalogSearchClear');
+        if (clearBtn) {
+            clearBtn.style.display = this.searchQuery ? 'flex' : 'none';
+        }
+
+        const url = new URL(window.location);
+        if (this.searchQuery.trim()) {
+            url.searchParams.set('q', this.searchQuery.trim());
+        } else {
+            url.searchParams.delete('q');
+        }
+        window.history.pushState({}, '', url);
+
+        this.applyFilters();
+    },
+
     setupViewToggle() {
         const self = this;
         document.querySelectorAll('.view button').forEach(function(btn) {
@@ -384,8 +440,14 @@ const Catalog = {
         this.priceMax = Infinity;
         document.getElementById('sortSelect').value = 'default';
         this.sortBy = 'default';
+        this.searchQuery = '';
+        const searchInput = document.getElementById('catalogSearch');
+        if (searchInput) searchInput.value = '';
+        const clearBtn = document.getElementById('catalogSearchClear');
+        if (clearBtn) clearBtn.style.display = 'none';
         const url = new URL(window.location);
         url.searchParams.delete('category');
+        url.searchParams.delete('q');
         window.history.pushState({}, '', url);
         this.applyFilters();
     },
@@ -401,6 +463,14 @@ const Catalog = {
             document.querySelectorAll('.block-cat-link').forEach(function(link) {
                 link.classList.toggle('active', link.dataset.category === catFromUrl);
             });
+        }
+        const qFromUrl = params.get('q');
+        if (qFromUrl) {
+            this.searchQuery = qFromUrl;
+            const searchInput = document.getElementById('catalogSearch');
+            if (searchInput) searchInput.value = qFromUrl;
+            const clearBtn = document.getElementById('catalogSearchClear');
+            if (clearBtn) clearBtn.style.display = 'flex';
         }
     }
 };

@@ -121,15 +121,14 @@
                     <div class="social-icons">${socialIcons(22)}</div>
 
                     <div class="header-cart-wrap" style="display:flex;align-items:center;gap:8px;">
-    <button class="header-cta desktop-cta" onclick="${ctaOnclick}" 
-            style="border:none;cursor:pointer;background:var(--gold);font-weight:700;font-size:14px;padding:10px 20px;border-radius:var(--radius);font-family:'Montserrat',sans-serif;color:var(--dark);transition:background .2s;">
-        ${ctaText}
-    </button>
-    <!-- КОРЗИНА — ССЫЛКА НА СТРАНИЦУ -->
-    <a href="/cart/cart.html" class="cart-toggle" style="position:relative;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px;display:flex;align-items:center;gap:4px;font-family:'Montserrat',sans-serif;text-decoration:none;">
-        <i class="fas fa-shopping-bag"></i>
-        <span class="cart-badge">0</span>
-    </a>
+                        <button class="header-cta desktop-cta" onclick="${ctaOnclick}" 
+                                style="border:none;cursor:pointer;background:var(--gold);font-weight:700;font-size:14px;padding:10px 20px;border-radius:var(--radius);font-family:'Montserrat',sans-serif;color:var(--dark);transition:background .2s;">
+                            ${ctaText}
+                        </button>
+                        <a href="/cart/cart.html" class="cart-toggle" style="position:relative;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px;display:flex;align-items:center;gap:4px;font-family:'Montserrat',sans-serif;text-decoration:none;">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span class="cart-badge">0</span>
+                        </a>
                     </div>
                 </div>
 
@@ -323,7 +322,221 @@
         }
     });
 
-    // CSS для хедера
+    // ============================================================
+    // ========== 🍪 COOKIE NOTIFICATION ===========================
+    // ============================================================
+    (function initCookieNotice() {
+        try {
+            if (document.getElementById('cookieNotice')) return;
+            if (localStorage.getItem('cookies_accepted') === 'true') return;
+
+            const prefix = getBasePath();
+
+            const notice = document.createElement('div');
+            notice.id = 'cookieNotice';
+            notice.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                max-width: 360px;
+                width: 100%;
+                background: #1a1a1a;
+                color: #fff;
+                padding: 16px 18px 18px;
+                z-index: 9999;
+                border-radius: 12px;
+                box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+                border: 1px solid rgba(255,255,255,0.08);
+                font-family: 'Open Sans', sans-serif;
+                animation: cookieSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                transition: opacity 0.4s ease, transform 0.4s ease;
+            `;
+
+            if (!document.getElementById('cookieNoticeStyles')) {
+                const style = document.createElement('style');
+                style.id = 'cookieNoticeStyles';
+                style.textContent = `
+                    @keyframes cookieSlideIn {
+                        from { opacity: 0; transform: translateY(30px) scale(0.95); }
+                        to { opacity: 1; transform: translateY(0) scale(1); }
+                    }
+                    @keyframes cookieSlideOut {
+                        from { opacity: 1; transform: translateY(0) scale(1); }
+                        to { opacity: 0; transform: translateY(30px) scale(0.95); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            notice.innerHTML = `
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                    <div style="flex-shrink:0;width:32px;height:32px;background:rgba(184,148,74,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+                        <i class="fas fa-cookie-bite" style="color:#b8944a;font-size:14px;"></i>
+                    </div>
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;font-family:'Montserrat',sans-serif;">
+                            🍪 Мы используем cookies
+                        </div>
+                        <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;margin:0 0 12px 0;">
+                            Для улучшения работы сайта.
+                            <a href="${prefix}cookies.html" target="_blank" style="color:#b8944a;font-weight:600;text-decoration:underline;">
+                                Подробнее
+                            </a>
+                        </p>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <button id="cookieAcceptBtn" style="flex:1;min-width:70px;background:#b8944a;border:none;color:#1a1a1a;font-weight:700;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;transition:background .2s;font-family:'Montserrat',sans-serif;">
+                                Принять
+                            </button>
+                            <button id="cookieDeclineBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-weight:600;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;transition:background .2s;font-family:'Montserrat',sans-serif;">
+                                Отклонить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(notice);
+
+            document.getElementById('cookieAcceptBtn').addEventListener('click', function() {
+                try {
+                    localStorage.setItem('cookies_accepted', 'true');
+                } catch(e) {}
+                const el = document.getElementById('cookieNotice');
+                if (el) {
+                    el.style.animation = 'cookieSlideOut 0.4s ease forwards';
+                    setTimeout(function() {
+                        el.style.display = 'none';
+                    }, 400);
+                }
+            });
+
+            document.getElementById('cookieDeclineBtn').addEventListener('click', function() {
+                const el = document.getElementById('cookieNotice');
+                if (el) {
+                    el.style.animation = 'cookieSlideOut 0.4s ease forwards';
+                    setTimeout(function() {
+                        el.style.display = 'none';
+                    }, 400);
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const el = document.getElementById('cookieNotice');
+                    if (el && el.style.display !== 'none') {
+                        el.style.animation = 'cookieSlideOut 0.4s ease forwards';
+                        setTimeout(function() {
+                            el.style.display = 'none';
+                        }, 400);
+                    }
+                }
+            });
+
+        } catch(e) {
+            // Если что-то пошло не так — просто не показываем уведомление
+        }
+    })();
+
+    // ============================================================
+    // ========== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ МОДАЛОК ==================
+    // ============================================================
+    
+    window.openModal = function() {
+        const overlay = document.getElementById('modalOverlay') || document.getElementById('orderOverlay');
+        if (overlay) {
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+    };
+
+    window.closeModal = function() {
+        const overlay = document.getElementById('modalOverlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    };
+
+    window.closeModalOutside = function(event) {
+        if (event.target === document.getElementById('modalOverlay')) closeModal();
+    };
+
+    window.openOrderModal = function() {
+        const overlay = document.getElementById('orderOverlay');
+        if (overlay) {
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        } else {
+            openModal();
+        }
+    };
+
+    window.closeOrderModal = function() {
+        const overlay = document.getElementById('orderOverlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    };
+
+    window.closeOrderModalOutside = function(event) {
+        if (event.target === document.getElementById('orderOverlay')) {
+            closeOrderModal();
+        }
+    };
+
+    window.openPhoneModal = function() {
+        const overlay = document.getElementById('phoneModalOverlay');
+        if (overlay) {
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        } else {
+            window.location.href = 'tel:+79362200900';
+        }
+    };
+
+    window.closePhoneModal = function() {
+        const overlay = document.getElementById('phoneModalOverlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    };
+
+    window.closePhoneModalOutside = function(event) {
+        if (event.target === document.getElementById('phoneModalOverlay')) closePhoneModal();
+    };
+
+    window.openEmailModal = function() {
+        const overlay = document.getElementById('emailModalOverlay');
+        if (overlay) {
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+    };
+
+    window.closeEmailModal = function() {
+        const overlay = document.getElementById('emailModalOverlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    };
+
+    window.closeEmailModalOutside = function(event) {
+        if (event.target === document.getElementById('emailModalOverlay')) closeEmailModal();
+    };
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (document.getElementById('modalOverlay')?.classList.contains('open')) closeModal();
+            if (document.getElementById('orderOverlay')?.classList.contains('open')) closeOrderModal();
+            if (document.getElementById('phoneModalOverlay')?.classList.contains('open')) closePhoneModal();
+            if (document.getElementById('emailModalOverlay')?.classList.contains('open')) closeEmailModal();
+        }
+    });
+
+    // CSS для хедера и футера
     const css = `
     .header-wrapper {
         position: sticky;
@@ -764,6 +977,29 @@
             right: -20px;
             width: 300px;
         }
+        #cookieNotice {
+            bottom: 76px !important;
+            right: 12px !important;
+            left: 12px !important;
+            max-width: none !important;
+            width: auto !important;
+            padding: 14px 16px 16px !important;
+            border-radius: 12px !important;
+        }
+        #cookieNotice .fa-cookie-bite {
+            display: none !important;
+        }
+        #cookieNotice > div {
+            gap: 8px !important;
+        }
+        #cookieNotice p {
+            font-size: 12px !important;
+            margin-bottom: 10px !important;
+        }
+        #cookieAcceptBtn, #cookieDeclineBtn {
+            font-size: 12px !important;
+            padding: 6px 14px !important;
+        }
     }
 
     @media (max-width: 480px) {
@@ -786,6 +1022,19 @@
         .header-cart-wrap .cart-dropdown {
             right: -40px;
             width: 280px;
+        }
+        #cookieNotice {
+            bottom: 68px !important;
+            right: 8px !important;
+            left: 8px !important;
+            padding: 12px 14px 14px !important;
+        }
+        #cookieNotice p {
+            font-size: 11px !important;
+        }
+        #cookieAcceptBtn, #cookieDeclineBtn {
+            font-size: 11px !important;
+            padding: 5px 12px !important;
         }
     }
     `;

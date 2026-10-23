@@ -1,12 +1,11 @@
-# Запретить доступ ко всем файлам
-Deny from all
-
-# Запретить доступ к JSON напрямую
 <Files "*.json">
-    Deny from all
-</Files>
-
-# Разрешить доступ только к index.php (если он есть)
-<Files "index.php">
+    Order Allow,Deny
     Allow from all
 </Files>
+
+# Или для Beget (если не работает)
+<IfModule mod_authz_core.c>
+    <Files "*.json">
+        Require all granted
+    </Files>
+</IfModule>

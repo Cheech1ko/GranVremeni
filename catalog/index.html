@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/portfolio-fx.css">
     <style>
         .catalog-page {
             padding: 40px 20px 70px;
@@ -36,6 +37,55 @@
         .catalog-header .count {
             font-size: 15px;
             color: var(--text-light);
+        }
+
+        .catalog-search {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .catalog-search input {
+            width: 100%;
+            padding: 13px 44px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s;
+            box-sizing: border-box;
+        }
+        .catalog-search input:focus {
+            border-color: var(--gold);
+        }
+        .catalog-search i.fa-search {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 14px;
+            pointer-events: none;
+        }
+        .catalog-search .search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border: none;
+            background: var(--gray-bg);
+            border-radius: 50%;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .catalog-search .search-clear:hover {
+            background: var(--border);
+            color: var(--dark);
         }
 
         .catalog-layout {
@@ -575,6 +625,142 @@
             margin-bottom: 16px;
         }
 
+        /* Модалка оформления заказа */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 18px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 12px 60px rgba(0,0,0,.25);
+            animation: modalIn 0.25s ease;
+        }
+        @keyframes modalIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: none; opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--gray-bg);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .modal-close:hover { background: var(--border); }
+        .modal-box h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .modal-box > p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 18px;
+        }
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .opd-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        .opd-block input {
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+        .opd-block a {
+            color: var(--gold);
+            text-decoration: underline;
+        }
+        .opd-err {
+            display: none;
+            color: #d32f2f;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .btn-submit {
+            width: 100%;
+            background: var(--gold);
+            border: none;
+            color: var(--dark);
+            font-weight: 800;
+            font-size: 15px;
+            padding: 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: background 0.2s;
+        }
+        .btn-submit:hover { background: var(--gold-light); }
+        .modal-success {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .modal-success i {
+            font-size: 48px;
+            color: #27ae60;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .modal-success h4 { font-size: 18px; margin-bottom: 6px; }
+        .modal-success p { font-size: 14px; color: var(--text-light); }
+
         @media (max-width: 1100px) {
             .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
             .catalog-item-img { height: 240px; }
@@ -657,6 +843,7 @@
             .cat-item { font-size: 13px; padding: 6px 8px; }
             .sub-cat-item { font-size: 12px; padding: 4px 8px; }
             .sub-categories { padding-left: 24px; }
+            .modal-box { padding: 24px 18px; }
         }
 
         @media (max-width: 768px) {
@@ -676,6 +863,7 @@
             .catalog-toolbar .sort select { font-size: 12px; padding: 5px 10px; }
             .pagination button { padding: 6px 12px; font-size: 13px; }
             .filter-range input { width: 60px; }
+            .modal-box { padding: 20px 16px; }
         }
 
         @media (max-width: 600px) {
@@ -706,6 +894,7 @@
             .cat-item .cat-icon { font-size: 14px; width: 20px; }
             .sub-cat-item { font-size: 11px; padding: 3px 6px; }
             .sub-categories { padding-left: 20px; }
+            .modal-box { padding: 24px 18px; }
         }
 
         @media (max-width: 400px) {
@@ -728,6 +917,12 @@
         <div class="catalog-header">
             <h1>Каталог товаров</h1>
             <span class="count" id="totalCount">Загрузка...</span>
+        </div>
+
+        <div class="catalog-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="catalogSearch" placeholder="Поиск по названию или артикулу...">
+            <button type="button" class="search-clear" id="catalogSearchClear" title="Очистить"><i class="fas fa-times"></i></button>
         </div>
 
         <div class="catalog-layout">
@@ -762,9 +957,6 @@
                             </button>
                             <button class="sub-cat-item" data-category="horizontal" onclick="safeSetCategory('horizontal')">
                                 Горизонтальные <span class="cat-count" id="countHorizontal">0</span>
-                            </button>
-                            <button class="sub-cat-item" data-category="carved" onclick="safeSetCategory('carved')">
-                                Резные <span class="cat-count" id="countCarved">0</span>
                             </button>
                             <button class="sub-cat-item" data-category="double" onclick="safeSetCategory('double')">
                                 Двойные <span class="cat-count" id="countDouble">0</span>
@@ -826,11 +1018,26 @@
                             <button class="sub-cat-item" data-category="design-glass" onclick="safeSetCategory('design-glass')">
                                 Фото на стекле <span class="cat-count" id="countDesignGlass">0</span>
                             </button>
+                            <button class="sub-cat-item" data-category="design-metal-photo" onclick="safeSetCategory('design-metal-photo')">
+                                Фото на металле <span class="cat-count" id="countDesignMetalPhoto">0</span>
+                            </button>
                             <button class="sub-cat-item" data-category="design-angels" onclick="safeSetCategory('design-angels')">
                                 Ангелы <span class="cat-count" id="countDesignAngels">0</span>
                             </button>
+                            <button class="sub-cat-item" data-category="design-crosses" onclick="safeSetCategory('design-crosses')">
+                                Кресты <span class="cat-count" id="countDesignCrosses">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-candles" onclick="safeSetCategory('design-candles')">
+                                Свечи <span class="cat-count" id="countDesignCandles">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-vertical" onclick="safeSetCategory('design-vertical')">
+                                На вертикальные памятники <span class="cat-count" id="countDesignVertical">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-horizontal" onclick="safeSetCategory('design-horizontal')">
+                                На горизонтальные памятники <span class="cat-count" id="countDesignHorizontal">0</span>
+                            </button>
                             <button class="sub-cat-item" data-category="design-branches" onclick="safeSetCategory('design-branches')">
-                                Ветви <span class="cat-count" id="countDesignBranches">0</span>
+                                Ветви, деревья <span class="cat-count" id="countDesignBranches">0</span>
                             </button>
                             <button class="sub-cat-item" data-category="design-military" onclick="safeSetCategory('design-military')">
                                 Военным <span class="cat-count" id="countDesignMilitary">0</span>
@@ -838,35 +1045,36 @@
                             <button class="sub-cat-item" data-category="design-animals" onclick="safeSetCategory('design-animals')">
                                 Животные, птицы <span class="cat-count" id="countDesignAnimals">0</span>
                             </button>
-                            <button class="sub-cat-item" data-category="design-crosses" onclick="safeSetCategory('design-crosses')">
-                                Кресты <span class="cat-count" id="countDesignCrosses">0</span>
-                            </button>
                             <button class="sub-cat-item" data-category="design-moon" onclick="safeSetCategory('design-moon')">
                                 Луна (мусульманская) <span class="cat-count" id="countDesignMoon">0</span>
                             </button>
                             <button class="sub-cat-item" data-category="design-music" onclick="safeSetCategory('design-music')">
                                 Музыкальная тематика <span class="cat-count" id="countDesignMusic">0</span>
                             </button>
-                            <button class="sub-cat-item" data-category="design-nature" onclick="safeSetCategory('design-nature')">
-                                Природа <span class="cat-count" id="countDesignNature">0</span>
-                            </button>
                             <button class="sub-cat-item" data-category="design-frames" onclick="safeSetCategory('design-frames')">
                                 Рамки <span class="cat-count" id="countDesignFrames">0</span>
                             </button>
-                            <button class="sub-cat-item" data-category="design-candles" onclick="safeSetCategory('design-candles')">
-                                Свечи <span class="cat-count" id="countDesignCandles">0</span>
+                            <button class="sub-cat-item" data-category="design-heraldry" onclick="safeSetCategory('design-heraldry')">
+                                Символика, геральдика <span class="cat-count" id="countDesignHeraldry">0</span>
                             </button>
                             <button class="sub-cat-item" data-category="design-flowers" onclick="safeSetCategory('design-flowers')">
                                 Цветы <span class="cat-count" id="countDesignFlowers">0</span>
                             </button>
-                            <button class="sub-cat-item" data-category="design-icons" onclick="safeSetCategory('design-icons')" style="border-top:1px solid var(--border);margin-top:4px;padding-top:6px;">
+                            <div style="border-top:1px solid var(--border);margin:4px 0;"></div>
+                            <button class="sub-cat-item" data-category="design-churches" onclick="safeSetCategory('design-churches')">
+                                Церкви, храмы <span class="cat-count" id="countDesignChurches">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-dreams" onclick="safeSetCategory('design-dreams')">
+                                Мечети <span class="cat-count" id="countDesignDreams">0</span>
+                            </button>
+                            <button class="sub-cat-item" data-category="design-icons" onclick="safeSetCategory('design-icons')">
                                 Иконы <span class="cat-count" id="countDesignIcons">0</span>
                             </button>
-                            <button class="sub-cat-item" data-category="design-churches" onclick="safeSetCategory('design-churches')">
-                                Церкви <span class="cat-count" id="countDesignChurches">0</span>
+                            <button class="sub-cat-item" data-category="design-landscapes" onclick="safeSetCategory('design-landscapes')">
+                                Пейзажи <span class="cat-count" id="countDesignLandscapes">0</span>
                             </button>
-                            <button class="sub-cat-item" data-category="design-mosques" onclick="safeSetCategory('design-mosques')">
-                                Мечети <span class="cat-count" id="countDesignMosques">0</span>
+                            <button class="sub-cat-item" data-category="design-nature" onclick="safeSetCategory('design-nature')">
+                                Природа <span class="cat-count" id="countDesignNature">0</span>
                             </button>
                         </div>
                     </div>
@@ -908,7 +1116,59 @@
 
 <footer id="site-footer"></footer>
 
+<!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
+<div class="modal-overlay" id="orderOverlay" onclick="closeOrderModalOutside(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeOrderModal()"><i class="fas fa-times"></i></button>
+
+        <div id="modalFormView">
+            <h3><i class="fas fa-paper-plane" style="color:var(--gold);margin-right:8px;"></i>Оставить заявку</h3>
+            <p style="font-size:13px;color:var(--text-light);margin-bottom:18px;">
+                Заполните данные — менеджер свяжется с вами для уточнения деталей
+            </p>
+
+            <div class="form-group">
+                <label>Ваше имя</label>
+                <input type="text" id="modalName" placeholder="Иван Иванов">
+            </div>
+            <div class="form-group">
+                <label>Номер телефона *</label>
+                <input type="tel" id="modalPhone" placeholder="+7 (___) ___-__-__">
+            </div>
+            <div class="form-group">
+                <label>Кладбище</label>
+                <input type="text" id="modalCemetery" placeholder="Например, Хованское">
+            </div>
+            <div class="form-group">
+                <label>Комментарий</label>
+                <textarea id="modalComment" placeholder="Дополнительные пожелания..." rows="2"></textarea>
+            </div>
+
+            <div class="opd-block">
+                <input type="checkbox" id="modalOpd">
+                <label for="modalOpd">
+                    Нажимая кнопку, я даю согласие на
+                    <a href="../privacy-policy.html" target="_blank" rel="noopener">обработку персональных данных</a>
+                    в соответствии с&nbsp;ФЗ&#8209;152.
+                </label>
+            </div>
+            <div class="opd-err" id="modalOpdErr"><i class="fas fa-exclamation-circle"></i> Необходимо согласие для отправки</div>
+
+            <button class="btn-submit" onclick="submitOrderModal()">
+                <i class="fas fa-paper-plane"></i> Отправить заявку
+            </button>
+        </div>
+
+        <div class="modal-success" id="modalSuccess">
+            <i class="fas fa-check-circle"></i>
+            <h4>Заявка отправлена!</h4>
+            <p>Менеджер свяжется с вами в течение 15 минут</p>
+        </div>
+    </div>
+</div>
+
 <script src="../js/main.js"></script>
+<script src="../js/portfolio-fx.js"></script>
 <script src="../js/validation.js"></script>
 <script src="../js/header.js"></script>
 <script src="../js/cart.js"></script>
@@ -943,8 +1203,8 @@ const updateActiveCategory = (category) => {
         el.classList.toggle('active', el.dataset.category === category);
     });
 
-    const memorialKeys = ['vertical', 'memorial-milling', 'horizontal', 'carved', 'double', 'memorial-arches', 'memorial-elite', 'cross', 'memorial-exclusive', 'memorial-chapels', 'memorial-granite-crosses', 'memorial-european', 'complex'];
-    const designKeys = ['design-photo', 'design-glass', 'design-angels', 'design-branches', 'design-military', 'design-animals', 'design-crosses', 'design-moon', 'design-music', 'design-nature', 'design-frames', 'design-candles', 'design-flowers', 'design-icons', 'design-churches', 'design-mosques'];
+    const memorialKeys = ['vertical', 'memorial-milling', 'horizontal', 'double', 'memorial-arches', 'memorial-elite', 'cross', 'memorial-exclusive', 'memorial-chapels', 'memorial-granite-crosses', 'memorial-european', 'complex'];
+    const designKeys = ['design-photo', 'design-glass', 'design-metal-photo', 'design-angels', 'design-crosses', 'design-candles', 'design-vertical', 'design-horizontal', 'design-branches', 'design-military', 'design-animals', 'design-moon', 'design-music', 'design-frames', 'design-heraldry', 'design-flowers', 'design-churches', 'design-mosques', 'design-icons', 'design-landscapes', 'design-nature'];
 
     document.querySelectorAll('.cat-item').forEach((el) => {
         const text = el.textContent.trim();
@@ -1050,13 +1310,112 @@ const setView = (view) => {
     }
 };
 
+// ========== МОДАЛКА ЗАКАЗА ДЛЯ КАТАЛОГА ==========
+
+window.closeOrderModal = function() {
+    const overlay = document.getElementById('orderOverlay');
+    if (overlay) {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+};
+
+window.closeOrderModalOutside = function(event) {
+    if (event.target === document.getElementById('orderOverlay')) {
+        closeOrderModal();
+    }
+};
+
+window.submitOrderModal = function() {
+    const name = (document.getElementById('modalName')?.value || '').trim();
+    const phone = (document.getElementById('modalPhone')?.value || '').trim();
+    const cemetery = (document.getElementById('modalCemetery')?.value || '').trim() || 'Не указано';
+    const comment = (document.getElementById('modalComment')?.value || '').trim() || 'Без комментария';
+    const opd = document.getElementById('modalOpd');
+
+    let isValid = true;
+
+    if (name && !/^[А-ЯЁа-яёA-Za-z\-\s]+$/.test(name)) {
+        isValid = false;
+        const field = document.getElementById('modalName');
+        if (field) {
+            field.style.borderColor = '#d32f2f';
+            field.style.borderWidth = '2px';
+            field.style.background = '#fff8f8';
+        }
+    } else {
+        const field = document.getElementById('modalName');
+        if (field) {
+            field.style.borderColor = '';
+            field.style.borderWidth = '';
+            field.style.background = '';
+        }
+    }
+
+    if (!phone || phone.replace(/\D/g, '').length < 11) {
+        isValid = false;
+        const field = document.getElementById('modalPhone');
+        if (field) {
+            field.style.borderColor = '#d32f2f';
+            field.style.borderWidth = '2px';
+            field.style.background = '#fff8f8';
+        }
+    } else {
+        const field = document.getElementById('modalPhone');
+        if (field) {
+            field.style.borderColor = '#27ae60';
+            field.style.borderWidth = '2px';
+            field.style.background = '';
+        }
+    }
+
+    if (!opd || !opd.checked) {
+        document.getElementById('modalOpdErr').style.display = 'block';
+        isValid = false;
+    } else {
+        document.getElementById('modalOpdErr').style.display = 'none';
+    }
+
+    if (!isValid) {
+        alert('Заполните обязательные поля (телефон и согласие)');
+        return;
+    }
+
+    const fullComment = 'Заявка из каталога:\nКладбище: ' + cemetery + '\nКомментарий: ' + comment;
+
+    fetch('/mail.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name: name || 'Клиент',
+            phone: phone,
+            interest: 'Заявка из каталога',
+            comment: fullComment,
+            source: 'Каталог'
+        })
+    })
+    .then(function(response) {
+        if (response.ok) {
+            document.getElementById('modalFormView').style.display = 'none';
+            document.getElementById('modalSuccess').style.display = 'block';
+            setTimeout(function() {
+                closeOrderModal();
+            }, 4000);
+        } else {
+            alert('Ошибка отправки. Попробуйте позже.');
+        }
+    })
+    .catch(function() {
+        alert('Ошибка. Позвоните: +7 (936) 2200-900');
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Исправляем подсчет категорий
     setTimeout(() => {
         if (window.Catalog && Catalog.products) {
             const products = Catalog.products;
             
-            // Функция проверки наличия категории у товара
             const productHasCategory = (product, cat) => {
                 if (!product) return false;
                 if (product.categories && Array.isArray(product.categories)) {
@@ -1073,7 +1432,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 'vertical': 'countVertical',
                 'memorial-milling': 'countMemorialMilling',
                 'horizontal': 'countHorizontal',
-                'carved': 'countCarved',
                 'double': 'countDouble',
                 'memorial-arches': 'countMemorialArches',
                 'memorial-elite': 'countMemorialElite',
@@ -1087,23 +1445,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 'vases': 'countVases',
                 'design-photo': 'countDesignPhoto',
                 'design-glass': 'countDesignGlass',
+                'design-metal-photo': 'countDesignMetalPhoto',
                 'design-angels': 'countDesignAngels',
+                'design-crosses': 'countDesignCrosses',
+                'design-candles': 'countDesignCandles',
+                'design-vertical': 'countDesignVertical',
+                'design-horizontal': 'countDesignHorizontal',
                 'design-branches': 'countDesignBranches',
                 'design-military': 'countDesignMilitary',
                 'design-animals': 'countDesignAnimals',
-                'design-crosses': 'countDesignCrosses',
                 'design-moon': 'countDesignMoon',
                 'design-music': 'countDesignMusic',
-                'design-nature': 'countDesignNature',
                 'design-frames': 'countDesignFrames',
-                'design-candles': 'countDesignCandles',
+                'design-heraldry': 'countDesignHeraldry',
                 'design-flowers': 'countDesignFlowers',
-                'design-icons': 'countDesignIcons',
                 'design-churches': 'countDesignChurches',
-                'design-mosques': 'countDesignMosques'
+                'design-mosques': 'countDesignMosques',
+                'design-icons': 'countDesignIcons',
+                'design-landscapes': 'countDesignLandscapes',
+                'design-nature': 'countDesignNature'
             };
 
-            const memorialKeys = ['vertical', 'memorial-milling', 'horizontal', 'carved', 'double', 'memorial-arches', 'memorial-elite', 'cross', 'memorial-exclusive', 'memorial-chapels', 'memorial-granite-crosses', 'memorial-european', 'complex'];
+            const memorialKeys = ['vertical', 'memorial-milling', 'horizontal', 'double', 'memorial-arches', 'memorial-elite', 'cross', 'memorial-exclusive', 'memorial-chapels', 'memorial-granite-crosses', 'memorial-european', 'complex'];
             const designKeys = ['design-photo', 'design-glass', 'design-angels', 'design-branches', 'design-military', 'design-animals', 'design-crosses', 'design-moon', 'design-music', 'design-nature', 'design-frames', 'design-candles', 'design-flowers', 'design-icons', 'design-churches', 'design-mosques'];
 
             let memorialTotal = 0;

@@ -18,6 +18,7 @@ if (!$data) {
     $source = $_POST['source'] ?? 'Сайт';
     $cemetery = $_POST['cemetery'] ?? 'Не указано';
     $time = $_POST['time'] ?? 'Не указано';
+    $sku = $_POST['sku'] ?? '';
 } else {
     $name = $data['name'] ?? 'Не указано';
     $phone = $data['phone'] ?? 'Не указано';
@@ -26,9 +27,9 @@ if (!$data) {
     $source = $data['source'] ?? 'Сайт';
     $cemetery = $data['cemetery'] ?? 'Не указано';
     $time = $data['time'] ?? 'Не указано';
+    $sku = $data['sku'] ?? '';
 }
 
-// ── ТЕКСТ ПИСЬМА ──
 $subject = 'Новая заявка с сайта';
 $message = "----------------------------------------\n";
 $message .= "НОВАЯ ЗАЯВКА\n";
@@ -36,6 +37,9 @@ $message .= "----------------------------------------\n\n";
 $message .= "Имя:         $name\n";
 $message .= "Телефон:     $phone\n";
 $message .= "Интерес:     $interest\n";
+if ($sku) {
+    $message .= "Артикул:     $sku\n";
+}
 $message .= "Кладбище:    $cemetery\n";
 if ($time && $time !== 'Не указано') {
     $message .= "Время выезда: $time\n";
@@ -46,7 +50,6 @@ $message .= "Источник:    $source\n";
 $message .= "Дата:        " . date('d.m.Y H:i:s') . "\n";
 $message .= "----------------------------------------\n";
 
-// ── ЗАГОЛОВКИ (С PUNYCODE) ──
 $from = 'asvezhov_gv.rf@xn--80aebkas0afexd6l.xn--p1ai';
 
 $headers = "From: $from\r\n";
@@ -54,10 +57,8 @@ $headers .= "Reply-To: $from\r\n";
 $headers .= "MIME-Version: 1.0\r\n";
 $headers .= "Content-Type: text/plain; charset=utf-8\r\n";
 
-// ── ОТПРАВКА ──
 $result = mail($to, $subject, $message, $headers);
 
-// ── ОТВЕТ ──
 header('Content-Type: application/json');
 if ($result) {
     echo json_encode(['ok' => true, 'message' => 'Письмо отправлено через mail()']);

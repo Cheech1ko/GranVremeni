@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена — ГраньВремени.рф</title>
+    <meta name="description" content="Страница не найдена. Вернитесь на главную или в каталог.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="/logoico.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .error-hero {
+            background: var(--dark);
+            padding: 80px 20px 60px;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .error-hero .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            color: var(--gold);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1;
+            letter-spacing: -4px;
+            text-shadow: 0 4px 40px rgba(184,148,74,0.15);
+        }
+        .error-hero .error-icon {
+            font-size: 64px;
+            color: rgba(184,148,74,0.2);
+            margin-bottom: 10px;
+        }
+        .error-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 12px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .error-hero .error-desc {
+            font-size: 16px;
+            color: rgba(255,255,255,0.6);
+            max-width: 480px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .error-hero .error-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .error-hero .error-actions .btn-primary {
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 28px;
+            border-radius: var(--radius);
+            transition: background .2s, transform .15s;
+            font-family: 'Montserrat', sans-serif;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .error-hero .error-actions .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+        .error-hero .error-actions .btn-outline-light {
+            background: transparent;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px 28px;
+            border-radius: var(--radius);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: border-color .2s, background .2s;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .error-hero .error-actions .btn-outline-light:hover {
+            border-color: #fff;
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-2px);
+        }
+        .error-hero .gold-line {
+            display: inline-block;
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+            margin: 10px auto 20px;
+        }
+
+        @media (max-width: 768px) {
+            .error-hero .error-code {
+                font-size: 72px;
+            }
+            .error-hero h1 {
+                font-size: 22px;
+            }
+            .error-hero .error-desc {
+                font-size: 14px;
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-hero {
+                padding: 50px 16px 40px;
+                min-height: 50vh;
+            }
+            .error-hero .error-code {
+                font-size: 56px;
+            }
+            .error-hero .error-icon {
+                font-size: 40px;
+            }
+            .error-hero h1 {
+                font-size: 18px;
+            }
+            .error-hero .error-desc {
+                font-size: 13px;
+            }
+            .error-hero .error-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .error-hero .error-actions .btn-primary,
+            .error-hero .error-actions .btn-outline-light {
+                justify-content: center;
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<section class="error-hero">
+    <div class="error-icon"><i class="fas fa-compass"></i></div>
+    <div class="error-code">404</div>
+    <div class="gold-line"></div>
+    <h1>Страница не найдена</h1>
+    <p class="error-desc">
+        К сожалению, запрашиваемая страница не существует или была перемещена.
+        Возможно, вы перешли по устаревшей ссылке или ошиблись в адресе.
+    </p>
+    <div class="error-actions">
+        <a href="/index.html" class="btn-primary">
+            <i class="fas fa-home"></i> На главную
+        </a>
+        <a href="/catalog/" class="btn-outline-light">
+            <i class="fas fa-th-list"></i> В каталог
+        </a>
+        <a href="/index.html#contact" class="btn-outline-light">
+            <i class="fas fa-envelope"></i> Связаться с нами
+        </a>
+    </div>
+</section>
+
+<footer id="site-footer"></footer>
+
+<!-- COOKIE NOTIFICATION -->
+<div id="cookieNotice" style="position:fixed;bottom:20px;right:20px;max-width:360px;width:100%;background:#1a1a1a;color:#fff;padding:16px 18px 18px;z-index:9999;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);font-family:'Open Sans',sans-serif;transition:opacity 0.4s ease,transform 0.4s ease;animation:cookieSlideIn 0.5s cubic-bezier(0.16,1,0.3,1);display:none;">
+    <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div style="flex-shrink:0;width:32px;height:32px;background:rgba(184,148,74,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+            <i class="fas fa-cookie-bite" style="color:#b8944a;font-size:14px;"></i>
+        </div>
+        <div style="flex:1;min-width:0;">
+            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;font-family:'Montserrat',sans-serif;">
+                🍪 Мы используем cookies
+            </div>
+            <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;margin:0 0 12px 0;">
+                Для улучшения работы сайта.
+                <a href="/privacy-policy.html" target="_blank" style="color:#b8944a;font-weight:600;text-decoration:underline;">Подробнее</a>
+            </p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button id="cookieAcceptBtn" style="flex:1;min-width:70px;background:#b8944a;border:none;color:#1a1a1a;font-weight:700;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'Montserrat',sans-serif;">Принять</button>
+                <button id="cookieDeclineBtn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-weight:600;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'Montserrat',sans-serif;">Отклонить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(() => {
+    // Cookie notice
+    try {
+        if (localStorage.getItem('cookies_accepted') === 'true') {
+            document.getElementById('cookieNotice').style.display = 'none';
+        } else {
+            document.getElementById('cookieNotice').style.display = 'block';
+        }
+    } catch(e) {
+        document.getElementById('cookieNotice').style.display = 'block';
+    }
+
+    document.getElementById('cookieAcceptBtn').addEventListener('click', () => {
+        try {
+            localStorage.setItem('cookies_accepted', 'true');
+        } catch(e) {}
+        const el = document.getElementById('cookieNotice');
+        if (el) {
+            el.style.animation = 'cookieSlideOut 0.4s ease forwards';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 400);
+        }
+    });
+
+    document.getElementById('cookieDeclineBtn').addEventListener('click', () => {
+        const el = document.getElementById('cookieNotice');
+        if (el) {
+            el.style.animation = 'cookieSlideOut 0.4s ease forwards';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 400);
+        }
+    });
+})();
+
+// Стили для анимации cookie
+(() => {
+    if (!document.getElementById('cookieNoticeStyles')) {
+        const style = document.createElement('style');
+        style.id = 'cookieNoticeStyles';
+        style.textContent = `
+            @keyframes cookieSlideIn {
+                from { opacity: 0; transform: translateY(30px) scale(0.95); }
+                to { opacity: 1; transform: translateY(0) scale(1); }
+            }
+            @keyframes cookieSlideOut {
+                from { opacity: 1; transform: translateY(0) scale(1); }
+                to { opacity: 0; transform: translateY(30px) scale(0.95); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+})();
+</script>
+
+<script src="js/main.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/header.js?v=2"></script>
+<script src="js/cart.js"></script>
+
+</body>
+</html>
